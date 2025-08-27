@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaudhary Kirana Store - Admin Panel</title>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-red: #e74a3b;
+            --text-color: #333;
+            --muted-color: #777;
+            --surface-color: #fff;
+            --surface-dark-color: #f8f9fa;
+            --border-color: #eee;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --card-border-radius: 18px;
+
+            /* Admin specific */
+            --admin-sidebar-bg: #2c3e50; /* Dark sidebar */
+            --admin-sidebar-text: #ecf0f1;
+            --admin-sidebar-hover: #34495e;
+            --admin-active-link: var(--primary-red);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            box-sizing: border-box;
+            background-color: var(--surface-dark-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-red);
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border-radius: var(--card-border-radius);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add transition for hover effect */
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+        }
+
+        /* Admin Layout */
+        .admin-sidebar {
+            width: 250px; /* Default width for desktop */
+            background-color: var(--admin-sidebar-bg);
+            color: var(--admin-sidebar-text);
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: width 0.3s ease, transform 0.3s ease; /* Add transform to transition */
+            box-sizing: border-box; /* Ensure padding doesn't affect width */
+        }
+
+        /* .admin-sidebar.collapsed is now handled exclusively in the min-width media query for desktop. */
+        /* This global rule is removed to prevent conflicts on mobile. */
+
+        /* Admin-specific styles for desktop sidebar when collapsed */
+        @media (min-width: 769px) {
+            .admin-sidebar.collapsed {
+                width: 60px;
+            }
+            .admin-sidebar.collapsed h2 {
+                font-size: 0;
+                margin-bottom: 0;
+            }
+            .admin-sidebar.collapsed h2 img {
+                height: 25px;
+                margin-right: 0;
+            }
+            .admin-sidebar.collapsed nav li a span {
+                display: none;
+            }
+            .admin-sidebar.collapsed nav li a i {
+                margin: 0 auto;
+                font-size: 1.3rem;
+            }
+            .admin-content.collapsed {
+                margin-left: 60px;
+            }
+        }
+
+        .admin-sidebar h2 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .admin-sidebar h2 img {
+            height: 30px; /* Adjust as needed */
+            margin-right: 10px;
+        }
+
+        .admin-sidebar.collapsed h2 {
+            font-size: 0;
+            margin-bottom: 0;
+        }
+
+        .admin-sidebar.collapsed h2 img {
+            height: 25px; /* Smaller logo when collapsed */
+            margin-right: 0;
+        }
+
+        .admin-sidebar nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .admin-sidebar nav li a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 18px; /* Increased padding for better touch targets */
+            color: var(--admin-sidebar-text);
+            border-radius: 10px; /* Slightly more rounded */
+            margin-bottom: 8px; /* Reduced margin for tighter list */
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease; /* Add transform for hover */
+        }
+
+        .admin-sidebar nav li a:hover {
+            background-color: var(--admin-sidebar-hover);
+            transform: translateX(5px); /* Subtle slide effect on hover */
+        }
+
+        .admin-sidebar nav li a.active {
+            background-color: var(--admin-active-link);
+            color: white;
+            box-shadow: 0 4px 10px rgba(231, 74, 59, 0.3); /* Add shadow for active state */
+        }
+
+        /* Admin Table Styling */
+        .admin-section table {
+            width: 100%; /* Ensure table takes full width */
+            border-collapse: collapse;
+            text-align: left;
+            background-color: var(--surface-color);
+            border-radius: var(--card-border-radius);
+            overflow: hidden; /* Hide overflowing borders/shadows */
+            box-shadow: 0 2px 8px var(--shadow-color);
+            margin-bottom: 20px; /* Space below table */
+        }
+
+        .admin-section thead tr {
+            background-color: var(--surface-dark-color); /* Light background for header */
+        }
+
+        .admin-section th {
+            padding: 12px 15px; /* Consistent padding */
+            font-weight: 600;
+            color: var(--text-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .admin-section td {
+            padding: 12px 15px; /* Consistent padding */
+            border-bottom: 1px solid var(--border-color); /* Lighter bottom border */
+            vertical-align: middle; /* Center content vertically */
+        }
+
+        /* Remove last row border */
+        .admin-section tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Admin content and sidebar collapsed states */
+        .admin-sidebar.collapsed nav li a span {
+            display: none;
+        }
+
+        .admin-sidebar.collapsed nav li a i {
+            margin: 0 auto;
+            font-size: 1.3rem;
+        }
+
+        .admin-content {
+            margin-left: 250px; /* Space for sidebar on desktop */
+            flex-grow: 1;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .admin-content.collapsed {
+            margin-left: 60px;
+        }
+
+        /* Sidebar toggle button (desktop) */
+        .sidebar-toggle-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            display: block;
+            color: var(--primary-red);
+            background-color: var(--surface-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1002;
+        }
+
+        /* Sidebar close button (mobile) */
+        .sidebar-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: var(--admin-sidebar-text);
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+            display: none;
+        }
+
+        /* Mobile Media Query */
+        @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            body.sidebar-open-mobile {
+                overflow-y: hidden;
+            }
+
+            .admin-sidebar {
+                width: 100%;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 1000;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+                padding: 20px;
+                position: fixed;
+                height: 100vh;
+                display: none;
+            }
+            .admin-sidebar.open {
+                transform: translateX(0);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 60px;
+            }
+
+            .sidebar-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                display: none;
+            }
+            .sidebar-backdrop.active {
+                display: block;
+            }
+
+            .admin-sidebar h2 {
+                font-size: 1.2rem;
+                margin-bottom: 20px;
+                height: auto;
+                letter-spacing: 0.3px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                white-space: normal;
+                overflow: visible;
+                text-overflow: clip;
+                padding: 10px 0;
+            }
+            .admin-sidebar h2 img {
+                height: 30px;
+                margin-right: 10px;
+            }
+            .admin-sidebar nav li a {
+                justify-content: center;
+                padding: 12px 0;
+            }
+            .admin-sidebar nav li a span {
+                display: inline;
+            }
+            .admin-sidebar nav li a i {
+                margin: 0;
+            }
+            .admin-content {
+                margin-left: 0;
+                padding: 15px;
+                width: 100%;
+                transition: none;
+            }
+            .admin-content.collapsed {
+                margin-left: 0;
+                transform: translateX(0);
+            }
+            .sidebar-toggle-btn {
+                display: block;
+                position: fixed;
+                top: 15px;
+                right: 15px;
+                color: var(--primary-red);
+                background-color: var(--surface-color);
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 1002;
+            }
+
+            .sidebar-close-btn {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                font-size: 1.5rem;
+                color: var(--admin-sidebar-text);
+                background: none;
+                border: none;
+                cursor: pointer;
+                z-index: 1001;
+                display: none;
+            }
+
+            /* Adjust font sizes for better readability on small screens */
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+            }
+
+            button {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            /* Modals should scroll if content is too tall */
+            #admin-auth-modal > div,
+            #product-manage-modal > div,
+            #add-slider-image-modal > div {
+                max-height: 90vh;
+                overflow-y: auto;
+                width: 95%;
+                padding: 20px;
+            }
+
+            /* Table responsiveness for admin tables */
+            .admin-section table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                border-radius: var(--card-border-radius);
+                box-shadow: 0 4px 15px var(--shadow-color);
+            }
+
+            .admin-section thead {
+                display: none;
+            }
+
+            .admin-section tbody,
+            .admin-section tr,
+            .admin-section td {
+                display: block;
+            }
+
+            .admin-section tr {
+                margin-bottom: 15px;
+                border: 1px solid var(--border-color);
+                border-radius: var(--card-border-radius);
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .admin-section td {
+                text-align: left;
+                padding-left: 0;
+                position: relative;
+                width: 100%;
+                border-bottom: none;
+            }
+
+            .admin-section td::before {
+                content: attr(data-label);
+                position: static;
+                width: auto;
+                display: block;
+                text-align: left;
+                font-weight: 600;
+                color: var(--muted-color);
+                margin-bottom: 5px;
+            }
+
+            /* Remove top border from first td in stacked rows */
+            .admin-section tr td:first-child {
+                padding-top: 0;
+            }
+            .admin-section tr td:last-child {
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            /* Specific adjustments for dashboard stats */
+            #stats-cards {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            #stats-cards .card {
+                padding: 20px;
+                text-align: center;
+            }
+            #stats-cards h3 {
+                font-size: 1.1rem;
+                margin-bottom: 8px;
+            }
+            #stats-cards p {
+                font-size: 1.4rem;
+                font-weight: 700;
+            }
+
+            /* Adjust general spacing and padding */
+            .container {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            input, textarea, select, button {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Further refine for very small screens (e.g., ~320px) */
+        @media (max-width: 480px) {
+            .admin-content {
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            button {
+                font-size: 0.85rem;
+                padding: 7px 10px;
+            }
+
+            /* Adjust table data-label font size for very small screens */
+            .admin-section td::before {
+                font-size: 0.8rem;
+            }
+
+            .card {
+                padding: 10px;
+            }
+
+            input, textarea, select {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+
+            /* Ensure buttons still look good and are clickable */
+            button {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Section Styling */
+        .admin-section {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        /* New styles for blurring content before login */
+        .blur-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay */
+            z-index: 2999; /* Below auth modal, above other content */
+            backdrop-filter: blur(8px); /* Apply blur effect */
+            -webkit-backdrop-filter: blur(8px); /* Safari support */
+            pointer-events: auto; /* Allow overlay to block interaction */
+        }
+        /* End new styles */
+
+        /* Skeleton Loading Animations */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-table {
+            width: 100%;
+            background: var(--surface-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .skeleton-table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .skeleton-table-title {
+            width: 150px;
+            height: 24px;
+        }
+
+        .skeleton-table-button {
+            width: 120px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .skeleton-table-row {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            gap: 20px;
+        }
+
+        .skeleton-table-row:last-child {
+            border-bottom: none;
+        }
+
+        .skeleton-table-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+        }
+
+        .skeleton-table-text {
+            flex: 1;
+            height: 16px;
+        }
+
+        .skeleton-table-text.short {
+            flex: 0.5;
+        }
+
+        .skeleton-table-actions {
+            width: 100px;
+            height: 32px;
+            border-radius: 6px;
+        }
+
+        .skeleton-stats-card {
+            background: var(--surface-color);
+            border-radius: var(--card-border-radius);
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .skeleton-stats-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+        }
+
+        .skeleton-stats-number {
+            width: 60px;
+            height: 32px;
+            margin: 0 auto 10px;
+        }
+
+        .skeleton-stats-label {
+            width: 80px;
+            height: 16px;
+            margin: 0 auto;
+        }
+
+        /* Image loading states for admin */
+        .admin-image-loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-image-loading::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            z-index: 1;
+        }
+
+        .admin-image-loaded::before {
+            display: none;
+        }
+
+        /* Dark mode skeleton for admin */
+        @media (prefers-color-scheme: dark) {
+            .skeleton {
+                background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+                background-size: 200% 100%;
+            }
+        }
+    </style>
+</head>
+<body style="display: none; background-color: white;">
+    <div class="admin-sidebar" id="admin-sidebar">
+        <h2>Chaudhary Kirana Store</h2>
+        <button class="icon-btn sidebar-close-btn" id="sidebar-close-btn" style="display: none;"><i class="fas fa-times"></i></button>
+        <nav>
+            <ul>
+                <li><a href="#dashboard" class="admin-nav-link active" data-route="dashboard"><i class="fas fa-chart-line"></i><span>Dashboard</span></a></li>
+                <li><a href="#products" class="admin-nav-link" data-route="products"><i class="fas fa-boxes"></i><span>Products</span></a></li>
+                <li><a href="#orders" class="admin-nav-link" data-route="orders"><i class="fas fa-receipt"></i><span>Orders</span></a></li>
+                <li><a href="#slider" class="admin-nav-link" data-route="slider"><i class="fas fa-images"></i><span>Slider / Ads</span></a></li>
+                <li><a href="#messages" class="admin-nav-link" data-route="messages"><i class="fas fa-envelope"></i><span>Messages</span></a></li>
+                <li><a href="#logout" class="admin-nav-link" data-route="logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="admin-content-wrapper">
+        <main class="admin-content" id="admin-content">
+            <button class="sidebar-toggle-btn" id="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+            <div class="container">
+                <section id="dashboard" class="admin-section active">
+                    <h2>Dashboard</h2>
+                    <div id="stats-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                        <div class="card stat-card" data-redirect="#products" style="cursor: pointer;">
+                            <h3 style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 1.2rem;">
+                                <span>Total Products</span>
+                                <i class="fas fa-boxes" style="color: var(--primary-red);"></i>
+                            </h3>
+                            <p id="total-products" style="font-size: 2.2rem; font-weight: 700; text-align: center; color: var(--text-color); margin: 0;">0</p>
+                        </div>
+                        <div class="card stat-card" data-redirect="#orders" style="cursor: pointer;">
+                            <h3 style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 1.2rem;">
+                                <span>Total Orders</span>
+                                <i class="fas fa-receipt" style="color: #007bff;"></i>
+                            </h3>
+                            <p id="total-orders" style="font-size: 2.2rem; font-weight: 700; text-align: center; color: var(--text-color); margin: 0;">0</p>
+                        </div>
+
+                        <div class="card stat-card" data-redirect="#messages" style="cursor: pointer;">
+                            <h3 style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 1.2rem;">
+                                <span>Total Messages</span>
+                                <i class="fas fa-envelope" style="color: #17a2b8;"></i>
+                            </h3>
+                            <p id="total-messages" style="font-size: 2.2rem; font-weight: 700; text-align: center; color: var(--text-color); margin: 0;">0</p>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button id="seed-demo-data-btn" style="background-color: #28a745; color: white;"><i class="fas fa-seedling" style="margin-right: 5px;"></i>Seed Demo Data</button>
+                    </div>
+                </section>
+
+                <section id="products" class="admin-section">
+                    <h2>Product Management</h2>
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <button id="add-product-btn" style="background-color: var(--primary-red); color: white;"><i class="fas fa-plus-circle" style="margin-right: 5px;"></i>Add New Product</button>
+                    </div>
+                    <div id="product-table-container" class="card">
+                        <!-- Product table will be loaded here -->
+                        <p style="text-align: center; color: var(--muted-color);">No products to display.</p>
+                    </div>
+                </section>
+
+                <section id="orders" class="admin-section">
+                    <h2>Order Management</h2>
+                    <div id="order-table-container" class="card">
+                        <!-- Order table will be loaded here -->
+                        <p style="text-align: center; color: var(--muted-color);">No orders to display.</p>
+                    </div>
+                </section>
+
+                <section id="slider" class="admin-section">
+                    <h2>Slider / Ad Management</h2>
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <button id="add-slider-image-btn" style="background-color: #007bff; color: white; margin-right: 10px;"><i class="fas fa-plus-circle" style="margin-right: 5px;"></i>Add New Slider Image</button>
+                        <button id="seed-slider-data-btn" style="background-color: #28a745; color: white;"><i class="fas fa-seedling" style="margin-right: 5px;"></i>Seed Demo Slider Data</button>
+                    </div>
+                    <div id="slider-image-table-container" class="card">
+                        <!-- Slider image table will be loaded here -->
+                        <p style="text-align: center; color: var(--muted-color);">No slider images to display.</p>
+                    </div>
+                </section>
+
+                <section id="messages" class="admin-section">
+                    <h2>Customer Messages</h2>
+                    <div id="messages-table-container" class="card">
+                        <!-- Messages table will be loaded here -->
+                        <p style="text-align: center; color: var(--muted-color);">No messages to display.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+    <!-- Message View Modal -->
+    <div id="message-view-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 3000;">
+        <div class="card" style="width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; padding: 30px; position: relative;">
+            <button style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; color: var(--muted-color); cursor: pointer;" onclick="document.getElementById('message-view-modal').style.display = 'none';">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 style="margin-bottom: 20px; color: var(--text-color);">Customer Message</h3>
+            <div id="message-modal-content">
+                <!-- Message details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="admin-auth-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 3000;">
+        <div class="card" style="width: 90%; max-width: 400px; padding: 30px; text-align: center;">
+            <h3>Admin Login</h3>
+            <form id="admin-auth-form">
+                <input type="email" id="admin-email" placeholder="Email" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <input type="password" id="admin-password" placeholder="Password" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <p id="admin-auth-error" style="color: var(--primary-red); margin-bottom: 15px; display: none;"></p>
+                <button type="submit" id="admin-login-btn" style="background-color: var(--primary-red); color: white; width: 100%;"><i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Add/Edit Modal -->
+    <div id="product-manage-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000;">
+        <div class="card" style="width: 90%; max-width: 600px; padding: 30px; position: relative;">
+            <button class="icon-btn" style="position: absolute; top: 10px; right: 10px; font-size: 1.5rem;" onclick="document.getElementById('product-manage-modal').style.display = 'none';"><i class="fas fa-times"></i></button>
+            <h3>Add/Edit Product</h3>
+            <form id="product-manage-form">
+                <input type="text" id="product-name" placeholder="Product Name" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <input type="text" id="product-category" placeholder="Category" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <input type="number" id="product-price" placeholder="Price" step="0.01" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <input type="url" id="product-image-url" placeholder="Image URL" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <textarea id="product-description" placeholder="Description" rows="5" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); border-radius: 8px;"></textarea>
+                <button type="submit" style="background-color: var(--primary-red); color: white; width: 100%;"><i class="fas fa-save" style="margin-right: 5px;"></i>Save Product</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Slider Image Modal -->
+    <div id="add-slider-image-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000;">
+        <div class="card" style="width: 90%; max-width: 400px; padding: 30px; position: relative; text-align: center;">
+            <button class="icon-btn" style="position: absolute; top: 10px; right: 10px; font-size: 1.5rem;" onclick="document.getElementById('add-slider-image-modal').style.display = 'none';"><i class="fas fa-times"></i></button>
+            <h3>Add Slider Image</h3>
+            <form id="add-slider-image-form">
+                <input type="url" id="slider-image-url-input" placeholder="Image URL" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); border-radius: 8px;">
+                <button type="submit" style="background-color: var(--primary-red); color: white; width: 100%;"><i class="fas fa-plus-circle" style="margin-right: 5px;"></i>Add Image</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script type="module">
+        // Firebase Configuration (Placeholder)
+        const firebaseConfig = {
+  apiKey: "AIzaSyBGh16sYlLk1e9nkhcLu7IPTZk807qeLZM",
+  authDomain: "test-60bf6.firebaseapp.com",
+  databaseURL: "https://test-60bf6-default-rtdb.firebaseio.com",
+  projectId: "test-60bf6",
+  storageBucket: "test-60bf6.firebasestorage.app",
+  messagingSenderId: "208881094528",
+  appId: "1:208881094528:web:114768e2de5956cae6fb65"
+};
+
+
+        // Initialize Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getDatabase, ref, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        // --- Skeleton Loading Functions ---
+        function showTableSkeleton(container, title, buttonText, rowCount = 5) {
+            container.innerHTML = `
+                <div class="skeleton-table">
+                    <div class="skeleton-table-header">
+                        <div class="skeleton skeleton-table-title"></div>
+                        <div class="skeleton skeleton-table-button"></div>
+                    </div>
+                    ${Array(rowCount).fill(0).map(() => `
+                        <div class="skeleton-table-row">
+                            <div class="skeleton skeleton-table-image"></div>
+                            <div class="skeleton skeleton-table-text"></div>
+                            <div class="skeleton skeleton-table-text short"></div>
+                            <div class="skeleton skeleton-table-text short"></div>
+                            <div class="skeleton skeleton-table-actions"></div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function showStatsSkeleton() {
+            const statsContainer = document.getElementById('stats-cards');
+            if (statsContainer) {
+                statsContainer.innerHTML = `
+                    <div class="skeleton-stats-card">
+                        <div class="skeleton skeleton-stats-icon"></div>
+                        <div class="skeleton skeleton-stats-number"></div>
+                        <div class="skeleton skeleton-stats-label"></div>
+                    </div>
+                    <div class="skeleton-stats-card">
+                        <div class="skeleton skeleton-stats-icon"></div>
+                        <div class="skeleton skeleton-stats-number"></div>
+                        <div class="skeleton skeleton-stats-label"></div>
+                    </div>
+                    <div class="skeleton-stats-card">
+                        <div class="skeleton skeleton-stats-icon"></div>
+                        <div class="skeleton skeleton-stats-number"></div>
+                        <div class="skeleton skeleton-stats-label"></div>
+                    </div>
+                    <div class="skeleton-stats-card">
+                        <div class="skeleton skeleton-stats-icon"></div>
+                        <div class="skeleton skeleton-stats-number"></div>
+                        <div class="skeleton skeleton-stats-label"></div>
+                    </div>
+                `;
+            }
+        }
+
+        // --- Enhanced Image Loading for Admin ---
+        function loadAdminImageWithFallback(imgElement, src, fallbackSrc = 'https://via.placeholder.com/50') {
+            return new Promise((resolve) => {
+                const img = new Image();
+                
+                // Add loading class
+                imgElement.classList.add('admin-image-loading');
+                
+                img.onload = () => {
+                    imgElement.src = src;
+                    imgElement.classList.remove('admin-image-loading');
+                    imgElement.classList.add('admin-image-loaded');
+                    resolve();
+                };
+                
+                img.onerror = () => {
+                    imgElement.src = fallbackSrc;
+                    imgElement.classList.remove('admin-image-loading');
+                    imgElement.classList.add('admin-image-loaded');
+                    resolve(); // Still resolve to continue
+                };
+                
+                img.src = src;
+            });
+        }
+
+        const adminSidebar = document.getElementById('admin-sidebar');
+        const adminContent = document.getElementById('admin-content');
+        const adminContentWrapper = document.getElementById('admin-content-wrapper'); // New: Get content wrapper
+        const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+        const sidebarCloseBtn = document.getElementById('sidebar-close-btn'); // Get the new close button
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop'); // New: Get sidebar backdrop
+
+        // --- Robust Sidebar Class Reset on Load ---
+        // Ensures no conflicting 'collapsed' or 'open' classes persist from previous states
+        adminSidebar.classList.remove('collapsed');
+        adminSidebar.classList.remove('open');
+        // --- End Robust Sidebar Class Reset ---
+
+        // --- Admin Authentication (Re-enabled) ---
+        const adminAuthModal = document.getElementById('admin-auth-modal');
+        const adminAuthForm = document.getElementById('admin-auth-form');
+        const adminEmailInput = document.getElementById('admin-email');
+        const adminPasswordInput = document.getElementById('admin-password');
+        const adminAuthError = document.getElementById('admin-auth-error');
+        const adminLoginBtn = document.getElementById('admin-login-btn'); // Get the login button
+
+        function showAdminAuthError(message) {
+            adminAuthError.textContent = message;
+            adminAuthError.style.display = 'block';
+        }
+
+        function hideAdminAuthError() {
+            adminAuthError.textContent = '';
+            adminAuthError.style.display = 'none';
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, hide login modal and show admin content
+                adminAuthModal.style.display = 'none';
+                adminSidebar.style.display = ''; // Let CSS control visibility (flex on desktop, none on mobile initially)
+                adminContent.style.display = ''; // Let CSS control visibility (block/flex)
+                adminContentWrapper.classList.remove('blur-overlay'); // Remove blur
+                document.body.style.display = 'flex'; // Show body content
+                document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
+                sidebarBackdrop.classList.remove('active'); // Hide backdrop
+
+                // Trigger initial stats fetch if on dashboard
+                if (window.location.hash === '#dashboard') {
+                    fetchDashboardStats();
+                }
+            } else {
+                // User is signed out, show login modal and hide admin content
+                adminAuthModal.style.display = 'flex';
+                adminSidebar.style.display = 'none'; // Hide sidebar
+                adminContent.style.display = 'none'; // Hide main content
+                adminContentWrapper.classList.add('blur-overlay'); // Apply blur
+                document.body.style.display = 'flex'; // Only show the login modal, which is a child of body
+                document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
+                sidebarBackdrop.classList.remove('active'); // Hide backdrop
+            }
+        });
+
+        adminAuthForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideAdminAuthError();
+
+            const email = adminEmailInput.value;
+            const password = adminPasswordInput.value;
+
+            adminLoginBtn.disabled = true; // Disable button
+            adminLoginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 5px;"></i>Logging in...'; // Show loading indicator
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                // Login successful, onAuthStateChanged will handle UI update
+            } catch (error) {
+                showAdminAuthError(error.message);
+            } finally {
+                adminLoginBtn.disabled = false; // Re-enable button
+                adminLoginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>Login'; // Restore original text
+            }
+        });
+
+        function handleAdminLogout() {
+            signOut(auth).then(() => {
+                // Sign-out successful, onAuthStateChanged will handle UI update
+                window.location.hash = '#dashboard'; // Redirect to dashboard after logout
+                document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
+                sidebarBackdrop.classList.remove('active'); // Hide backdrop
+            }).catch((error) => {
+                console.error("Logout Error:", error);
+                alert("Failed to log out.");
+            });
+        }
+
+
+        // --- SPA Routing Logic ---
+        const adminRoutes = {
+            '#dashboard': 'dashboard',
+            '#products': 'products',
+            '#orders': 'orders',
+            '#slider': 'slider',
+            '#messages': 'messages',
+            '#logout': 'logout' // Special case for logout
+        };
+
+        function showAdminSection(sectionId) {
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        }
+
+        function handleAdminHashChange() {
+            const hash = window.location.hash || '#dashboard';
+            const route = adminRoutes[hash];
+
+            document.querySelectorAll('.admin-nav-link').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            if (route) {
+                if (route === 'logout') {
+                    handleAdminLogout();
+                    return;
+                }
+                showAdminSection(route);
+                const activeNavLink = document.querySelector(`.admin-nav-link[data-route="${route}"]`);
+                if (activeNavLink) {
+                    activeNavLink.classList.add('active');
+                }
+            } else {
+                window.location.hash = '#dashboard';
+            }
+            // Close sidebar and hide backdrop on hash change (mobile only)
+            if (window.innerWidth <= 768) {
+                adminSidebar.classList.remove('open');
+                sidebarBackdrop.classList.remove('active');
+                document.body.classList.remove('sidebar-open-mobile');
+                updateSidebarToggleButtonIcon();
+            }
+        }
+
+        window.addEventListener('hashchange', handleAdminHashChange);
+        window.addEventListener('load', handleAdminHashChange);
+
+        // Sidebar Toggle (for opening the sidebar)
+        sidebarToggleBtn.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                adminSidebar.style.display = 'flex'; // Show the sidebar immediately on mobile
+                setTimeout(() => {
+                    adminSidebar.classList.toggle('open');
+                    sidebarBackdrop.classList.toggle('active');
+                    document.body.classList.toggle('sidebar-open-mobile');
+                    updateSidebarToggleButtonIcon();
+                }, 10);
+            } else {
+                adminSidebar.classList.toggle('collapsed');
+                adminContent.classList.toggle('collapsed');
+                updateSidebarToggleButtonIcon(); // Always update icon after click
+            }
+        });
+
+        // New: Close button inside sidebar (for mobile)
+        sidebarCloseBtn.addEventListener('click', () => {
+            adminSidebar.classList.remove('open');
+            sidebarBackdrop.classList.remove('active');
+            document.body.classList.remove('sidebar-open-mobile');
+            updateSidebarToggleButtonIcon();
+            setTimeout(() => {
+                adminSidebar.style.display = 'none'; // Hide after animation
+            }, 300); // Match CSS transition duration
+        });
+
+        // Close sidebar when a navigation link is clicked on mobile
+        document.querySelectorAll('.admin-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768 && adminSidebar.classList.contains('open')) {
+                    adminSidebar.classList.remove('open');
+                    sidebarBackdrop.classList.remove('active');
+                    document.body.classList.remove('sidebar-open-mobile');
+                    updateSidebarToggleButtonIcon(); // Update icon when sidebar is closed
+                    setTimeout(() => {
+                        adminSidebar.style.display = 'none'; // Hide after animation
+                    }, 300); // Match CSS transition duration
+                }
+            });
+        });
+
+        // Close sidebar when backdrop is clicked
+        sidebarBackdrop.addEventListener('click', () => {
+            if (window.innerWidth <= 768 && adminSidebar.classList.contains('open')) {
+                adminSidebar.classList.remove('open');
+                sidebarBackdrop.classList.remove('active');
+                document.body.classList.remove('sidebar-open-mobile');
+                updateSidebarToggleButtonIcon();
+                setTimeout(() => {
+                    adminSidebar.style.display = 'none';
+                }, 300);
+            }
+        });
+
+        // Adjust sidebar on window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                // On desktop: remove mobile-specific 'open' class, manage 'collapsed' for desktop
+                adminSidebar.classList.remove('open');
+                // We need to decide if desktop should be collapsed by default or open.
+                // Let's assume on resize to desktop, it should default to open (not collapsed).
+                adminSidebar.classList.remove('collapsed');
+                adminContent.classList.remove('collapsed');
+                document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
+                sidebarBackdrop.classList.remove('active'); // Hide backdrop
+                adminSidebar.style.display = ''; // Ensure sidebar is visible again on desktop
+            } else {
+                // On mobile: ensure both 'open' and 'collapsed' are removed
+                adminSidebar.classList.remove('open');
+                adminSidebar.classList.remove('collapsed');
+                adminContent.classList.remove('collapsed'); // Ensure content is not shifted
+                document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
+                sidebarBackdrop.classList.remove('active'); // Hide backdrop
+                adminSidebar.style.display = 'none'; // Hide sidebar on mobile if not open
+            }
+            updateSidebarToggleButtonIcon(); // Update icon after resize
+        });
+
+        // Initial checks on load
+        // Determine initial state based on screen width
+        if (window.innerWidth <= 768) {
+            // Mobile: Ensure sidebar is closed and not collapsed by default
+            adminSidebar.classList.remove('open');
+            adminSidebar.classList.remove('collapsed');
+            adminContent.classList.remove('collapsed');
+            adminSidebar.style.display = 'none'; // Ensure sidebar is hidden initially on mobile
+        } else {
+            // Desktop: Ensure sidebar is initially open (not collapsed)
+            adminSidebar.classList.remove('collapsed');
+            adminContent.classList.remove('collapsed');
+            adminSidebar.classList.remove('open'); // Ensure mobile 'open' is not active
+            adminSidebar.style.display = ''; // Ensure sidebar is visible on desktop
+        }
+        updateSidebarToggleButtonIcon(); // Set initial icon
+
+        // Function to update the sidebar toggle button icon AND close button visibility
+        function updateSidebarToggleButtonIcon() {
+           if (window.innerWidth <= 768) {
+               // On mobile, sidebarToggleBtn (in main content) shows 'bars'
+               sidebarToggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+               // And the close button inside the sidebar is controlled by .admin-sidebar.open
+               if (adminSidebar.classList.contains('open')) {
+                   sidebarCloseBtn.style.display = 'block'; // Show the internal close button
+               } else {
+                   sidebarCloseBtn.style.display = 'none'; // Hide the internal close button
+               }
+           } else {
+               // On desktop, sidebarToggleBtn (in main content) shows chevron-left/right
+               if (adminSidebar.classList.contains('collapsed')) {
+                   sidebarToggleBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+               } else {
+                   sidebarToggleBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+               }
+               sidebarCloseBtn.style.display = 'none'; // Ensure internal close button is hidden on desktop
+           }
+        }
+
+        // Update the icon immediately on load
+        updateSidebarToggleButtonIcon();
+
+        // --- Dashboard Stats ---
+        const totalProductsSpan = document.getElementById('total-products');
+        const totalOrdersSpan = document.getElementById('total-orders');
+        const totalMessagesSpan = document.getElementById('total-messages');
+
+        function fetchDashboardStats() {
+            // Show skeleton loading for stats
+            showStatsSkeleton();
+            
+            // Total Products
+            onValue(ref(database, 'products'), (snapshot) => {
+                const products = snapshot.val();
+                totalProductsSpan.textContent = products ? Object.keys(products).length : 0;
+            });
+
+            // Total Orders (aggregate across all users)
+            onValue(ref(database, 'orders'), (snapshot) => {
+                const allOrders = snapshot.val();
+                let orderCount = 0;
+                if (allOrders) {
+                    for (const userId in allOrders) {
+                        orderCount += Object.keys(allOrders[userId]).length;
+                    }
+                }
+                totalOrdersSpan.textContent = orderCount;
+            });
+
+            // Total Messages
+            onValue(ref(database, 'messages'), (snapshot) => {
+                const messages = snapshot.val();
+                totalMessagesSpan.textContent = messages ? Object.keys(messages).length : 0;
+            });
+        }
+
+        // Fetch stats when dashboard is active or on load if already on dashboard
+        window.addEventListener('hashchange', () => {
+            if (window.location.hash === '#dashboard') {
+                fetchDashboardStats();
+            }
+        });
+
+        // --- Stat Card Click Handlers ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const redirectUrl = card.dataset.redirect;
+                    if (redirectUrl) {
+                        window.location.hash = redirectUrl;
+                    }
+                });
+            });
+        });
+
+        // --- Seed Demo Data ---
+        const seedDemoDataBtn = document.getElementById('seed-demo-data-btn');
+        const seedSliderDataBtn = document.getElementById('seed-slider-data-btn');
+
+        const mockSliderImages = [
+            { downloadURL: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" },
+            { downloadURL: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" },
+            { downloadURL: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" }
+        ];
+
+        const mockProducts = [
+            { name: "Stylish T-Shirt", price: 25.99, imageUrl: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Comfortable cotton t-shirt for everyday wear.", category: "Fashion" },
+            { name: "Wireless Headphones", price: 99.00, imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "High-quality sound with noise-cancellation.", category: "Electronics" },
+            { name: "Smartwatch", price: 199.50, imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Track your fitness and receive notifications.", category: "Electronics" },
+            { name: "Leather Wallet", price: 45.00, imageUrl: "https://images.unsplash.com/photo-1627123424574-724758594e93?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Genuine leather wallet with multiple card slots.", category: "Fashion" },
+            { name: "Desk Lamp", price: 35.75, imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Modern design LED desk lamp with adjustable brightness.", category: "Home" }
+        ];
+
+        async function seedSliderImages() {
+            const sliderRef = ref(database, 'sliderImages');
+            await set(sliderRef, null); // Clear existing images completely
+            console.log("Cleared existing slider images");
+            
+            for (const image of mockSliderImages) {
+                const newImageRef = push(sliderRef);
+                await set(newImageRef, image);
+                console.log("Added slider image:", image.downloadURL);
+            }
+            console.log("Demo slider images seeded successfully!");
+        }
+
+        async function seedProducts() {
+            const productsRef = ref(database, 'products');
+            await set(productsRef, {}); // Clear existing products
+            for (const product of mockProducts) {
+                const newProductRef = push(productsRef);
+                await set(newProductRef, product);
+            }
+            console.log("Demo products seeded!");
+        }
+
+        seedDemoDataBtn.addEventListener('click', async () => {
+            await seedSliderImages();
+            await seedProducts();
+            fetchDashboardStats(); // Refresh stats after seeding
+        });
+
+        seedSliderDataBtn.addEventListener('click', async () => {
+            await seedSliderImages();
+        });
+
+        // --- Product Management (CRUD) ---
+        const addProductBtn = document.getElementById('add-product-btn');
+        const productManageModal = document.getElementById('product-manage-modal');
+        const productManageForm = document.getElementById('product-manage-form');
+        const productNameInput = document.getElementById('product-name');
+        const productCategoryInput = document.getElementById('product-category');
+        const productPriceInput = document.getElementById('product-price');
+        const productImageUrlInput = document.getElementById('product-image-url');
+        const productDescriptionTextarea = document.getElementById('product-description');
+
+        let editingProductId = null; // To store the ID of the product being edited
+
+        function renderProductTable(products) {
+            const productTableContainer = document.getElementById('product-table-container');
+            if (Object.keys(products).length === 0) {
+                productTableContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">No products to display.</p>';
+                return;
+            }
+
+            let tableHtml = `
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <th style="padding: 10px;">Image</th>
+                            <th style="padding: 10px;">Name</th>
+                            <th style="padding: 10px;">Category</th>
+                            <th style="padding: 10px;">Price</th>
+                            <th style="padding: 10px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            for (const productId in products) {
+                const product = products[productId];
+                tableHtml += `
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td data-label="Image:" style="padding: 10px;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Crect width='100%25' height='100%25' fill='%23f0f0f0'/%3E%3C/svg%3E" alt="${product.name}" class="admin-product-image" data-src="${product.imageUrl || 'https://via.placeholder.com/50'}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
+                        <td data-label="Name:" style="padding: 10px;">${product.name}</td>
+                        <td data-label="Category:" style="padding: 10px;">${product.category}</td>
+                        <td data-label="Price:" style="padding: 10px;">₹${product.price.toFixed(2)}</td>
+                        <td data-label="Actions:" style="padding: 10px; text-align: center;">
+                            <button class="icon-btn edit-product-btn" data-product-id="${productId}" style="color: #007bff;"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-product-btn" data-product-id="${productId}" style="color: var(--primary-red); margin-left: 5px;"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            tableHtml += `
+                    </tbody>
+                </table>
+            `;
+            productTableContainer.innerHTML = tableHtml;
+
+            // Load images with enhanced loading
+            productTableContainer.querySelectorAll('.admin-product-image').forEach(img => {
+                const imageSrc = img.getAttribute('data-src');
+                if (imageSrc) {
+                    loadAdminImageWithFallback(img, imageSrc);
+                }
+            });
+
+            // Add event listeners for edit and delete buttons
+            productTableContainer.querySelectorAll('.edit-product-btn').forEach(button => {
+                button.addEventListener('click', (e) => openEditProductModal(e.currentTarget.dataset.productId, products[e.currentTarget.dataset.productId]));
+            });
+
+            productTableContainer.querySelectorAll('.delete-product-btn').forEach(button => {
+                button.addEventListener('click', (e) => deleteProduct(e.currentTarget.dataset.productId));
+            });
+        }
+
+        addProductBtn.addEventListener('click', () => {
+            editingProductId = null;
+            productManageForm.reset();
+            productManageModal.style.display = 'flex';
+        });
+
+        function openEditProductModal(productId, product) {
+            editingProductId = productId;
+            productNameInput.value = product.name;
+            productCategoryInput.value = product.category;
+            productPriceInput.value = product.price;
+            productImageUrlInput.value = product.imageUrl;
+            productDescriptionTextarea.value = product.description;
+            productManageModal.style.display = 'flex';
+        }
+
+        productManageForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const productData = {
+                name: productNameInput.value,
+                category: productCategoryInput.value,
+                price: parseFloat(productPriceInput.value),
+                imageUrl: productImageUrlInput.value,
+                description: productDescriptionTextarea.value,
+            };
+
+            const productsRef = ref(database, 'products');
+
+            if (editingProductId) {
+                // Update existing product
+                const productRef = ref(database, `products/${editingProductId}`);
+                await update(productRef, productData);
+            } else {
+                // Add new product
+                const newProductRef = push(productsRef);
+                await set(newProductRef, productData);
+            }
+            productManageModal.style.display = 'none';
+            productManageForm.reset();
+        });
+
+        async function deleteProduct(productId) {
+            if (confirm("Are you sure you want to delete this product?")) {
+                const productRef = ref(database, `products/${productId}`);
+                await remove(productRef);
+            }
+        }
+
+        // Show skeleton loading initially for products
+        const productTableContainer = document.getElementById('product-table-container');
+        if (productTableContainer) {
+            showTableSkeleton(productTableContainer, 'Products', 'Add Product', 6);
+        }
+
+        // Listen for product changes to re-render the table
+        onValue(ref(database, 'products'), (snapshot) => {
+            const products = snapshot.val() || {};
+            renderProductTable(products);
+        });
+
+        // Refresh product table when navigating to the products section
+        window.addEventListener('hashchange', () => {
+            if (window.location.hash === '#products') {
+                onValue(ref(database, 'products'), (snapshot) => {
+                    const products = snapshot.val() || {};
+                    renderProductTable(products);
+                }, { onlyOnce: true });
+            }
+        });
+
+        // --- Order Management ---
+        const orderTableContainer = document.getElementById('order-table-container');
+
+        function renderOrderTable(allOrders) {
+            if (!allOrders || Object.keys(allOrders).length === 0) {
+                orderTableContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">No orders to display.</p>';
+                return;
+            }
+
+            let tableHtml = `
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <th style="padding: 10px;">Order ID</th>
+                            <th style="padding: 10px;">Customer</th>
+                            <th style="padding: 10px;">Address</th>
+                            <th style="padding: 10px;">Date</th>
+                            <th style="padding: 10px;">Total</th>
+                            <th style="padding: 10px;">Status</th>
+                            <th style="padding: 10px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            const ordersArray = [];
+            for (const userId in allOrders) {
+                for (const orderId in allOrders[userId]) {
+                    ordersArray.push({ userId, ...allOrders[userId][orderId] });
+                }
+            }
+
+            // Sort orders by date (most recent first)
+            ordersArray.sort((a, b) => b.date - a.date);
+
+            ordersArray.forEach(order => {
+                const orderDate = new Date(order.date).toLocaleDateString();
+                tableHtml += `
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td data-label="Order ID:" style="padding: 10px;">${order.orderId}</td>
+                        <td data-label="Customer:" style="padding: 10px;">${order.shippingName}<br><small>${order.userEmail}</small></td>
+                        <td data-label="Address:" style="padding: 10px;">${order.shippingAddress}</td>
+                        <td data-label="Date:" style="padding: 10px;">${orderDate}</td>
+                        <td data-label="Total:" style="padding: 10px;">$${order.totalAmount.toFixed(2)}</td>
+                        <td data-label="Status:" style="padding: 10px;">
+                            <select class="order-status-select" data-user-id="${order.userId}" data-order-id="${order.orderId}" style="padding: 5px; border-radius: 4px; border: 1px solid var(--border-color);">
+                                <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                                <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                                <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                                <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </td>
+                        <td data-label="Actions:" style="padding: 10px; text-align: center;">
+                            <button class="icon-btn delete-order-btn" data-user-id="${order.userId}" data-order-id="${order.orderId}" style="color: var(--primary-red);"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += `
+                    </tbody>
+                </table>
+            `;
+            orderTableContainer.innerHTML = tableHtml;
+
+            // Add event listeners for status change
+            orderTableContainer.querySelectorAll('.order-status-select').forEach(select => {
+                select.addEventListener('change', (e) => updateOrderStatus(
+                    e.currentTarget.dataset.userId,
+                    e.currentTarget.dataset.orderId,
+                    e.currentTarget.value
+                ));
+            });
+
+            // Add event listeners for delete buttons
+            orderTableContainer.querySelectorAll('.delete-order-btn').forEach(button => {
+                button.addEventListener('click', (e) => deleteOrder(
+                    e.currentTarget.dataset.userId,
+                    e.currentTarget.dataset.orderId
+                ));
+            });
+        }
+
+        async function updateOrderStatus(userId, orderId, newStatus) {
+            const orderRef = ref(database, `orders/${userId}/${orderId}`);
+            await update(orderRef, { status: newStatus });
+            console.log(`Order ${orderId} status updated to ${newStatus}`);
+        }
+
+        async function deleteOrder(userId, orderId) {
+            if (confirm("Are you sure you want to delete this order permanently?")) {
+                const orderRef = ref(database, `orders/${userId}/${orderId}`);
+                await remove(orderRef);
+                console.log(`Order ${orderId} deleted.`);
+            }
+        }
+
+        // Listen for all orders changes to re-render the table
+        onValue(ref(database, 'orders'), (snapshot) => {
+            const allOrders = snapshot.val() || {};
+            renderOrderTable(allOrders);
+        });
+
+        // Refresh order table when navigating to the orders section
+        window.addEventListener('hashchange', () => {
+            if (window.location.hash === '#orders') {
+                onValue(ref(database, 'orders'), (snapshot) => {
+                    const allOrders = snapshot.val() || {};
+                    renderOrderTable(allOrders);
+                }, { onlyOnce: true });
+            }
+        });
+
+        // --- Slider / Ad Management ---
+        const addSliderImageBtn = document.getElementById('add-slider-image-btn');
+        const addSliderImageModal = document.getElementById('add-slider-image-modal');
+        const addSliderImageForm = document.getElementById('add-slider-image-form');
+        const sliderImageUrlInput = document.getElementById('slider-image-url-input');
+        const sliderImageTableContainer = document.getElementById('slider-image-table-container');
+
+        function renderSliderImageTable(sliderImages) {
+            if (Object.keys(sliderImages).length === 0) {
+                sliderImageTableContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">No slider images to display.</p>';
+                return;
+            }
+
+            let tableHtml = `
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <th style="padding: 10px;">Preview</th>
+                            <th style="padding: 10px;">URL</th>
+                            <th style="padding: 10px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            for (const imageId in sliderImages) {
+                const image = sliderImages[imageId];
+                tableHtml += `
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td data-label="Preview:" style="padding: 10px;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60'%3E%3Crect width='100%25' height='100%25' fill='%23f0f0f0'/%3E%3C/svg%3E" alt="Slider Image" class="admin-slider-image" data-src="${image.downloadURL}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 4px;"></td>
+                        <td data-label="URL:" style="padding: 10px; word-break: break-all;">${image.downloadURL}</td>
+                        <td data-label="Actions:" style="padding: 10px; text-align: center;">
+                            <button class="icon-btn delete-slider-image-btn" data-image-id="${imageId}" style="color: var(--primary-red);"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            tableHtml += `
+                    </tbody>
+                </table>
+            `;
+            sliderImageTableContainer.innerHTML = tableHtml;
+
+            // Load images with enhanced loading
+            sliderImageTableContainer.querySelectorAll('.admin-slider-image').forEach(img => {
+                const imageSrc = img.getAttribute('data-src');
+                if (imageSrc) {
+                    loadAdminImageWithFallback(img, imageSrc, 'https://via.placeholder.com/100x60');
+                }
+            });
+
+            // Add event listeners for delete buttons
+            sliderImageTableContainer.querySelectorAll('.delete-slider-image-btn').forEach(button => {
+                button.addEventListener('click', (e) => deleteSliderImage(e.currentTarget.dataset.imageId));
+            });
+        }
+
+        addSliderImageBtn.addEventListener('click', () => {
+            sliderImageUrlInput.value = '';
+            addSliderImageModal.style.display = 'flex';
+        });
+
+        addSliderImageForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const imageUrl = sliderImageUrlInput.value;
+            if (imageUrl) {
+                const sliderRef = ref(database, 'sliderImages');
+                const newImageRef = push(sliderRef);
+                await set(newImageRef, { downloadURL: imageUrl });
+                addSliderImageModal.style.display = 'none';
+                addSliderImageForm.reset();
+            }
+        });
+
+        async function deleteSliderImage(imageId) {
+            if (confirm("Are you sure you want to delete this slider image?")) {
+                const imageRef = ref(database, `sliderImages/${imageId}`);
+                await remove(imageRef);
+            }
+        }
+
+        // Show skeleton loading initially for slider images
+        if (sliderImageTableContainer) {
+            showTableSkeleton(sliderImageTableContainer, 'Slider Images', 'Add Image', 4);
+        }
+
+        // Listen for slider image changes to re-render the table
+        onValue(ref(database, 'sliderImages'), (snapshot) => {
+            const sliderImages = snapshot.val() || {};
+            renderSliderImageTable(sliderImages);
+        });
+
+        // Refresh slider image table when navigating to the slider section
+        window.addEventListener('hashchange', () => {
+            if (window.location.hash === '#slider') {
+                onValue(ref(database, 'sliderImages'), (snapshot) => {
+                    const sliderImages = snapshot.val() || {};
+                    renderSliderImageTable(sliderImages);
+                }, { onlyOnce: true });
+            }
+        });
+
+        // --- Message Management ---
+        const messagesTableContainer = document.getElementById('messages-table-container');
+
+        function renderMessagesTable(messages) {
+            if (Object.keys(messages).length === 0) {
+                messagesTableContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">No messages to display.</p>';
+                return;
+            }
+
+            let tableHtml = `
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <th style="padding: 10px;">Date</th>
+                            <th style="padding: 10px;">Sender Name</th>
+                            <th style="padding: 10px;">Email</th>
+                            <th style="padding: 10px;">Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            // Sort messages by date (most recent first)
+            const sortedMessages = Object.values(messages).sort((a, b) => b.date - a.date);
+
+            sortedMessages.forEach((message, index) => {
+                const messageDate = new Date(message.date).toLocaleDateString() + ' ' + new Date(message.date).toLocaleTimeString();
+                const truncatedMessage = message.message.length > 50 ? message.message.substring(0, 50) + '...' : message.message;
+                
+                // Store message data in data attributes for safer handling
+                const messageId = `msg_${index}_${Date.now()}`;
+                
+                tableHtml += `
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td data-label="Date:" style="padding: 10px;">${messageDate}</td>
+                        <td data-label="Sender Name:" style="padding: 10px;">${message.name}</td>
+                        <td data-label="Email:" style="padding: 10px;">${message.email}</td>
+                        <td data-label="Message:" style="padding: 10px; cursor: pointer; color: var(--primary-color); text-decoration: underline;" 
+                            class="message-cell" 
+                            data-message-id="${messageId}"
+                            data-name="${message.name.replace(/"/g, '&quot;')}" 
+                            data-email="${message.email.replace(/"/g, '&quot;')}" 
+                            data-date="${messageDate}" 
+                            data-message="${message.message.replace(/"/g, '&quot;')}">
+                            ${truncatedMessage}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += `
+                    </tbody>
+                </table>
+            `;
+            messagesTableContainer.innerHTML = tableHtml;
+            
+            // Add click event listeners to message cells
+            const messageCells = messagesTableContainer.querySelectorAll('.message-cell');
+            messageCells.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    const name = this.getAttribute('data-name');
+                    const email = this.getAttribute('data-email');
+                    const date = this.getAttribute('data-date');
+                    const message = this.getAttribute('data-message');
+                    showMessageModal(name, email, date, message);
+                });
+            });
+        }
+
+        // Function to show message modal
+        function showMessageModal(name, email, date, message) {
+            const modal = document.getElementById('message-view-modal');
+            const modalContent = document.getElementById('message-modal-content');
+            
+            modalContent.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <div style="display: grid; gap: 15px; margin-bottom: 20px;">
+                        <div>
+                            <strong style="color: var(--muted-color); display: block; margin-bottom: 5px;">From:</strong>
+                            <div style="font-size: 1.1rem; color: var(--text-color);">${name}</div>
+                        </div>
+                        <div>
+                            <strong style="color: var(--muted-color); display: block; margin-bottom: 5px;">Email:</strong>
+                            <div style="color: var(--primary-color);">${email}</div>
+                        </div>
+                        <div>
+                            <strong style="color: var(--muted-color); display: block; margin-bottom: 5px;">Date:</strong>
+                            <div style="color: var(--text-color);">${date}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <strong style="color: var(--muted-color); display: block; margin-bottom: 10px;">Message:</strong>
+                        <div style="background: var(--card-background); padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color); line-height: 1.6; white-space: pre-wrap; word-wrap: break-word;">${message}</div>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+            
+            // Close modal when clicking outside the content
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Listen for messages changes to re-render the table
+        onValue(ref(database, 'messages'), (snapshot) => {
+            const messages = snapshot.val() || {};
+            renderMessagesTable(messages);
+        });
+
+        // Refresh messages table when navigating to the messages section
+        window.addEventListener('hashchange', () => {
+            if (window.location.hash === '#messages') {
+                onValue(ref(database, 'messages'), (snapshot) => {
+                    const messages = snapshot.val() || {};
+                    renderMessagesTable(messages);
+                }, { onlyOnce: true });
+            }
+        });
+
+    </script>
+</body>
+</html>
