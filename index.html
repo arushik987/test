@@ -1580,6 +1580,11 @@ const firebaseConfig = {
         
         // Initialize Google Auth Provider
         const googleProvider = new GoogleAuthProvider();
+        
+        // Add custom parameters to help with popup issues
+        googleProvider.setCustomParameters({
+            prompt: 'select_account'
+        });
 
         // --- SPA Routing Logic ---
         const routes = {
@@ -2582,24 +2587,54 @@ const firebaseConfig = {
                             return;
                         }
                         
-                        const result = await signInWithPopup(auth, googleProvider);
-                        const user = result.user;
+                        // Show helpful message about popup requirements
+                        showAuthError('🔐 Opening Google Sign-In popup... Please ensure popups are allowed for this site.');
                         
-                        // Check if this is a new user
-                        if (result._tokenResponse?.isNewUser) {
-                            // Save additional user data to Realtime Database for new Google users
-                            const userProfileRef = ref(database, `users/${user.uid}/profile`);
-                            await set(userProfileRef, {
-                                email: user.email,
-                                name: user.displayName || user.email.split('@')[0],
-                                registrationDate: Date.now(),
-                                authProvider: 'google',
-                                emailVerified: true // Google accounts are pre-verified
-                            });
-                        }
-                        
-                        // Close the auth modal
-                        document.getElementById('auth-modal').style.display = 'none';
+                        try {
+                            const result = await signInWithPopup(auth, googleProvider);
+                            const user = result.user;
+                            
+                            // Check if this is a new user
+                            if (result._tokenResponse?.isNewUser) {
+                                try {
+                                    // Save additional user data to Realtime Database for new Google users
+                                    const userProfileRef = ref(database, `users/${user.uid}/profile`);
+                                    await set(userProfileRef, {
+                                        email: user.email,
+                                        name: user.displayName || user.email.split('@')[0],
+                                        registrationDate: Date.now(),
+                                        authProvider: 'google',
+                                        emailVerified: true // Google accounts are pre-verified
+                                    });
+                                } catch (dbError) {
+                                    console.warn('Could not save user profile to database:', dbError);
+                                    // Continue with sign-in even if database save fails
+                                }
+                            }
+                        } catch (popupError) {
+                            // Handle specific popup errors
+                            if (popupError.code === 'auth/popup-closed-by-user') {
+                                // User closed the popup - no error message needed
+                                return;
+                            } else if (popupError.code === 'auth/popup-blocked') {
+                                showAuthError('Google Sign-In popup was blocked. Please allow popups for this site and try again.');
+                                return;
+                            } else if (popupError.code === 'auth/unauthorized-domain') {
+                                showAuthError('This domain is not authorized for Google Sign-In. Please contact the administrator or use a different domain.');
+                                return;
+                            } else if (popupError.code === 'auth/cancelled-popup-request') {
+                                showAuthError('Google Sign-In was cancelled. Please try again.');
+                                return;
+                            } else {
+                                // For other popup errors, suggest alternative methods
+                                showAuthError('Google Sign-In popup failed. Please try using email/password sign-in instead, or check your browser settings.');
+                                return;
+                                                            }
+                            }
+                            
+                            // Clear any error messages and close the auth modal
+                            hideAuthError();
+                            document.getElementById('auth-modal').style.display = 'none';
                     } catch (error) {
                         console.error('Google Sign-In Error:', error);
                         if (error.code === 'auth/popup-closed-by-user') {

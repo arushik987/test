@@ -2388,8 +2388,13 @@ const firebaseConfig = {
             auth = getAuth(app);
             database = getDatabase(app);
             
-            // Initialize Google Auth Provider
-            const googleProvider = new GoogleAuthProvider();
+                    // Initialize Google Auth Provider
+        const googleProvider = new GoogleAuthProvider();
+        
+        // Add custom parameters to help with popup issues
+        googleProvider.setCustomParameters({
+            prompt: 'select_account'
+        });
         } catch (error) {
             console.error('Firebase initialization failed:', error);
             showFallbackStats();
@@ -2778,21 +2783,43 @@ const firebaseConfig = {
                         return;
                     }
                     
-                    const result = await signInWithPopup(auth, googleProvider);
-                    const user = result.user;
-                    
-                                            // Check if this is a new user
+                    try {
+                        const result = await signInWithPopup(auth, googleProvider);
+                        const user = result.user;
+                        
+                        // Check if this is a new user
                         if (result._tokenResponse?.isNewUser) {
-                            // Save additional user data to Realtime Database for new Google users
-                            const userProfileRef = ref(database, `users/${user.uid}/profile`);
-                            await set(userProfileRef, {
-                                email: user.email,
-                                name: user.displayName || user.email.split('@')[0],
-                                registrationDate: Date.now(),
-                                authProvider: 'google',
-                                emailVerified: true // Google accounts are pre-verified
-                            });
+                            try {
+                                // Save additional user data to Realtime Database for new Google users
+                                const userProfileRef = ref(database, `users/${user.uid}/profile`);
+                                await set(userProfileRef, {
+                                    email: user.email,
+                                    name: user.displayName || user.email.split('@')[0],
+                                    registrationDate: Date.now(),
+                                    authProvider: 'google',
+                                    emailVerified: true // Google accounts are pre-verified
+                                });
+                            } catch (dbError) {
+                                console.warn('Could not save user profile to database:', dbError);
+                                // Continue with sign-in even if database save fails
+                            }
                         }
+                    } catch (popupError) {
+                        // Handle specific popup errors
+                        if (popupError.code === 'auth/popup-closed-by-user') {
+                            // User closed the popup - no error message needed
+                            return;
+                        } else if (popupError.code === 'auth/popup-blocked') {
+                            showAdminAuthError('Google Sign-In popup was blocked. Please allow popups for this site and try again.');
+                            return;
+                        } else if (popupError.code === 'auth/unauthorized-domain') {
+                            showAdminAuthError('This domain is not authorized for Google Sign-In. Please contact the administrator or use a different domain.');
+                            return;
+                        } else {
+                            // Re-throw other errors to be handled by the outer catch block
+                            throw popupError;
+                        }
+                    }
                     
                     // Login successful, onAuthStateChanged will handle UI update
                 } catch (error) {
