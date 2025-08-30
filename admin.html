@@ -29,6 +29,10 @@
             --surface-dark-color: #1a1a1a;
             --border-color: #444;
             --shadow-color: rgba(0, 0, 0, 0.3);
+            --card-bg: #3a3a3a;
+            --input-bg: #2d2d2d;
+            --button-bg: #4a4a4a;
+            --button-hover-bg: #5a5a5a;
         }
         
         /* Smooth theme transitions */
@@ -75,6 +79,245 @@
         [data-theme="dark"] .admin-header {
             background-color: var(--surface-color);
             border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Dark mode main content */
+        [data-theme="dark"] .admin-content {
+            background-color: var(--surface-dark-color);
+        }
+
+        /* Dark mode cards and sections */
+        [data-theme="dark"] .card,
+        [data-theme="dark"] .section-card,
+        [data-theme="dark"] .product-card,
+        [data-theme="dark"] .order-card,
+        [data-theme="dark"] .message-card,
+        [data-theme="dark"] .slider-image-card {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        /* Dark mode section headers */
+        [data-theme="dark"] .section-header,
+        [data-theme="dark"] .section-title {
+            color: var(--text-color) !important;
+        }
+
+        /* Dark mode buttons */
+        [data-theme="dark"] .btn-primary,
+        [data-theme="dark"] .add-product-btn,
+        [data-theme="dark"] .add-slider-image-btn {
+            background-color: var(--button-bg);
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .btn-secondary,
+        [data-theme="dark"] .edit-btn,
+        [data-theme="dark"] .edit-product-btn,
+        [data-theme="dark"] .edit-slider-image-btn {
+            background-color: var(--button-bg) !important;
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        /* Dark mode for white elements in Products, Messages, and Slider tabs */
+        [data-theme="dark"] .product-card,
+        [data-theme="dark"] .message-card,
+        [data-theme="dark"] .slider-image-card {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        /* Dark mode for main section cards (Products, Messages, Slider) */
+        [data-theme="dark"] #products .card,
+        [data-theme="dark"] #messages .card,
+        [data-theme="dark"] #slider .card {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        /* Force dark theme for all cards in dark mode */
+        [data-theme="dark"] .card {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        /* Force dark theme for specific section cards */
+        [data-theme="dark"] .admin-section .card {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        /* Dark mode for text elements in cards */
+        [data-theme="dark"] .product-card .product-name,
+        [data-theme="dark"] .product-card .product-category,
+        [data-theme="dark"] .product-card .product-price,
+        [data-theme="dark"] .message-card .message-sender,
+        [data-theme="dark"] .message-card .message-email,
+        [data-theme="dark"] .message-card .message-content,
+        [data-theme="dark"] .slider-image-card .slider-url-label {
+            color: var(--text-color) !important;
+        }
+
+        /* Dark mode for labels in cards */
+        [data-theme="dark"] .product-card .product-label,
+        [data-theme="dark"] .message-card .message-label,
+        [data-theme="dark"] .slider-image-card .slider-url-label {
+            color: var(--primary-red) !important;
+        }
+
+        /* Dark mode for input fields in cards */
+        [data-theme="dark"] .slider-image-card input[type="text"],
+        [data-theme="dark"] .slider-image-card input[type="url"] {
+            background-color: var(--input-bg) !important;
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        [data-theme="dark"] .btn-secondary:hover,
+        [data-theme="dark"] .edit-btn:hover,
+        [data-theme="dark"] .edit-product-btn:hover,
+        [data-theme="dark"] .edit-slider-image-btn:hover {
+            background-color: var(--button-hover-bg) !important;
+        }
+
+        [data-theme="dark"] .btn-danger,
+        [data-theme="dark"] .delete-btn,
+        [data-theme="dark"] .delete-product-btn,
+        [data-theme="dark"] .delete-slider-image-btn {
+            background-color: var(--primary-red) !important;
+            color: white !important;
+        }
+
+        /* Dark mode form elements */
+        [data-theme="dark"] input,
+        [data-theme="dark"] textarea,
+        [data-theme="dark"] select {
+            background-color: var(--input-bg) !important;
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        /* Dark mode tables */
+        [data-theme="dark"] table {
+            background-color: var(--card-bg) !important;
+            color: var(--text-color) !important;
+        }
+
+        [data-theme="dark"] th,
+        [data-theme="dark"] td {
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
+        }
+
+        /* Dark mode modals */
+        [data-theme="dark"] .modal-content,
+        [data-theme="dark"] .modal-header,
+        [data-theme="dark"] .modal-body {
+            background-color: var(--card-bg) !important;
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        /* Dark mode status badges */
+        [data-theme="dark"] .status-badge,
+        [data-theme="dark"] .order-status-badge {
+            color: white !important;
+        }
+
+        /* Dark mode icons */
+        [data-theme="dark"] .icon-btn {
+            color: var(--text-color) !important;
+        }
+
+        /* Dark mode search inputs */
+        [data-theme="dark"] .search-input,
+        [data-theme="dark"] #order-search-input {
+            background-color: var(--input-bg) !important;
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        /* Dark mode product cards */
+        [data-theme="dark"] .product-card {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        [data-theme="dark"] .product-card .product-name,
+        [data-theme="dark"] .product-card .product-category,
+        [data-theme="dark"] .product-card .product-price {
+            color: var(--text-color) !important;
+        }
+
+        [data-theme="dark"] .product-card .product-label {
+            color: var(--primary-red) !important;
+        }
+
+
+
+
+
+
+
+        /* Dark mode order cards */
+        [data-theme="dark"] .order-card {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        [data-theme="dark"] .order-card .order-customer-name,
+        [data-theme="dark"] .order-card .order-mobile,
+        [data-theme="dark"] .order-card .order-address,
+        [data-theme="dark"] .order-card .order-details {
+            color: var(--text-color) !important;
+        }
+
+        /* Dark mode message cards */
+        [data-theme="dark"] .message-card {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        [data-theme="dark"] .message-card .message-sender,
+        [data-theme="dark"] .message-card .message-email,
+        [data-theme="dark"] .message-card .message-content {
+            color: var(--text-color) !important;
+        }
+
+        [data-theme="dark"] .message-card .message-label {
+            color: var(--primary-red) !important;
+        }
+
+        /* Dark mode slider image cards */
+        [data-theme="dark"] .slider-image-card {
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        [data-theme="dark"] .slider-image-card .slider-url-label {
+            color: var(--primary-red) !important;
+        }
+
+        [data-theme="dark"] .slider-image-card .slider-url-input {
+            background-color: var(--input-bg) !important;
+            color: var(--text-color) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        /* Dark mode section titles and descriptions */
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] .section-description {
+            color: var(--text-color) !important;
+        }
+
+        [data-theme="dark"] .section-description {
+            color: var(--muted-color) !important;
         }
 
                 .admin-header .logo {
@@ -292,8 +535,9 @@
         [data-theme="dark"] #add-slider-image-modal .card,
         [data-theme="dark"] #order-details-modal .card,
         [data-theme="dark"] #status-update-modal .card {
-            background-color: var(--surface-color);
-            border-color: var(--border-color);
+            background-color: var(--card-bg) !important;
+            border-color: var(--border-color) !important;
+            color: var(--text-color) !important;
         }
         
         /* Dark mode search section */
@@ -323,6 +567,10 @@
                 font-size: 0.8rem;
             }
         }
+
+
+
+
         
         /* Google Sign-In Button Hover Effects */
         #admin-google-signin-btn:hover {
@@ -884,6 +1132,8 @@
                 padding: 15px;
                 margin-bottom: 15px;
             }
+
+
 
             #stats-cards {
                 grid-template-columns: 1fr;
@@ -2161,6 +2411,171 @@
             }
         }
 
+        // Helper function to safely encode order data for HTML attributes
+        function encodeOrderData(order) {
+            try {
+                // Validate the order object first
+                if (!order || typeof order !== 'object') {
+                    console.error('Invalid order object:', order);
+                    return '';
+                }
+                
+                // Check for required fields
+                if (!order.orderId || !order.userId) {
+                    console.error('Order missing required fields:', order);
+                    return '';
+                }
+                
+                // Instead of storing the entire order data, just store the order ID and user ID
+                // This avoids HTML attribute length limitations and JSON parsing issues
+                const minimalData = {
+                    orderId: order.orderId,
+                    userId: order.userId
+                };
+                
+                const encoded = JSON.stringify(minimalData);
+                console.log('Successfully encoded minimal order data:', minimalData);
+                return encoded;
+            } catch (error) {
+                console.error('Error encoding order data:', error);
+                // Return a safe fallback
+                return '';
+            }
+        }
+
+        // Helper function to decode order data from HTML attributes
+        function decodeOrderData(encodedData) {
+            try {
+                if (!encodedData) {
+                    console.warn('No encoded data provided to decodeOrderData');
+                    return null;
+                }
+                
+                // Parse the minimal data (just orderId and userId)
+                const minimalData = JSON.parse(encodedData);
+                console.log('Successfully parsed minimal order data:', minimalData);
+                
+                // If we have the minimal data, fetch the full order from the database
+                if (minimalData.orderId && minimalData.userId) {
+                    // Try to find the order in the current orders data
+                    if (window.allOrders && 
+                        window.allOrders[minimalData.userId] && 
+                        window.allOrders[minimalData.userId][minimalData.orderId]) {
+                        const fullOrder = window.allOrders[minimalData.userId][minimalData.orderId];
+                        console.log('Found full order data for:', minimalData.orderId);
+                        return fullOrder;
+                    }
+                    
+                    // If not found in current data, return the minimal data for now
+                    // The order details modal will need to handle this case
+                    console.warn('Full order data not found, returning minimal data:', minimalData);
+                    return minimalData;
+                }
+                
+                console.warn('Minimal data missing required fields:', minimalData);
+                return null;
+            } catch (error) {
+                console.error('Error decoding order data:', error);
+                console.log('Raw encoded data length:', encodedData ? encodedData.length : 0);
+                console.log('Raw encoded data preview:', encodedData ? encodedData.substring(0, 200) + '...' : 'null');
+                return null;
+            }
+        }
+
+        // Function to refresh all existing order cards to ensure proper encoding
+        function refreshOrderCards() {
+            console.log('Refreshing order cards to ensure proper encoding...');
+            
+            // Refresh main orders table
+            if (window.allOrders) {
+                renderOrderTable(window.allOrders);
+            }
+            
+            // Refresh today's orders
+            renderTodayOrders();
+        }
+
+        // Function to handle corrupted order data gracefully
+        function handleCorruptedOrderData(card, error) {
+            console.error('Handling corrupted order data:', error);
+            
+            // Show user-friendly error message
+            card.innerHTML = `
+                <div style="text-align: center; padding: 20px; color: var(--muted-color);">
+                    <div style="font-size: 1.2rem; margin-bottom: 10px;">⚠️</div>
+                    <div>This order data is corrupted</div>
+                    <div style="font-size: 0.8rem; margin-top: 5px;">Click to remove</div>
+                </div>
+            `;
+            
+            // Make the card clickable to remove it
+            card.style.cursor = 'pointer';
+            card.onclick = () => {
+                card.remove();
+                console.log('User removed corrupted order card');
+            };
+        }
+
+        // Function to validate order data integrity
+        function validateOrderData(order) {
+            if (!order) return false;
+            
+            const requiredFields = ['orderId', 'userId', 'shippingName', 'items', 'totalAmount', 'status', 'date'];
+            const missingFields = requiredFields.filter(field => !order[field]);
+            
+            if (missingFields.length > 0) {
+                console.warn('Order missing required fields:', missingFields);
+                return false;
+            }
+            
+            if (!Array.isArray(order.items) || order.items.length === 0) {
+                console.warn('Order has invalid items array:', order.items);
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Function to clean up corrupted order data
+        function cleanupCorruptedOrders() {
+            console.log('Cleaning up corrupted order data...');
+            
+            if (!database) {
+                console.error('Database not available for cleanup');
+                return;
+            }
+            
+            // Listen to orders data to identify and fix corrupted entries
+            onValue(ref(database, 'orders'), (snapshot) => {
+                const allOrders = snapshot.val();
+                if (!allOrders) return;
+                
+                let hasCorruptedData = false;
+                
+                for (const userId in allOrders) {
+                    for (const orderId in allOrders[userId]) {
+                        const order = allOrders[userId][orderId];
+                        
+                        // Check if order data is corrupted
+                        if (!order || !order.orderId || !order.userId) {
+                            console.warn('Found corrupted order, removing:', { userId, orderId, order });
+                            hasCorruptedData = true;
+                            
+                            // Remove corrupted order
+                            remove(ref(database, `orders/${userId}/${orderId}`));
+                        }
+                    }
+                }
+                
+                if (hasCorruptedData) {
+                    console.log('Cleaned up corrupted orders, refreshing display...');
+                    setTimeout(() => {
+                        refreshOrderCards();
+                    }, 1000);
+                }
+            });
+        }
+
         // --- Skeleton Loading Functions ---
         function showTableSkeleton(container, title, buttonText, rowCount = 5) {
             container.innerHTML = `
@@ -2739,7 +3154,7 @@
                     themeToggleIcon.title = 'Switch to Light Mode';
                     // You can change the icon here if you want
                 } else {
-                    themeToggleIcon.title = 'Switch to Dark Mode';
+                    themeToggleIcon.title = 'Switch to Light Mode';
                     // You can change the icon here if you want
                 }
             }
@@ -2783,6 +3198,16 @@
             
             // Initialize theme functionality
             initializeTheme();
+            
+            // Refresh order cards to ensure proper encoding
+            setTimeout(() => {
+                refreshOrderCards();
+            }, 1000); // Wait 1 second for data to load
+            
+            // Clean up any corrupted order data
+            setTimeout(() => {
+                cleanupCorruptedOrders();
+            }, 2000); // Wait 2 seconds for data to load
             
             if (themeToggleIcon) {
                 themeToggleIcon.addEventListener('click', () => {
@@ -3134,6 +3559,12 @@
             ordersArray.sort((a, b) => b.date - a.date);
 
             ordersArray.forEach(order => {
+                // Validate order data before rendering
+                if (!validateOrderData(order)) {
+                    console.warn('Skipping invalid order:', { userId: order.userId, orderId: order.orderId, order });
+                    return; // Skip this order
+                }
+                
                 const orderDate = new Date(order.date).toLocaleDateString();
                 const firstProduct = order.items && order.items.length > 0 ? order.items[0] : null;
                 const productImage = firstProduct ? (firstProduct.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yMCAyNEMyMi4wOTExIDI0IDI0IDIyLjA5MTEgMjQgMjBDMjQgMTcuOTA4OSAyMi4wOTExIDE2IDIwIDE2QzE3LjkwODkgMTYgMTYgMTcuOTA4OSAxNiAyMEMxNiAyMi4wOTExIDE3LjkwODkgMjQgMjAgMjRaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0yMCAyOEMyNC40MTgzIDI4IDI4IDI0LjQxODMgMjggMjBIMTJDMTIgMjQuNDE4MyAxNS41ODE3IDI4IDIwIDI4WiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K') : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yMCAyNEMyMi4wOTExIDI0IDI0IDIyLjA5MTEgMjQgMjBDMjQgMTcuOTA4OSAyMi4wOTExIDE2IDIwIDE2QzE3LjkwODkgMTYgMTYgMTcuOTA4OSAxNiAyMEMxNiAyMi4wOTExIDE3LjkwODkgMjQgMjAgMjRaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0yMCAyOEMyNC40MTgzIDI4IDI4IDI0LjQxODMgMjggMjBIMTJDMTIgMjQuNDE4MyAxNS41ODE3IDI4IDIwIDI4WiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K';
@@ -3141,7 +3572,7 @@
                 const totalItems = order.items ? order.items.length : 0;
                 
                 tableHtml += `
-                    <div class="order-card" data-order='${JSON.stringify(order)}' style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <div class="order-card" data-order='${encodeOrderData(order)}' style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         <div style="display: flex; align-items: center; gap: 15px;">
                             <div style="flex-shrink: 0;">
                                 <img src="${productImage}" alt="${productName}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color);">
@@ -3181,8 +3612,16 @@
                     if (e.target.closest('.update-status-btn')) {
                         return;
                     }
-                    const orderData = JSON.parse(card.dataset.order);
-                    showOrderDetailsModal(orderData);
+                    
+                    // Debug: Log the raw data
+                    console.log('Raw order data:', card.dataset.order);
+                    
+                    const orderData = decodeOrderData(card.dataset.order);
+                    if (orderData) {
+                        showOrderDetailsModal(orderData);
+                    } else {
+                        handleCorruptedOrderData(card, new Error('Failed to parse order data'));
+                    }
                 });
             });
 
@@ -3363,6 +3802,12 @@
                 `;
 
                 todayOrders.forEach(order => {
+                    // Validate order data before rendering
+                    if (!validateOrderData(order)) {
+                        console.warn('Skipping invalid today order:', { userId: order.userId, orderId: order.orderId, order });
+                        return; // Skip this order
+                    }
+                    
                     const orderTime = new Date(order.date).toLocaleTimeString('en-US', { 
                         hour: '2-digit', 
                         minute: '2-digit',
@@ -3374,7 +3819,7 @@
                     const totalItems = order.items ? order.items.length : 0;
                     
                     todayOrdersHtml += `
-                        <div class="order-card" data-order='${JSON.stringify(order)}' style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div class="order-card" data-order='${encodeOrderData(order)}' style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                             <div style="display: flex; align-items: center; gap: 15px;">
                                 <div style="flex-shrink: 0;">
                                     <img src="${productImage}" alt="${productName}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color);">
@@ -3414,8 +3859,16 @@
                         if (e.target.closest('.update-status-btn')) {
                             return;
                         }
-                        const orderData = JSON.parse(card.dataset.order);
-                        showOrderDetailsModal(orderData);
+                        
+                        // Debug: Log the raw data
+                        console.log('Raw today order data:', card.dataset.order);
+                        
+                        const orderData = decodeOrderData(card.dataset.order);
+                        if (orderData) {
+                            showOrderDetailsModal(orderData);
+                        } else {
+                            handleCorruptedOrderData(card, new Error('Failed to parse today order data'));
+                        }
                     });
                 });
 
@@ -3795,6 +4248,42 @@
         function showOrderDetailsModal(order) {
             const modal = document.getElementById('order-details-modal');
             const content = document.getElementById('order-details-content');
+            
+            // Check if we have minimal data (just orderId and userId) and need to fetch full order
+            if (order && order.orderId && order.userId && !order.shippingName) {
+                // We have minimal data, try to fetch the full order from the database
+                if (window.allOrders && 
+                    window.allOrders[order.userId] && 
+                    window.allOrders[order.userId][order.orderId]) {
+                    order = window.allOrders[order.userId][order.orderId];
+                } else {
+                    // Show error message if we can't find the full order data
+                    content.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--muted-color);">
+                            <div style="font-size: 2rem; margin-bottom: 20px;">⚠️</div>
+                            <div style="font-size: 1.2rem; margin-bottom: 10px;">Order Data Not Found</div>
+                            <div>Unable to load complete order details.</div>
+                            <div style="font-size: 0.9rem; margin-top: 10px;">Order ID: ${order.orderId}</div>
+                        </div>
+                    `;
+                    modal.style.display = 'flex';
+                    return;
+                }
+            }
+            
+            // Validate that we have the required order data
+            if (!validateOrderData(order)) {
+                content.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--muted-color);">
+                        <div style="font-size: 2rem; margin-bottom: 20px;">⚠️</div>
+                        <div style="font-size: 1.2rem; margin-bottom: 10px;">Invalid Order Data</div>
+                        <div>This order appears to be corrupted or incomplete.</div>
+                        <div style="font-size: 0.9rem; margin-top: 10px;">Order ID: ${order?.orderId || 'Unknown'}</div>
+                    </div>
+                `;
+                modal.style.display = 'flex';
+                return;
+            }
             
             const orderDate = new Date(order.date).toLocaleDateString() + ' ' + new Date(order.date).toLocaleTimeString();
             
