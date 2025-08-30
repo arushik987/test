@@ -2447,71 +2447,7 @@
             });
         }
         
-        // Function to update admin profile information
-        function updateAdminProfile(user) {
-            const adminName = document.getElementById('admin-name');
-            const adminDropdownName = document.getElementById('admin-dropdown-name');
-            const adminDropdownEmail = document.getElementById('admin-dropdown-email');
-            
-            if (adminName) {
-                adminName.textContent = user.displayName || user.email.split('@')[0];
-                adminName.style.display = 'inline';
-            }
-            
-            if (adminDropdownName) {
-                adminDropdownName.textContent = user.displayName || user.email.split('@')[0];
-            }
-            
-            if (adminDropdownEmail) {
-                adminDropdownEmail.textContent = user.email;
-            }
-            
-            // Update connection status to show admin is logged in
-            updateConnectionStatus(true);
-        }
-        
-        // Function to update admin profile information
-        function clearAdminProfile() {
-            const adminName = document.getElementById('admin-name');
-            const adminDropdownName = document.getElementById('admin-dropdown-name');
-            const adminDropdownEmail = document.getElementById('admin-dropdown-email');
-            
-            if (adminName) {
-                adminName.style.display = 'none';
-            }
-            
-            if (adminDropdownName) {
-                adminDropdownName.textContent = 'Admin User';
-            }
-            
-            if (adminDropdownEmail) {
-                adminDropdownEmail.textContent = 'admin@example.com';
-            }
-            
-            // Update connection status to show admin is logged out
-            updateConnectionStatus(false);
-        }
-        
-        // Theme functionality
-        function initializeTheme() {
-            // Load saved theme from localStorage
-            const savedTheme = localStorage.getItem('admin-theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeIcon(savedTheme);
-        }
-        
-        function updateThemeIcon(theme) {
-            const themeToggleIcon = document.querySelector('.theme-toggle-icon');
-            if (themeToggleIcon) {
-                if (theme === 'dark') {
-                    themeToggleIcon.title = 'Switch to Light Mode';
-                    // You can change the icon here if you want
-                } else {
-                    themeToggleIcon.title = 'Switch to Dark Mode';
-                    // You can change the icon here if you want
-                }
-            }
-        }
+
 
 
         // Time period button functionality
@@ -2727,6 +2663,87 @@
 
 
         }); // Close Admin Authentication DOMContentLoaded
+
+        // Global admin functions that need to be accessible from other parts
+        function handleAdminLogout() {
+            signOut(auth).then(() => {
+                // Sign-out successful, onAuthStateChanged will handle UI update
+                window.location.hash = '#today-orders'; // Redirect to today orders after logout
+                document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
+                if (typeof sidebarBackdrop !== 'undefined') {
+                    sidebarBackdrop.classList.remove('active'); // Hide backdrop
+                }
+            }).catch((error) => {
+                console.error("Logout Error:", error);
+                // Logout failed - no alert needed
+            });
+        }
+
+        // Function to update admin profile information
+        function updateAdminProfile(user) {
+            const adminName = document.getElementById('admin-name');
+            const adminDropdownName = document.getElementById('admin-dropdown-name');
+            const adminDropdownEmail = document.getElementById('admin-dropdown-email');
+            
+            if (adminName) {
+                adminName.textContent = user.displayName || user.email.split('@')[0];
+                adminName.style.display = 'inline';
+            }
+            
+            if (adminDropdownName) {
+                adminDropdownName.textContent = user.displayName || user.email.split('@')[0];
+            }
+            
+            if (adminDropdownEmail) {
+                adminDropdownEmail.textContent = user.email;
+            }
+            
+            // Update connection status to show admin is logged in
+            updateConnectionStatus(true);
+        }
+        
+        // Function to clear admin profile information
+        function clearAdminProfile() {
+            const adminName = document.getElementById('admin-name');
+            const adminDropdownName = document.getElementById('admin-dropdown-name');
+            const adminDropdownEmail = document.getElementById('admin-dropdown-email');
+            
+            if (adminName) {
+                adminName.style.display = 'none';
+            }
+            
+            if (adminDropdownName) {
+                adminDropdownName.textContent = 'Admin User';
+            }
+            
+            if (adminDropdownEmail) {
+                adminDropdownEmail.textContent = 'admin@example.com';
+            }
+            
+            // Update connection status to show admin is logged out
+            updateConnectionStatus(false);
+        }
+        
+        // Theme functionality
+        function initializeTheme() {
+            // Load saved theme from localStorage
+            const savedTheme = localStorage.getItem('admin-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+        
+        function updateThemeIcon(theme) {
+            const themeToggleIcon = document.querySelector('.theme-toggle-icon');
+            if (themeToggleIcon) {
+                if (theme === 'dark') {
+                    themeToggleIcon.title = 'Switch to Light Mode';
+                    // You can change the icon here if you want
+                } else {
+                    themeToggleIcon.title = 'Switch to Dark Mode';
+                    // You can change the icon here if you want
+                }
+            }
+        }
 
         // --- Stat Card Click Handlers ---
         document.addEventListener('DOMContentLoaded', () => {
