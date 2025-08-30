@@ -853,6 +853,20 @@
         #header-logout-btn:hover i {
             color: white !important;
         }
+        
+        /* Google Sign-In Button Hover Effects */
+        #google-signin-btn:hover {
+            background-color: #3367d6 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+        }
+        
+        #header-google-login-btn:hover {
+            background: #3367d6 !important;
+            border-color: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(66, 133, 244, 0.4);
+        }
 
         /* Skeleton Loading Animations */
         .skeleton {
@@ -1138,6 +1152,13 @@
                             <button class="profile-action-btn" id="header-login-btn">
                                 <i class="fas fa-sign-in-alt"></i> Login
                             </button>
+                            <button class="profile-action-btn" id="header-google-login-btn" style="
+                                background: #4285f4; 
+                                color: white !important; 
+                                border-color: #4285f4;
+                            ">
+                                <i class="fab fa-google"></i> Login with Google
+                            </button>
                             <button class="profile-action-btn" id="header-profile-btn" style="display: none;">
                                 <i class="fas fa-user-edit"></i> Edit Profile
                             </button>
@@ -1227,6 +1248,7 @@
                     <div style="text-align: left; width: 100%;">
                         <p><strong>User ID:</strong> <span id="profile-user-id">Not available</span></p>
                         <p><strong>Email:</strong> <span id="profile-email">Not logged in</span></p>
+                        <p id="profile-auth-provider" style="display: none;"><strong>Sign-in Method:</strong> <span id="profile-auth-provider-text"></span></p>
                     </div>
                     <button id="edit-profile-btn" style="background-color: var(--primary-red); color: white; margin-top: 20px; padding: 10px 20px; border-radius: 8px;">Edit Profile</button>
                 </div>
@@ -1323,6 +1345,29 @@
                 <p id="auth-error" style="color: var(--primary-red); margin-bottom: 15px; display: none;"></p>
                 <button type="submit" id="auth-submit-btn" style="background-color: var(--primary-red); color: white; width: 100%; margin-bottom: 10px;">Login</button>
                 <button type="button" id="toggle-auth-mode" style="background-color: var(--muted-color); color: white; width: 100%; margin-bottom: 10px;">Switch to Register</button>
+                
+                <!-- Google Sign-In Button -->
+                <div style="margin: 15px 0; text-align: center;">
+                    <div style="margin-bottom: 10px; color: var(--muted-color); font-size: 0.9rem;">Or</div>
+                    <button type="button" id="google-signin-btn" style="
+                        background-color: #4285f4; 
+                        color: white; 
+                        width: 100%; 
+                        padding: 12px; 
+                        border: none; 
+                        border-radius: 8px; 
+                        font-size: 1rem; 
+                        cursor: pointer; 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center; 
+                        gap: 10px;
+                        transition: background-color 0.2s ease;
+                    ">
+                        <i class="fab fa-google" style="font-size: 1.1rem;"></i>
+                        Sign in with Google
+                    </button>
+                </div>
             </form>
             <button class="close-modal-btn" style="background-color: var(--muted-color); color: white; width: 100%;" onclick="document.getElementById('auth-modal').style.display = 'none';">Close</button>
         </div>
@@ -1374,14 +1419,14 @@
 
     <script type="module">
         // Firebase Configuration (Placeholder)
-const firebaseConfig = {
-  apiKey: "AIzaSyDTSCG-mP_Atcgpg1-JKhAlKKLjNug-PZk",
-  authDomain: "kirana-store-f55dd.firebaseapp.com",
-  databaseURL: "https://kirana-store-f55dd-default-rtdb.firebaseio.com",
-  projectId: "kirana-store-f55dd",
-  storageBucket: "kirana-store-f55dd.firebasestorage.app",
-  messagingSenderId: "584414364232",
-  appId: "1:584414364232:web:1a89c8c6b293be45e30e7d"
+        const firebaseConfig = {
+  apiKey: "AIzaSyBGh16sYlLk1e9nkhcLu7IPTZk807qeLZM",
+  authDomain: "test-60bf6.firebaseapp.com",
+  databaseURL: "https://test-60bf6-default-rtdb.firebaseio.com",
+  projectId: "test-60bf6",
+  storageBucket: "test-60bf6.firebasestorage.app",
+  messagingSenderId: "208881094528",
+  appId: "1:208881094528:web:114768e2de5956cae6fb65"
 };
 
         // Telegram Bot Configuration
@@ -1390,7 +1435,7 @@ const firebaseConfig = {
 
         // Initialize Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
         import { getDatabase, ref, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
         // --- Telegram Bot Integration ---
@@ -1516,6 +1561,9 @@ const firebaseConfig = {
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const database = getDatabase(app);
+        
+        // Initialize Google Auth Provider
+        const googleProvider = new GoogleAuthProvider();
 
         // --- SPA Routing Logic ---
         const routes = {
@@ -1594,11 +1642,26 @@ const firebaseConfig = {
 
                 profileEmailSpan.textContent = user.email;
                 profileUserIdSpan.textContent = user.uid; // Display User ID
+                
+                // Show authentication provider in profile section
+                const profileAuthProvider = document.getElementById('profile-auth-provider');
+                const profileAuthProviderText = document.getElementById('profile-auth-provider-text');
+                if (profileAuthProvider && profileAuthProviderText) {
+                    const authProvider = user.providerData[0]?.providerId;
+                    if (authProvider === 'google.com') {
+                        profileAuthProviderText.innerHTML = 'Google <i class="fab fa-google" style="color: #4285f4; margin-left: 5px;"></i>';
+                        profileAuthProvider.style.display = 'block';
+                    } else {
+                        profileAuthProviderText.innerHTML = 'Email & Password <i class="fas fa-envelope" style="color: var(--primary-red); margin-left: 5px;"></i>';
+                        profileAuthProvider.style.display = 'block';
+                    }
+                }
 
                 // Update header profile dropdown
                 const headerProfileName = document.getElementById('header-profile-name');
                 const headerProfileEmail = document.getElementById('header-profile-email');
                 const headerLoginBtn = document.getElementById('header-login-btn');
+                const headerGoogleLoginBtn = document.getElementById('header-google-login-btn');
                 const headerProfileBtn = document.getElementById('header-profile-btn');
                 const headerOrdersBtn = document.getElementById('header-orders-btn');
                 const headerLogoutBtn = document.getElementById('header-logout-btn');
@@ -1606,9 +1669,19 @@ const firebaseConfig = {
                 if (headerProfileName) headerProfileName.textContent = user.displayName || user.email.split('@')[0];
                 if (headerProfileEmail) headerProfileEmail.textContent = user.email;
                 if (headerLoginBtn) headerLoginBtn.style.display = 'none';
+                if (headerGoogleLoginBtn) headerGoogleLoginBtn.style.display = 'none';
                 if (headerProfileBtn) headerProfileBtn.style.display = 'flex';
                 if (headerOrdersBtn) headerOrdersBtn.style.display = 'flex';
                 if (headerLogoutBtn) headerLogoutBtn.style.display = 'flex';
+                
+                // Show authentication provider indicator
+                const authProvider = user.providerData[0]?.providerId;
+                if (authProvider === 'google.com') {
+                    // Add a small Google icon indicator
+                    if (headerProfileEmail) {
+                        headerProfileEmail.innerHTML = `${user.email} <i class="fab fa-google" style="color: #4285f4; margin-left: 5px; font-size: 0.8rem;"></i>`;
+                    }
+                }
 
                 // No longer fetching name and age for display in this section
                 // const userProfileRef = ref(database, `users/${user.uid}/profile`);
@@ -1679,11 +1752,18 @@ const firebaseConfig = {
                 profilePicDisplay.src = 'https://i.ibb.co/V0z4HyF2/1bcaf73402827ce2445bfc904fd01f4b.jpg'; // Always use the specified image
                 editProfileBtn.style.display = 'none';
                 editProfileModal.style.display = 'none'; // Hide edit modal if logged out
+                
+                // Hide authentication provider info
+                const profileAuthProvider = document.getElementById('profile-auth-provider');
+                if (profileAuthProvider) {
+                    profileAuthProvider.style.display = 'none';
+                }
 
                 // Update header profile dropdown for logged out state
                 const headerProfileName = document.getElementById('header-profile-name');
                 const headerProfileEmail = document.getElementById('header-profile-email');
                 const headerLoginBtn = document.getElementById('header-login-btn');
+                const headerGoogleLoginBtn = document.getElementById('header-google-login-btn');
                 const headerProfileBtn = document.getElementById('header-profile-btn');
                 const headerOrdersBtn = document.getElementById('header-orders-btn');
                 const headerLogoutBtn = document.getElementById('header-logout-btn');
@@ -1691,6 +1771,7 @@ const firebaseConfig = {
                 if (headerProfileName) headerProfileName.textContent = 'Guest User';
                 if (headerProfileEmail) headerProfileEmail.textContent = 'Not logged in';
                 if (headerLoginBtn) headerLoginBtn.style.display = 'flex';
+                if (headerGoogleLoginBtn) headerGoogleLoginBtn.style.display = 'flex';
                 if (headerProfileBtn) headerProfileBtn.style.display = 'none';
                 if (headerOrdersBtn) headerOrdersBtn.style.display = 'none';
                 if (headerLogoutBtn) headerLogoutBtn.style.display = 'none';
@@ -2250,6 +2331,9 @@ const firebaseConfig = {
             authGenderSelect = document.getElementById('auth-gender');
             authAgeInput = document.getElementById('auth-age');
             
+            // Get Google Sign-In button
+            const googleSignInBtn = document.getElementById('google-signin-btn');
+            
             // Get profile elements
             loginStatusIndicator = document.getElementById('login-status-indicator');
             menuLoginLink = document.getElementById('menu-login-link');
@@ -2434,6 +2518,50 @@ const firebaseConfig = {
                     if (authAgeInput) authAgeInput.style.display = isLoginMode ? 'none' : 'block';
 
                     hideAuthError();
+                });
+            }
+            
+            // Set up Google Sign-In functionality
+            if (googleSignInBtn) {
+                googleSignInBtn.addEventListener('click', async () => {
+                    try {
+                        hideAuthError();
+                        
+                        // Check if we're in a secure context (required for popup)
+                        if (!window.isSecureContext && location.protocol !== 'https:' && location.hostname !== 'localhost') {
+                            showAuthError('Google Sign-In requires a secure connection (HTTPS) or localhost. Please use HTTPS or localhost for testing.');
+                            return;
+                        }
+                        
+                        const result = await signInWithPopup(auth, googleProvider);
+                        const user = result.user;
+                        
+                        // Check if this is a new user
+                        if (result._tokenResponse?.isNewUser) {
+                            // Save additional user data to Realtime Database for new Google users
+                            const userProfileRef = ref(database, `users/${user.uid}/profile`);
+                            await set(userProfileRef, {
+                                email: user.email,
+                                name: user.displayName || user.email.split('@')[0],
+                                registrationDate: Date.now(),
+                                authProvider: 'google'
+                            });
+                        }
+                        
+                        // Close the auth modal
+                        document.getElementById('auth-modal').style.display = 'none';
+                    } catch (error) {
+                        console.error('Google Sign-In Error:', error);
+                        if (error.code === 'auth/popup-closed-by-user') {
+                            // User closed the popup - no error message needed
+                        } else if (error.code === 'auth/unauthorized-domain') {
+                            showAuthError('This domain is not authorized for Google Sign-In. Please contact the administrator or use a different domain.');
+                        } else if (error.code === 'auth/popup-blocked') {
+                            showAuthError('Google Sign-In popup was blocked. Please allow popups for this site and try again.');
+                        } else {
+                            showAuthError(`Google Sign-In failed: ${error.message}`);
+                        }
+                    }
                 });
             }
 
@@ -2719,6 +2847,125 @@ const firebaseConfig = {
                     headerLoginBtn.addEventListener('click', () => {
                         profileDropdown.classList.remove('show');
                         document.getElementById('auth-modal').style.display = 'flex';
+                    });
+                }
+                
+                // Header Google login button
+                const headerGoogleLoginBtn = document.getElementById('header-google-login-btn');
+                if (headerGoogleLoginBtn) {
+                    headerGoogleLoginBtn.addEventListener('click', async () => {
+                        profileDropdown.classList.remove('show');
+                        try {
+                            // Check if we're in a secure context (required for popup)
+                            if (!window.isSecureContext && location.protocol !== 'https:' && location.hostname !== 'localhost') {
+                                const notification = document.createElement('div');
+                                notification.style.cssText = `
+                                    position: fixed;
+                                    top: 80px;
+                                    right: 20px;
+                                    background: var(--primary-red);
+                                    color: white;
+                                    padding: 15px 20px;
+                                    border-radius: 8px;
+                                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                                    z-index: 10000;
+                                    max-width: 300px;
+                                    animation: slideInRight 0.3s ease;
+                                `;
+                                notification.innerHTML = `
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <div>Google Sign-In requires HTTPS or localhost. Please use a secure connection.</div>
+                                    </div>
+                                `;
+                                document.body.appendChild(notification);
+                                
+                                // Auto-remove after 5 seconds
+                                setTimeout(() => {
+                                    if (notification.parentNode) {
+                                        notification.parentNode.removeChild(notification);
+                                    }
+                                }, 5000);
+                                return;
+                            }
+                            
+                            const result = await signInWithPopup(auth, googleProvider);
+                            const user = result.user;
+                            
+                            // Check if this is a new user
+                            if (result._tokenResponse?.isNewUser) {
+                                // Save additional user data to Realtime Database for new Google users
+                                const userProfileRef = ref(database, `users/${user.uid}/profile`);
+                                await set(userProfileRef, {
+                                    email: user.email,
+                                    name: user.displayName || user.email.split('@')[0],
+                                    registrationDate: Date.now(),
+                                    authProvider: 'google'
+                                });
+                            }
+                        } catch (error) {
+                            console.error('Google Sign-In Error:', error);
+                            if (error.code === 'auth/unauthorized-domain') {
+                                const notification = document.createElement('div');
+                                notification.style.cssText = `
+                                    position: fixed;
+                                    top: 80px;
+                                    right: 20px;
+                                    background: var(--primary-red);
+                                    color: white;
+                                    padding: 15px 20px;
+                                    border-radius: 8px;
+                                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                                    z-index: 10000;
+                                    max-width: 300px;
+                                    animation: slideInRight 0.3s ease;
+                                `;
+                                notification.innerHTML = `
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <div>Domain not authorized. Please contact administrator.</div>
+                                    </div>
+                                `;
+                                document.body.appendChild(notification);
+                                
+                                // Auto-remove after 5 seconds
+                                setTimeout(() => {
+                                    if (notification.parentNode) {
+                                        notification.parentNode.removeChild(notification);
+                                    }
+                                }, 5000);
+                            } else if (error.code !== 'auth/popup-closed-by-user') {
+                                // Show error in a user-friendly way
+                                const notification = document.createElement('div');
+                                notification.style.cssText = `
+                                    position: fixed;
+                                    top: 80px;
+                                    right: 20px;
+                                    background: var(--primary-red);
+                                    color: white;
+                                    padding: 15px 20px;
+                                    border-radius: 8px;
+                                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                                    z-index: 10000;
+                                    max-width: 300px;
+                                    animation: slideInRight 0.3s ease;
+                                `;
+                                notification.innerHTML = `
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <div>Google Sign-In failed. Please try again.</div>
+                                    </div>
+                                `;
+                                document.body.appendChild(notification);
+                                
+                                // Auto-remove after 5 seconds
+                                setTimeout(() => {
+                                    if (notification.parentNode) {
+                                        notification.parentNode.removeChild(notification);
+                                    }
+                                }, 5000);
+                            }
+                        }
                     });
                 }
                 

@@ -75,6 +75,13 @@
                 font-size: 0.9rem;
             font-weight: 600;
         }
+        
+        /* Google Sign-In Button Hover Effects */
+        #admin-google-signin-btn:hover {
+            background-color: #3367d6 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+        }
 
 
 
@@ -1480,6 +1487,29 @@
                 <input type="password" id="admin-password" placeholder="Password" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); border-radius: 8px;">
                 <p id="admin-auth-error" style="color: var(--primary-red); margin-bottom: 15px; display: none;"></p>
                 <button type="submit" id="admin-login-btn" style="background-color: var(--primary-red); color: white; width: 100%;"><i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>Login</button>
+                
+                <!-- Google Sign-In Button -->
+                <div style="margin: 15px 0; text-align: center;">
+                    <div style="margin-bottom: 10px; color: var(--muted-color); font-size: 0.9rem;">Or</div>
+                    <button type="button" id="admin-google-signin-btn" style="
+                        background-color: #4285f4; 
+                        color: white; 
+                        width: 100%; 
+                        padding: 12px; 
+                        border: none; 
+                        border-radius: 8px; 
+                        font-size: 1rem; 
+                        cursor: pointer; 
+                        display: flex; 
+                        align-items: center; 
+                        justify-content: center; 
+                        gap: 10px;
+                        transition: background-color 0.2s ease;
+                    ">
+                        <i class="fab fa-google" style="font-size: 1.1rem;"></i>
+                        Sign in with Google
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -1555,14 +1585,14 @@
 
     <script type="module">
         // Firebase Configuration (Placeholder)
-const firebaseConfig = {
-  apiKey: "AIzaSyDTSCG-mP_Atcgpg1-JKhAlKKLjNug-PZk",
-  authDomain: "kirana-store-f55dd.firebaseapp.com",
-  databaseURL: "https://kirana-store-f55dd-default-rtdb.firebaseio.com",
-  projectId: "kirana-store-f55dd",
-  storageBucket: "kirana-store-f55dd.firebasestorage.app",
-  messagingSenderId: "584414364232",
-  appId: "1:584414364232:web:1a89c8c6b293be45e30e7d"
+        const firebaseConfig = {
+  apiKey: "AIzaSyBGh16sYlLk1e9nkhcLu7IPTZk807qeLZM",
+  authDomain: "test-60bf6.firebaseapp.com",
+  databaseURL: "https://test-60bf6-default-rtdb.firebaseio.com",
+  projectId: "test-60bf6",
+  storageBucket: "test-60bf6.firebasestorage.app",
+  messagingSenderId: "208881094528",
+  appId: "1:208881094528:web:114768e2de5956cae6fb65"
 };
 
         // Telegram Bot Configuration
@@ -1572,7 +1602,7 @@ const firebaseConfig = {
 
         // Initialize Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
         import { getDatabase, ref, push, set, onValue, remove, update, onDisconnect } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
         // --- Telegram Bot Integration for Admin ---
@@ -1682,6 +1712,9 @@ const firebaseConfig = {
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             database = getDatabase(app);
+            
+            // Initialize Google Auth Provider
+            const googleProvider = new GoogleAuthProvider();
         } catch (error) {
             console.error('Firebase initialization failed:', error);
             showFallbackStats();
@@ -1842,6 +1875,50 @@ const firebaseConfig = {
                 adminLoginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>Login'; // Restore original text
             }
         });
+        
+        // Set up Google Sign-In functionality for admin
+        const adminGoogleSignInBtn = document.getElementById('admin-google-signin-btn');
+        if (adminGoogleSignInBtn) {
+            adminGoogleSignInBtn.addEventListener('click', async () => {
+                try {
+                    hideAdminAuthError();
+                    
+                    // Check if we're in a secure context (required for popup)
+                    if (!window.isSecureContext && location.protocol !== 'https:' && location.hostname !== 'localhost') {
+                        showAdminAuthError('Google Sign-In requires a secure connection (HTTPS) or localhost. Please use HTTPS or localhost for testing.');
+                        return;
+                    }
+                    
+                    const result = await signInWithPopup(auth, googleProvider);
+                    const user = result.user;
+                    
+                    // Check if this is a new user
+                    if (result._tokenResponse?.isNewUser) {
+                        // Save additional user data to Realtime Database for new Google users
+                        const userProfileRef = ref(database, `users/${user.uid}/profile`);
+                        await set(userProfileRef, {
+                            email: user.email,
+                            name: user.displayName || user.email.split('@')[0],
+                            registrationDate: Date.now(),
+                            authProvider: 'google'
+                        });
+                    }
+                    
+                    // Login successful, onAuthStateChanged will handle UI update
+                } catch (error) {
+                    console.error('Google Sign-In Error:', error);
+                    if (error.code === 'auth/popup-closed-by-user') {
+                        // User closed the popup - no error message needed
+                    } else if (error.code === 'auth/unauthorized-domain') {
+                        showAdminAuthError('This domain is not authorized for Google Sign-In. Please contact the administrator or use a different domain.');
+                    } else if (error.code === 'auth/popup-blocked') {
+                        showAdminAuthError('Google Sign-In popup was blocked. Please allow popups for this site and try again.');
+                    } else {
+                        showAdminAuthError(`Google Sign-In failed: ${error.message}`);
+                    }
+                }
+            });
+        }
 
         function handleAdminLogout() {
             signOut(auth).then(() => {
