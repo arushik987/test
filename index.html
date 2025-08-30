@@ -1346,6 +1346,22 @@
                 <button type="submit" id="auth-submit-btn" style="background-color: var(--primary-red); color: white; width: 100%; margin-bottom: 10px;">Login</button>
                 <button type="button" id="toggle-auth-mode" style="background-color: var(--muted-color); color: white; width: 100%; margin-bottom: 10px;">Switch to Register</button>
                 
+                <!-- Resend Verification Button (hidden by default) -->
+                <button type="button" id="resend-verification-btn" style="
+                    background-color: #28a745; 
+                    color: white; 
+                    width: 100%; 
+                    margin-bottom: 10px; 
+                    display: none;
+                    padding: 10px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                ">
+                    <i class="fas fa-envelope" style="margin-right: 8px;"></i>Resend Verification Email
+                </button>
+                
                 <!-- Google Sign-In Button -->
                 <div style="margin: 15px 0; text-align: center;">
                     <div style="margin-bottom: 10px; color: var(--muted-color); font-size: 0.9rem;">Or</div>
@@ -1435,7 +1451,7 @@
 
         // Initialize Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, GoogleAuthProvider, signInWithPopup, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
         import { getDatabase, ref, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
         // --- Telegram Bot Integration ---
@@ -1633,7 +1649,14 @@
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // User is signed in
+                // Check if user is verified (only for Email/Password users)
+                if (user.providerData[0]?.providerId === 'password' && !user.emailVerified) {
+                    // Email/Password user is not verified, sign them out
+                    await signOut(auth);
+                    return;
+                }
+                
+                // User is signed in and verified
                 loginStatusIndicator.style.display = 'block';
                 menuLoginLink.style.display = 'none';
                 menuProfileLink.style.display = 'list-item';
@@ -2334,6 +2357,9 @@
             // Get Google Sign-In button
             const googleSignInBtn = document.getElementById('google-signin-btn');
             
+            // Get resend verification button
+            const resendVerificationBtn = document.getElementById('resend-verification-btn');
+            
             // Get profile elements
             loginStatusIndicator = document.getElementById('login-status-indicator');
             menuLoginLink = document.getElementById('menu-login-link');
@@ -2516,6 +2542,11 @@
                     if (authNameInput) authNameInput.style.display = isLoginMode ? 'none' : 'block';
                     if (authGenderSelect) authGenderSelect.style.display = isLoginMode ? 'none' : 'block';
                     if (authAgeInput) authAgeInput.style.display = isLoginMode ? 'none' : 'block';
+                    
+                    // Show resend verification button only in login mode
+                    if (resendVerificationBtn) {
+                        resendVerificationBtn.style.display = isLoginMode ? 'block' : 'none';
+                    }
 
                     hideAuthError();
                 });
@@ -2544,7 +2575,8 @@
                                 email: user.email,
                                 name: user.displayName || user.email.split('@')[0],
                                 registrationDate: Date.now(),
-                                authProvider: 'google'
+                                authProvider: 'google',
+                                emailVerified: true // Google accounts are pre-verified
                             });
                         }
                         
@@ -2564,6 +2596,45 @@
                     }
                 });
             }
+            
+            // Set up resend verification functionality
+            if (resendVerificationBtn) {
+                resendVerificationBtn.addEventListener('click', async () => {
+                    try {
+                        const email = authEmailInput.value;
+                        if (!email) {
+                            showAuthError('Please enter your email address first.');
+                            return;
+                        }
+                        
+                        // Try to sign in to get the user object
+                        const userCredential = await signInWithEmailAndPassword(auth, email, authPasswordInput.value);
+                        const user = userCredential.user;
+                        
+                        // Send verification email
+                        await sendEmailVerification(user);
+                        
+                        // Sign out immediately
+                        await signOut(auth);
+                        
+                        // Show success message
+                        showAuthError('✅ Verification email resent! Please check your inbox.');
+                        
+                        // Hide the resend button
+                        resendVerificationBtn.style.display = 'none';
+                    } catch (error) {
+                        if (error.code === 'auth/user-not-found') {
+                            showAuthError('User not found. Please check your email address.');
+                        } else if (error.code === 'auth/wrong-password') {
+                            showAuthError('Wrong password. Please check your credentials.');
+                        } else if (error.code === 'auth/too-many-requests') {
+                            showAuthError('Too many attempts. Please try again later.');
+                        } else {
+                            showAuthError(`Failed to resend verification: ${error.message}`);
+                        }
+                    }
+                });
+            }
 
             if (authForm) {
                 authForm.addEventListener('submit', async (e) => {
@@ -2578,7 +2649,18 @@
 
                     if (isLoginMode) {
                         try {
-                            await signInWithEmailAndPassword(auth, email, password);
+                            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                            const user = userCredential.user;
+                            
+                            // Check if email is verified for Email/Password users
+                            if (!user.emailVerified) {
+                                // Sign out immediately if email is not verified
+                                await signOut(auth);
+                                showAuthError('❌ Please verify your email before logging in. Check your inbox for the verification link.');
+                                return;
+                            }
+                            
+                            // Email is verified, proceed with login
                             document.getElementById('auth-modal').style.display = 'none';
                         } catch (error) {
                             showAuthError(error.message);
@@ -2594,6 +2676,9 @@
                             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                             const user = userCredential.user;
 
+                            // Send email verification
+                            await sendEmailVerification(user);
+
                             // Update Firebase Auth profile (displayName)
                             await updateProfile(user, {
                                 displayName: name,
@@ -2606,10 +2691,18 @@
                                 name: name,
                                 gender: gender,
                                 age: age,
-                                registrationDate: Date.now()
+                                registrationDate: Date.now(),
+                                emailVerified: false,
+                                authProvider: 'email'
                             });
 
-                            document.getElementById('auth-modal').style.display = 'none';
+                            // Sign out the user immediately after registration
+                            await signOut(auth);
+                            
+                            // Show verification message
+                            showAuthError('✅ Verification email sent! Please check your inbox and verify your email before logging in.');
+                            
+                            // Don't close the modal, let user see the message
                         } catch (error) {
                             showAuthError(error.message);
                         }
@@ -2900,7 +2993,8 @@
                                     email: user.email,
                                     name: user.displayName || user.email.split('@')[0],
                                     registrationDate: Date.now(),
-                                    authProvider: 'google'
+                                    authProvider: 'google',
+                                    emailVerified: true // Google accounts are pre-verified
                                 });
                             }
                         } catch (error) {
