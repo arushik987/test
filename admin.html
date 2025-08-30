@@ -18,400 +18,499 @@
             --border-color: #eee;
             --shadow-color: rgba(0, 0, 0, 0.08);
             --card-border-radius: 18px;
+        }
 
-            /* Admin specific */
-            --admin-sidebar-bg: #2c3e50; /* Dark sidebar */
-            --admin-sidebar-text: #ecf0f1;
-            --admin-sidebar-hover: #34495e;
-            --admin-active-link: var(--primary-red);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
-            margin: 0;
-            box-sizing: border-box;
             background-color: var(--surface-dark-color);
             color: var(--text-color);
             line-height: 1.6;
+            padding-bottom: 80px; /* Space for bottom navigation */
+        }
+
+        /* Fixed Top Header */
+        .admin-header {
+            background-color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px var(--shadow-color);
             display: flex;
-            min-height: 100vh;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
-        *, *::before, *::after {
-            box-sizing: inherit;
-        }
-
-        a {
-            text-decoration: none;
+        .admin-header .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             color: var(--primary-red);
+            font-size: 1.2rem;
+                font-weight: 700;
         }
 
-        button {
-            cursor: pointer;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
+        .admin-header .logo span {
+            color: var(--primary-red) !important;
         }
 
-        .container {
+        .admin-header .logo i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .admin-header .admin-profile {
+                display: flex;
+                align-items: center;
+            gap: 8px;
+            color: var(--primary-red);
+                font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+
+
+        /* Main Content */
+        .admin-content {
+            padding: 100px 15px 20px 15px;
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px;
+                margin: 0 auto;
         }
 
+        /* Section Styling */
+        .admin-section {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        /* All sections - consistent spacing */
+        .admin-section {
+            padding-top: 90px;
+        }
+
+        .admin-section h2 {
+            margin-bottom: 60px;
+        }
+
+        .admin-section .card {
+            margin-top: 35px;
+        }
+
+        /* Products section specific */
+        #products .card {
+            margin-top: 25px;
+        }
+
+
+
+        
+
+        /* Slider section specific */
+        #slider .card {
+            margin-top: 25px;
+        }
+
+        /* Messages section specific */
+        #messages .card {
+            margin-top: 25px;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .admin-section h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 20px;
+                text-align: center;
+            color: var(--primary-red);
+            font-weight: 700;
+        }
+
+        .admin-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        /* Card Styling */
         .card {
             background-color: var(--surface-color);
             border-radius: var(--card-border-radius);
             box-shadow: 0 4px 15px var(--shadow-color);
             padding: 20px;
             margin-bottom: 20px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add transition for hover effect */
+            border: 1px solid var(--border-color);
         }
 
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
-        }
-
-        /* Admin Layout */
-        .admin-sidebar {
-            width: 250px; /* Default width for desktop */
-            background-color: var(--admin-sidebar-bg);
-            color: var(--admin-sidebar-text);
-            padding: 20px;
-            position: fixed;
-            height: 100%;
-            overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            transition: width 0.3s ease, transform 0.3s ease; /* Add transform to transition */
-            box-sizing: border-box; /* Ensure padding doesn't affect width */
-        }
-
-        /* .admin-sidebar.collapsed is now handled exclusively in the min-width media query for desktop. */
-        /* This global rule is removed to prevent conflicts on mobile. */
-
-        /* Admin-specific styles for desktop sidebar when collapsed */
-        @media (min-width: 769px) {
-            .admin-sidebar.collapsed {
-                width: 60px;
-            }
-            .admin-sidebar.collapsed h2 {
-                font-size: 0;
-                margin-bottom: 0;
-            }
-            .admin-sidebar.collapsed h2 img {
-                height: 25px;
-                margin-right: 0;
-            }
-            .admin-sidebar.collapsed nav li a span {
-                display: none;
-            }
-            .admin-sidebar.collapsed nav li a i {
-                margin: 0 auto;
-                font-size: 1.3rem;
-            }
-            .admin-content.collapsed {
-                margin-left: 60px;
-            }
-        }
-
-        .admin-sidebar h2 {
-            text-align: center;
-            color: white;
+        /* Stats Cards */
+        #stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
             margin-bottom: 30px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 1.3rem;
-            letter-spacing: 0.5px;
-            line-height: 1.2;
         }
 
-        .admin-sidebar h2 img {
-            height: 30px; /* Adjust as needed */
-            margin-right: 10px;
-        }
-
-        .admin-sidebar.collapsed h2 {
-            font-size: 0;
-            margin-bottom: 0;
-        }
-
-        .admin-sidebar.collapsed h2 img {
-            height: 25px; /* Smaller logo when collapsed */
-            margin-right: 0;
-        }
-
-        .admin-sidebar nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .admin-sidebar nav li a {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 14px 18px; /* Increased padding for better touch targets */
-            color: var(--admin-sidebar-text);
-            border-radius: 10px; /* Slightly more rounded */
-            margin-bottom: 8px; /* Reduced margin for tighter list */
-            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease; /* Add transform for hover */
-        }
-
-        .admin-sidebar nav li a:hover {
-            background-color: var(--admin-sidebar-hover);
-            transform: translateX(5px); /* Subtle slide effect on hover */
-        }
-
-        .admin-sidebar nav li a.active {
-            background-color: var(--admin-active-link);
-            color: white;
-            box-shadow: 0 4px 10px rgba(231, 74, 59, 0.3); /* Add shadow for active state */
-        }
-
-        /* Admin Table Styling */
-        .admin-section table {
-            width: 100%; /* Ensure table takes full width */
-            border-collapse: collapse;
-            text-align: left;
-            background-color: var(--surface-color);
+        .stat-card {
+            background: var(--surface-color);
+            padding: 25px 20px;
             border-radius: var(--card-border-radius);
-            overflow: hidden; /* Hide overflowing borders/shadows */
-            box-shadow: 0 2px 8px var(--shadow-color);
-            margin-bottom: 20px; /* Space below table */
+            text-align: center;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .admin-section thead tr {
-            background-color: var(--surface-dark-color); /* Light background for header */
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin-bottom: 10px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 1rem;
+            color: var(--muted-color);
+            font-weight: 500;
+        }
+
+        /* Button Styling */
+            button, .btn {
+                background: var(--primary-red);
+                color: white;
+                border: none;
+                border-radius: 12px;
+            padding: 12px 20px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            }
+
+            button:hover, .btn:hover {
+                background: #c0392b;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(231, 74, 59, 0.4);
+            }
+
+            #add-product-btn, #add-slider-image-btn {
+                background: var(--primary-red);
+                color: white;
+            padding: 14px 24px;
+            font-size: 1rem;
+                border-radius: 12px;
+            margin: 10px 0;
+            display: inline-block;
+        }
+
+        /* Time Period Buttons */
+            .time-btn {
+            background: var(--surface-dark-color);
+            color: var(--muted-color);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 8px 16px;
+                margin: 5px;
+                font-size: 0.9rem;
+                font-weight: 500;
+            transition: all 0.3s ease;
+                display: inline-block;
+            }
+
+            .time-btn.active {
+                background: var(--primary-red);
+                color: white;
+                border-color: var(--primary-red);
+        }
+
+        /* Table Styling */
+            .admin-section table {
+                width: 100%;
+            border-collapse: collapse;
+            background: var(--surface-color);
+            border-radius: var(--card-border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .admin-section thead {
+            background: var(--surface-dark-color);
         }
 
         .admin-section th {
-            padding: 12px 15px; /* Consistent padding */
+            padding: 15px;
+            text-align: left;
             font-weight: 600;
             color: var(--text-color);
             border-bottom: 1px solid var(--border-color);
         }
 
         .admin-section td {
-            padding: 12px 15px; /* Consistent padding */
-            border-bottom: 1px solid var(--border-color); /* Lighter bottom border */
-            vertical-align: middle; /* Center content vertically */
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
         }
 
-        /* Remove last row border */
         .admin-section tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        /* Admin content and sidebar collapsed states */
-        .admin-sidebar.collapsed nav li a span {
-            display: none;
-        }
-
-        .admin-sidebar.collapsed nav li a i {
-            margin: 0 auto;
-            font-size: 1.3rem;
-        }
-
-        .admin-content {
-            margin-left: 250px; /* Space for sidebar on desktop */
-            flex-grow: 1;
-            padding: 20px;
-            transition: margin-left 0.3s ease;
-        }
-
-        .admin-content.collapsed {
-            margin-left: 60px;
-        }
-
-        /* Sidebar toggle button (desktop) */
-        .sidebar-toggle-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            cursor: pointer;
-            display: block;
-            color: var(--primary-red);
-            background-color: var(--surface-color);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 1002;
-        }
-
-        /* Sidebar close button (mobile) */
-        .sidebar-close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            color: var(--admin-sidebar-text);
-            background: none;
-            border: none;
-            cursor: pointer;
-            z-index: 1001;
-            display: none;
-        }
-
-        /* Mobile Media Query */
-        @media (max-width: 768px) {
-            body {
-                overflow-x: hidden;
+                border-bottom: none;
             }
 
-            body.sidebar-open-mobile {
-                overflow-y: hidden;
+        /* Action Buttons */
+            .icon-btn {
+            background: var(--surface-dark-color);
+            border: 1px solid var(--border-color);
+                border-radius: 8px;
+                padding: 8px 12px;
+                margin: 0 3px;
+            color: var(--muted-color);
+            transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 40px;
+                min-height: 40px;
             }
 
-            .admin-sidebar {
-                width: 100%;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease-in-out;
-                z-index: 1000;
-                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-                padding: 20px;
-                position: fixed;
-                height: 100vh;
-                display: none;
+            .icon-btn:hover {
+            background: var(--border-color);
+                transform: scale(1.05);
             }
-            .admin-sidebar.open {
-                transform: translateX(0);
+
+            .edit-product-btn, .edit-slider-image-btn {
+                background: #e3f2fd;
+                color: #1976d2;
+                border-color: #bbdefb;
+            }
+
+            .delete-product-btn, .delete-slider-image-btn {
+                background: #ffebee;
+                color: #d32f2f;
+                border-color: #ffcdd2;
+            }
+
+            .view-order-btn {
+                background: #e8f5e8;
+                color: #388e3c;
+                border-color: #c8e6c9;
+            }
+
+        /* Form Styling */
+            form {
                 display: flex;
                 flex-direction: column;
-                align-items: center;
-                justify-content: flex-start;
-                padding-top: 60px;
+                gap: 20px;
+                margin: 20px 0;
             }
 
-            .sidebar-backdrop {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 999;
-                display: none;
-            }
-            .sidebar-backdrop.active {
-                display: block;
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        input, textarea, select {
+            padding: 12px 16px;
+                font-size: 1rem;
+            border: 2px solid var(--border-color);
+                border-radius: 12px;
+            background: var(--surface-dark-color);
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        input:focus, textarea:focus, select:focus {
+                border-color: var(--primary-red);
+                background: white;
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(231, 74, 59, 0.1);
             }
 
-            .admin-sidebar h2 {
-                font-size: 1.2rem;
-                margin-bottom: 20px;
-                height: auto;
-                letter-spacing: 0.3px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
-                white-space: normal;
-                overflow: visible;
-                text-overflow: clip;
-                padding: 10px 0;
-            }
-            .admin-sidebar h2 img {
-                height: 30px;
-                margin-right: 10px;
-            }
-            .admin-sidebar nav li a {
-                justify-content: center;
-                padding: 12px 0;
-            }
-            .admin-sidebar nav li a span {
-                display: inline;
-            }
-            .admin-sidebar nav li a i {
-                margin: 0;
-            }
-            .admin-content {
-                margin-left: 0;
-                padding: 15px;
-                width: 100%;
-                transition: none;
-            }
-            .admin-content.collapsed {
-                margin-left: 0;
-                transform: translateX(0);
-            }
-            .sidebar-toggle-btn {
-                display: block;
-                position: fixed;
-                top: 15px;
-                right: 15px;
-                color: var(--primary-red);
-                background-color: var(--surface-color);
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-                z-index: 1002;
+        /* Modal Styling */
+            .modal-content {
+                background: white;
+                border-radius: 20px;
+            padding: 30px;
+                margin: 20px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            max-height: 90vh;
+            overflow-y: auto;
             }
 
-            .sidebar-close-btn {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                font-size: 1.5rem;
-                color: var(--admin-sidebar-text);
-                background: none;
-                border: none;
-                cursor: pointer;
-                z-index: 1001;
-                display: none;
-            }
+        /* Image Styling */
+            .admin-product-image, .admin-slider-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+                border-radius: 8px;
+            border: 2px solid var(--border-color);
+        }
 
-            /* Adjust font sizes for better readability on small screens */
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            h3 {
-                font-size: 1.2rem;
-            }
-
-            button {
-                padding: 8px 12px;
+        /* Status Badges */
+            .order-status-select {
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 2px solid var(--border-color);
+            background: var(--surface-dark-color);
                 font-size: 0.9rem;
+                font-weight: 600;
+            color: var(--text-color);
+                transition: all 0.3s ease;
             }
 
-            /* Modals should scroll if content is too tall */
-            #admin-auth-modal > div,
-            #product-manage-modal > div,
-            #add-slider-image-modal > div {
-                max-height: 90vh;
-                overflow-y: auto;
-                width: 95%;
-                padding: 20px;
+            .order-status-select:focus {
+                border-color: var(--primary-red);
+                box-shadow: 0 0 0 3px rgba(231, 74, 59, 0.1);
             }
 
-            /* Table responsiveness for admin tables */
+        /* Bottom Navigation */
+        .admin-bottom-nav {
+            background-color: var(--surface-color);
+            box-shadow: 0 -2px 10px var(--shadow-color);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 10px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .admin-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--muted-color);
+                transition: all 0.3s ease;
+            padding: 6px 8px;
+            border-radius: 8px;
+            min-width: 50px;
+            flex: 1;
+        }
+
+        .admin-nav-item:hover {
+            color: var(--primary-red);
+            background-color: var(--surface-dark-color);
+        }
+
+        .admin-nav-item.active {
+            color: var(--primary-red);
+            background-color: rgba(231, 74, 59, 0.1);
+        }
+
+        .admin-nav-item i {
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+        }
+
+        .admin-nav-item span {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Loading States */
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            color: var(--primary-red);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            .admin-content {
+                padding: 90px 10px 20px 10px;
+            }
+
+            .admin-header {
+                padding: 12px 15px;
+            }
+
+            .admin-header .logo {
+                font-size: 1rem;
+            }
+
+            .admin-header .admin-profile {
+                font-size: 0.8rem;
+            }
+
+
+
+            .admin-section {
+                padding-top: 55px;
+            }
+
+            .admin-section h2 {
+                font-size: 1.5rem;
+                margin-bottom: 40px;
+            }
+
+            .admin-section h3 {
+                font-size: 1.1rem;
+                margin-bottom: 15px;
+            }
+
+            .admin-section .card {
+                margin-top: 30px;
+            }
+
+            .card {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            #stats-cards {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 20px 15px;
+            }
+
+            .stat-card .stat-number {
+                font-size: 2rem;
+            }
+
+            /* Mobile Table Layout */
             .admin-section table {
                 display: block;
                 overflow-x: auto;
-                white-space: nowrap;
-                border-radius: var(--card-border-radius);
-                box-shadow: 0 4px 15px var(--shadow-color);
             }
 
             .admin-section thead {
@@ -427,357 +526,930 @@
             .admin-section tr {
                 margin-bottom: 15px;
                 border: 1px solid var(--border-color);
-                border-radius: var(--card-border-radius);
-                padding: 10px;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
+                border-radius: 12px;
+                padding: 15px;
+                background: white;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             }
 
             .admin-section td {
-                text-align: left;
-                padding-left: 0;
+                text-align: center;
+                padding: 12px 0;
+                border: none;
+                border-bottom: 1px solid var(--border-color);
                 position: relative;
-                width: 100%;
+                min-height: 50px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .admin-section td:last-child {
                 border-bottom: none;
             }
 
             .admin-section td::before {
                 content: attr(data-label);
-                position: static;
-                width: auto;
-                display: block;
-                text-align: left;
-                font-weight: 600;
-                color: var(--muted-color);
-                margin-bottom: 5px;
-            }
-
-            /* Remove top border from first td in stacked rows */
-            .admin-section tr td:first-child {
-                padding-top: 0;
-            }
-            .admin-section tr td:last-child {
-                padding-bottom: 0;
-                border-bottom: none;
-            }
-
-            /* Specific adjustments for dashboard stats */
-            #stats-cards {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            #stats-cards .card {
-                padding: 20px;
-                text-align: center;
-            }
-            #stats-cards h3 {
-                font-size: 1.1rem;
-                margin-bottom: 8px;
-            }
-            #stats-cards p {
-                font-size: 1.4rem;
                 font-weight: 700;
+                color: var(--primary-red);
+                font-size: 0.8rem;
+                margin-bottom: 8px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
             }
 
-            /* Adjust general spacing and padding */
-            .container {
-                padding: 10px;
+            /* Special handling for image and action columns */
+            .admin-section td:first-child::before,
+            .admin-section td:last-child::before {
+                display: none;
             }
 
-            .card {
-                padding: 15px;
+            .admin-section td:first-child {
+                text-align: center;
+                justify-content: center;
             }
 
-            input, textarea, select, button {
+            .admin-section td:last-child {
+                text-align: center;
+                justify-content: center;
+            }
+
+            /* Mobile Button Layout */
+            button, .btn {
+                width: 100%;
+                max-width: 300px;
+                margin: 8px auto;
+                display: block;
+            }
+
+
+
+
+
+            /* Mobile Form Layout */
+            form input, form textarea, form select {
+                width: 100%;
                 margin-bottom: 10px;
             }
-        }
 
-        /* Further refine for very small screens (e.g., ~320px) */
-        @media (max-width: 480px) {
-            .admin-content {
-                padding: 10px;
+            /* Mobile Modal Layout */
+            .modal-content {
+                width: 95%;
+                margin: 20px auto;
+                padding: 20px;
             }
 
-            h2 {
-                font-size: 1.3rem;
+            /* Mobile Navigation */
+            .admin-bottom-nav {
+                padding: 10px 5px;
             }
 
-            h3 {
+            .admin-nav-item {
+                min-width: 45px;
+                padding: 5px 4px;
+            }
+
+            .admin-nav-item i {
                 font-size: 1rem;
             }
 
-            button {
-                font-size: 0.85rem;
-                padding: 7px 10px;
+            .admin-nav-item span {
+                font-size: 0.65rem;
             }
 
-            /* Adjust table data-label font size for very small screens */
-            .admin-section td::before {
-                font-size: 0.8rem;
+            /* Better mobile touch targets */
+            .icon-btn {
+                min-width: 50px;
+                min-height: 50px;
+                margin: 5px;
+                border-radius: 12px;
+                font-size: 1rem;
+                transition: all 0.3s ease;
             }
 
-            .card {
-                padding: 10px;
+            .icon-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             }
 
-            input, textarea, select {
-                padding: 8px;
-                font-size: 0.9rem;
+            .icon-btn:active {
+                transform: scale(0.95);
+                transition: transform 0.1s ease;
             }
 
-            /* Ensure buttons still look good and are clickable */
-            button {
-                padding: 8px 12px;
-                font-size: 0.9rem;
+            /* Mobile grocery button styling */
+            #add-grocery-btn {
+                width: 100%;
+                max-width: 350px;
+                margin: 15px auto;
+                display: block;
+                padding: 18px 20px;
+                font-size: 1rem;
+                border-radius: 16px;
+                box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+            }
+
+            /* Mobile status select styling */
+            .order-status-select {
+                min-height: 44px;
+                font-size: 1rem;
+                padding: 12px 16px;
+                border-radius: 12px;
+                border: 2px solid var(--border-color);
+                background: var(--surface-dark-color);
+                transition: all 0.3s ease;
+                width: 100%;
+                max-width: 200px;
+                margin: 0 auto;
+                display: block;
+            }
+
+            .order-status-select:focus {
+                border-color: var(--primary-red);
+                box-shadow: 0 0 0 3px rgba(231, 74, 59, 0.1);
+                background: white;
+            }
+
+            /* Enhanced mobile experience */
+            .admin-section {
+                animation: slideInUp 0.5s ease-out;
+            }
+
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Better mobile shadows and borders */
+            .card, .stat-card {
+                border: 1px solid rgba(0,0,0,0.1);
+                transition: all 0.3s ease;
+            }
+
+            .card:hover, .stat-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            }
+
+            /* Mobile-optimized header */
+                .admin-header {
+                backdrop-filter: blur(10px);
+                background: rgba(255, 255, 255, 0.95);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                }
+
+            /* Mobile-optimized bottom navigation */
+                .admin-bottom-nav {
+                backdrop-filter: blur(10px);
+                background: rgba(255, 255, 255, 0.95);
+                border-top: 1px solid rgba(0,0,0,0.1);
+            }
+
+            #add-grocery-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(40, 167, 69, 0.5);
+            }
+
+            #add-grocery-btn:active {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
             }
         }
 
-        /* Section Styling */
+        /* Extra Small Devices */
+        @media (max-width: 480px) {
+            .admin-content {
+                padding: 85px 8px 20px 8px;
+            }
+
+            .admin-header {
+                padding: 10px 12px;
+            }
+
+            .admin-header .logo {
+                font-size: 0.9rem;
+            }
+
+            .admin-section h2 {
+                font-size: 1.3rem;
+            }
+
+            .admin-section h3 {
+                font-size: 1rem;
+            }
+
+            .card {
+                padding: 12px;
+            }
+
+            .stat-card {
+                padding: 15px 12px;
+            }
+
+            .stat-card .stat-number {
+                font-size: 1.8rem;
+            }
+
+            button, .btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+
+            .admin-section td {
+                padding: 15px 0;
+                min-height: 60px;
+            }
+
+            .admin-section td::before {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Hide sections by default */
         .admin-section {
             display: none;
-            padding: 20px 0;
         }
 
         .admin-section.active {
             display: block;
         }
 
-        /* New styles for blurring content before login */
+        /* Blur overlay for login */
         .blur-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay */
-            z-index: 2999; /* Below auth modal, above other content */
-            backdrop-filter: blur(8px); /* Apply blur effect */
-            -webkit-backdrop-filter: blur(8px); /* Safari support */
-            pointer-events: auto; /* Allow overlay to block interaction */
-        }
-        /* End new styles */
-
-        /* Skeleton Loading Animations */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 2999;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            pointer-events: auto;
         }
 
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+        .blur-overlay ~ .admin-bottom-nav {
+            z-index: 10000 !important;
+        }
+        /* Mobile-specific table improvements */
+        @media (max-width: 768px) {
+            .admin-content {
+                padding: 15px 10px;
+            }
+            
+            /* Removed specific order-table-container rules to match Products tab responsiveness */
+            
+            .order-status-select {
+                font-size: 12px !important;
+                padding: 4px 6px !important;
+                min-width: 80px !important;
+            }
+            
+            .view-order-btn,
+            .delete-order-btn {
+                padding: 4px !important;
+                font-size: 14px !important;
+            }
+
+                        /* Orders section now matches Products tab responsiveness */
         }
 
-        .skeleton-table {
-            width: 100%;
-            background: var(--surface-color);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px var(--shadow-color);
+        /* Order cards now use standard card styling for consistent responsiveness */
+        
+        @media (max-width: 480px) {
+            .admin-section {
+                padding-top: 40px;
+            }
+
+            .admin-section h2 {
+                font-size: 1.3rem;
+                margin-bottom: 30px;
+            }
+
+            /* Removed specific order-table-container rules for consistent responsiveness */
+            
+            .order-status-select {
+                font-size: 11px !important;
+                padding: 3px 4px !important;
+            }
+
+            .time-btn {
+                padding: 5px 10px;
+                font-size: 0.75rem;
+            }
         }
 
-        .skeleton-table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .skeleton-table-title {
-            width: 150px;
-            height: 24px;
-        }
-
-        .skeleton-table-button {
-            width: 120px;
-            height: 36px;
-            border-radius: 8px;
-        }
-
-        .skeleton-table-row {
-            display: flex;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border-color);
-            gap: 20px;
-        }
-
-        .skeleton-table-row:last-child {
-            border-bottom: none;
-        }
-
-        .skeleton-table-image {
-            width: 50px;
-            height: 50px;
-            border-radius: 4px;
-        }
-
-        .skeleton-table-text {
-            flex: 1;
-            height: 16px;
-        }
-
-        .skeleton-table-text.short {
-            flex: 0.5;
-        }
-
-        .skeleton-table-actions {
-            width: 100px;
+        /* Modal Close Button Styles */
+        .modal-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 32px;
             height: 32px;
-            border-radius: 6px;
+            border-radius: 50%;
+            background: var(--primary-red);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            z-index: 1001;
         }
 
-        .skeleton-stats-card {
-            background: var(--surface-color);
-            border-radius: var(--card-border-radius);
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 4px 15px var(--shadow-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .modal-close-btn:hover {
+            background: #e74a3b;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(231, 74, 59, 0.4);
         }
 
-        .skeleton-stats-icon {
+        .modal-close-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Status Update Button Hover Effects */
+        #status-update-btn:hover {
+            background-color: #e74a3b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 74, 59, 0.4);
+        }
+
+        #status-update-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Order Progress Step Styles */
+        .order-progress-step.completed .progress-step-icon {
+            background: var(--primary-red);
+            color: white;
+            border-color: var(--primary-red);
+            box-shadow: 0 4px 15px rgba(231, 74, 59, 0.3);
+        }
+
+        .order-progress-step.completed .progress-step-label {
+            color: var(--primary-red);
+            font-weight: 600;
+        }
+
+        .order-progress-step.current .progress-step-icon {
+            background: var(--primary-red);
+            color: white;
+            border-color: var(--primary-red);
+            box-shadow: 0 4px 15px rgba(231, 74, 59, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .order-progress-step.current .progress-step-label {
+            color: var(--primary-red);
+            font-weight: 600;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Enhanced Mobile Responsiveness for All Tabs */
+        @media (max-width: 768px) {
+            /* Enhanced Order Tab Mobile Responsiveness */
+            .order-card {
+                margin-bottom: 15px !important;
+                padding: 12px !important;
+            }
+
+            .order-card > div {
+                flex-direction: column !important;
+                gap: 12px !important;
+                text-align: center;
+            }
+
+            .order-card img {
+                width: 80px !important;
+                height: 80px !important;
+                margin: 0 auto !important;
+            }
+
+            .order-status-badge {
+                font-size: 0.7rem !important;
+                padding: 6px 10px !important;
+                min-width: 60px !important;
+            }
+
+            .update-status-btn {
+                width: 36px !important;
+                height: 36px !important;
+                margin: 0 auto !important;
+            }
+
+            /* Enhanced Products Tab Mobile Responsiveness */
+            .admin-product-image {
+                width: 60px !important;
+                height: 60px !important;
+                margin: 0 auto !important;
+            }
+
+            /* Enhanced Slider Tab Mobile Responsiveness */
+            .admin-slider-image {
+                width: 80px !important;
+                height: 50px !important;
+                margin: 0 auto !important;
+            }
+
+            /* Enhanced Messages Tab Mobile Responsiveness */
+            .message-cell {
+                text-align: center !important;
+                padding: 8px !important;
+            }
+
+            /* Enhanced Order Progress Steps for Mobile */
+            .order-progress-bar {
+                display: flex;
+                flex-direction: row;
+                gap: 15px;
+                align-items: center;
+                justify-content: center;
+                max-width: 350px;
+            }
+
+            .order-progress-step {
+                flex-direction: column;
+                text-align: center;
+                min-width: 50px;
+            }
+
+            .progress-step-icon {
+                margin-bottom: 8px;
+            }
+
+            .progress-step-label {
+                font-size: 0.8rem;
+            }
+
+            /* Enhanced Modal Responsiveness */
+            #order-details-modal .card {
+                width: 95% !important;
+                margin: 10px auto !important;
+                padding: 20px !important;
+                max-height: 85vh !important;
+            }
+
+            #order-details-modal .card > div {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+
+            #status-update-modal .card {
+                width: 90% !important;
+                margin: 20px auto !important;
+                padding: 20px !important;
+            }
+
+            #product-manage-modal .card,
+            #add-slider-image-modal .card {
+                width: 95% !important;
+                margin: 20px auto !important;
+                padding: 20px !important;
+            }
+
+            /* Enhanced Table Container Responsiveness */
+            #product-table-container,
+            #order-table-container,
+            #today-orders-container,
+            #slider-image-table-container,
+            #messages-table-container {
+                overflow-x: hidden;
+                padding: 0 5px;
+            }
+        }
+
+        /* Extra Small Device Responsiveness */
+        @media (max-width: 480px) {
+            /* Extra small device order card adjustments */
+            .order-card {
+                padding: 10px !important;
+            }
+
+            .order-card img {
+                width: 60px !important;
+                height: 60px !important;
+            }
+
+            .order-status-badge {
+                font-size: 0.65rem !important;
+                padding: 4px 8px !important;
+            }
+
+            .update-status-btn {
+                width: 32px !important;
+                height: 32px !important;
+            }
+
+            /* Extra small device product image adjustments */
+            .admin-product-image {
+                width: 50px !important;
+                height: 50px !important;
+            }
+
+            /* Extra small device slider image adjustments */
+            .admin-slider-image {
+                width: 60px !important;
+                height: 40px !important;
+            }
+        }
+
+        .progress-step-icon {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            margin: 0 auto 15px;
+            background: var(--surface-dark-color);
+            color: var(--muted-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
         }
 
-        .skeleton-stats-number {
-            width: 60px;
-            height: 32px;
-            margin: 0 auto 10px;
+        .progress-step-label {
+            font-size: 0.8rem;
+            color: var(--muted-color);
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .skeleton-stats-label {
-            width: 80px;
-            height: 16px;
-            margin: 0 auto;
-        }
-
-        /* Image loading states for admin */
-        .admin-image-loading {
+        /* Base Order Progress Bar Styles */
+        .order-progress-bar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
             position: relative;
-            overflow: hidden;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .admin-image-loading::before {
+        .order-progress-bar::before {
             content: '';
             position: absolute;
-            top: 0;
+            top: 50%;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
+            height: 0px;
+            background: transparent;
             z-index: 1;
         }
 
-        .admin-image-loaded::before {
-            display: none;
+        .order-progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            background: var(--surface-color);
+            padding: 10px;
+            border-radius: 8px;
         }
 
-        /* Dark mode skeleton for admin */
-        @media (prefers-color-scheme: dark) {
-            .skeleton {
-                background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
-                background-size: 200% 100%;
-            }
+        /* Linear Progress Bar with Connected Steps */
+        .order-progress-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
         }
+
+        .order-progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            right: 50px;
+            height: 4px;
+            background: #e0e0e0;
+            z-index: 1;
+            transform: translateY(-50%);
+            border-radius: 2px;
+        }
+
+        .order-progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            background: transparent;
+            padding: 8px;
+            border-radius: 8px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .progress-step-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            border: 4px solid #e0e0e0;
+            position: relative;
+            font-size: 1.2rem;
+        }
+
+        .progress-step-label {
+            font-size: 0.75rem;
+            color: #666;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        /* Active and Completed Step Styles */
+        .order-progress-step.completed .progress-step-icon {
+            background: var(--primary-red);
+            color: white;
+            border-color: var(--primary-red);
+            box-shadow: 0 4px 15px rgba(231, 74, 59, 0.3);
+        }
+
+        .order-progress-step.completed .progress-step-label {
+            color: var(--primary-red);
+            font-weight: 600;
+        }
+
+        .order-progress-step.current .progress-step-icon {
+            background: var(--primary-red);
+            color: white;
+            border-color: var(--primary-red);
+            box-shadow: 0 4px 15px rgba(231, 74, 59, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .order-progress-step.current .progress-step-label {
+            color: var(--primary-red);
+            font-weight: 600;
+        }
+
+        /* Progress Line Fill */
+        .order-progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 30px;
+            height: 0px;
+            background: transparent;
+            z-index: 1;
+            transform: translateY(-50%);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        /* Progress Line Fill for Different Statuses */
+        .order-progress-bar[data-progress="25"]::after { width: 25%; }
+        .order-progress-bar[data-progress="50"]::after { width: 50%; }
+        .order-progress-bar[data-progress="75"]::after { width: 75%; }
+        .order-progress-bar[data-progress="100"]::after { width: 100%; }
+
+        /* Individual Circular Progress Steps - Clean Design */
+        .order-progress-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+            gap: 25px;
+        }
+
+        .order-progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            background: transparent;
+            padding: 4px;
+            border-radius: 8px;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .progress-step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+            transition: all 0.3s ease;
+            border: 2px solid #e0e0e0;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .progress-step-label {
+            font-size: 0.75rem;
+            color: #666;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        /* Active and Completed Step Styles */
+        .order-progress-step.completed .progress-step-icon {
+            background: var(--primary-red);
+            color: white;
+            border-color: var(--primary-red);
+            box-shadow: 0 4px 15px rgba(231, 74, 59, 0.3);
+        }
+
+        .order-progress-step.completed .progress-step-label {
+            color: var(--primary-red);
+            font-weight: 600;
+        }
+
+        .order-progress-step.current .progress-step-icon {
+            background: var(--primary-red);
+            color: white;
+            border-color: var(--primary-red);
+            box-shadow: 0 4px 15px rgba(231, 74, 59, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .order-progress-step.current .progress-step-label {
+            color: var(--primary-red);
+            font-weight: 600;
+        }
+
+        /* Enhanced Mobile Responsiveness for All Tabs */
     </style>
 </head>
-<body style="display: none; background-color: white;">
-    <div class="admin-sidebar" id="admin-sidebar">
-        <h2>Chaudhary Kirana Store</h2>
-        <button class="icon-btn sidebar-close-btn" id="sidebar-close-btn" style="display: none;"><i class="fas fa-times"></i></button>
-        <nav>
-            <ul>
-                <li><a href="#dashboard" class="admin-nav-link active" data-route="dashboard"><i class="fas fa-chart-line"></i><span>Dashboard</span></a></li>
-                <li><a href="#products" class="admin-nav-link" data-route="products"><i class="fas fa-boxes"></i><span>Products</span></a></li>
-                <li><a href="#orders" class="admin-nav-link" data-route="orders"><i class="fas fa-receipt"></i><span>Orders</span></a></li>
-                <li><a href="#slider" class="admin-nav-link" data-route="slider"><i class="fas fa-images"></i><span>Slider / Ads</span></a></li>
-                <li><a href="#messages" class="admin-nav-link" data-route="messages"><i class="fas fa-envelope"></i><span>Messages</span></a></li>
-                <li><a href="#logout" class="admin-nav-link" data-route="logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
-            </ul>
-        </nav>
-    </div>
+<body>
+    <!-- Fixed Top Header -->
+    <header class="admin-header">
+        <div class="logo">
+            <i class="fas fa-store" style="color: var(--primary-red); font-size: 1.5rem; margin-right: 12px;"></i>
+            <span style="font-weight: 700; font-size: 1.2rem; color: white;">Chaudhary Kirana Store</span>
+        </div>
+        <div class="admin-profile">
+            <i id="admin-shield-icon" class="fas fa-user-shield" style="color: var(--primary-red); font-size: 1.2rem; transition: color 0.3s ease;" title="Checking connection..."></i>
+        </div>
+    </header>
 
     <div id="admin-content-wrapper">
         <main class="admin-content" id="admin-content">
-            <button class="sidebar-toggle-btn" id="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
-            <div class="container">
-                <section id="dashboard" class="admin-section active">
-                    <h2>Dashboard</h2>
-                    <div id="stats-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                        <div class="card stat-card" data-redirect="#products" style="cursor: pointer;">
-                            <h3 style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 1.2rem;">
-                                <span>Total Products</span>
-                                <i class="fas fa-boxes" style="color: var(--primary-red);"></i>
-                            </h3>
-                            <p id="total-products" style="font-size: 2.2rem; font-weight: 700; text-align: center; color: var(--text-color); margin: 0;">0</p>
-                        </div>
-                        <div class="card stat-card" data-redirect="#orders" style="cursor: pointer;">
-                            <h3 style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 1.2rem;">
-                                <span>Total Orders</span>
-                                <i class="fas fa-receipt" style="color: #007bff;"></i>
-                            </h3>
-                            <p id="total-orders" style="font-size: 2.2rem; font-weight: 700; text-align: center; color: var(--text-color); margin: 0;">0</p>
-                        </div>
 
-                        <div class="card stat-card" data-redirect="#messages" style="cursor: pointer;">
-                            <h3 style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 1.2rem;">
-                                <span>Total Messages</span>
-                                <i class="fas fa-envelope" style="color: #17a2b8;"></i>
-                            </h3>
-                            <p id="total-messages" style="font-size: 2.2rem; font-weight: 700; text-align: center; color: var(--text-color); margin: 0;">0</p>
-                        </div>
-                    </div>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <button id="seed-demo-data-btn" style="background-color: #28a745; color: white;"><i class="fas fa-seedling" style="margin-right: 5px;"></i>Seed Demo Data</button>
-                    </div>
-                </section>
+            <div class="container">
+
 
                 <section id="products" class="admin-section">
-                    <h2>Product Management</h2>
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <button id="add-product-btn" style="background-color: var(--primary-red); color: white;"><i class="fas fa-plus-circle" style="margin-right: 5px;"></i>Add New Product</button>
-                    </div>
-                    <div id="product-table-container" class="card">
-                        <!-- Product table will be loaded here -->
-                        <p style="text-align: center; color: var(--muted-color);">No products to display.</p>
+                    <h2>Products</h2>
+                    
+
+
+                    <!-- Products Management Section -->
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 600; color: var(--text-color);">Product List</h3>
+                            <button id="add-product-btn" style="background-color: var(--primary-red); color: white; padding: 12px 20px; border-radius: 8px; font-weight: 600;">
+                                <i class="fas fa-plus" style="margin-right: 8px;"></i>Add Product
+                            </button>
+                        </div>
+                        <div id="product-table-container">
+                            <!-- Product table will be loaded here -->
+                            <p style="text-align: center; color: var(--muted-color);">No products to display.</p>
+                        </div>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button onclick="addGroceryProducts()" id="add-grocery-btn" style="background-color: #28a745; color: white; padding: 15px 25px; border-radius: 12px; font-weight: 600; margin: 10px; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);">
+                                <i class="fas fa-shopping-cart" style="margin-right: 10px; font-size: 1.2rem;"></i>
+                                <span style="font-size: 1.1rem;">Add Grocery Products from Zepto</span>
+                            </button>
+                        </div>
                     </div>
                 </section>
 
                 <section id="orders" class="admin-section">
-                    <h2>Order Management</h2>
-                    <div id="order-table-container" class="card">
-                        <!-- Order table will be loaded here -->
-                        <p style="text-align: center; color: var(--muted-color);">No orders to display.</p>
+                    <h2>Orders</h2>
+                    
+
+                    
+                    <!-- Orders Management Section -->
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 600; color: var(--text-color);">Order List</h3>
+                            <div style="display: flex; gap: 8px;">
+                                <span style="color: var(--muted-color); font-size: 0.9rem;">All orders</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Search Section -->
+                        <div style="margin-bottom: 20px; padding: 15px; background: var(--surface-dark-color); border-radius: 12px; border: 1px solid var(--border-color);">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
+                                <i class="fas fa-search" style="color: var(--primary-red); font-size: 1.1rem;"></i>
+                                <h4 style="margin: 0; font-size: 1rem; font-weight: 600; color: var(--text-color);">Search Orders</h4>
+                            </div>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                                <div style="position: relative; flex: 1; min-width: 250px;">
+                                    <input type="text" id="order-search-input" placeholder="Search by Order ID or Customer Name..." style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.9rem; background: white; transition: all 0.3s ease; box-sizing: border-box;">
+                                </div>
+                                <button id="order-clear-search-btn" style="background: var(--surface-dark-color); color: var(--muted-color); padding: 10px 16px; border: 2px solid var(--border-color); border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 0.9rem;">
+                                    <i class="fas fa-times" style="margin-right: 6px;"></i>Clear
+                                </button>
+                            </div>
+                            <div id="search-results-info" style="margin-top: 10px; font-size: 0.85rem; color: var(--muted-color); display: none;">
+                                <!-- Search results info will be shown here -->
+                            </div>
+                        </div>
+                        
+                        <div id="order-table-container">
+                            <!-- Order table will be loaded here -->
+                            <p style="text-align: center; color: var(--muted-color);">No orders to display.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="today-orders" class="admin-section active">
+                    <h2>Today Orders</h2>
+                    
+
+                    <!-- Today Orders Section -->
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 600; color: var(--text-color);">Today's Order List</h3>
+                            <div style="display: flex; gap: 8px;">
+                                <span style="color: var(--muted-color); font-size: 0.9rem;">Orders placed today</span>
+                            </div>
+                        </div>
+                        <div id="today-orders-container">
+                            <!-- Today's orders will be loaded here -->
+                            <p style="text-align: center; color: var(--muted-color);">No orders placed today.</p>
+                        </div>
                     </div>
                 </section>
 
                 <section id="slider" class="admin-section">
                     <h2>Slider / Ad Management</h2>
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <button id="add-slider-image-btn" style="background-color: #007bff; color: white; margin-right: 10px;"><i class="fas fa-plus-circle" style="margin-right: 5px;"></i>Add New Slider Image</button>
-                        <button id="seed-slider-data-btn" style="background-color: #28a745; color: white;"><i class="fas fa-seedling" style="margin-right: 5px;"></i>Seed Demo Slider Data</button>
+                    
+                    <!-- Slider Management Section -->
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 600; color: var(--text-color);">Slider Images</h3>
+                            <button id="add-slider-image-btn" style="background-color: #007bff; color: white; padding: 12px 20px; border-radius: 8px; font-weight: 600;">
+                                <i class="fas fa-plus-circle" style="margin-right: 8px;"></i>Add New Slider Image
+                            </button>
                     </div>
-                    <div id="slider-image-table-container" class="card">
+                        <div id="slider-image-table-container">
                         <!-- Slider image table will be loaded here -->
                         <p style="text-align: center; color: var(--muted-color);">No slider images to display.</p>
+                        </div>
                     </div>
                 </section>
 
                 <section id="messages" class="admin-section">
                     <h2>Customer Messages</h2>
-                    <div id="messages-table-container" class="card">
+                    
+                    <!-- Messages Management Section -->
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 600; color: var(--text-color);">Message List</h3>
+                            <div style="display: flex; gap: 8px;">
+                                <span style="color: var(--muted-color); font-size: 0.9rem;">Customer inquiries and feedback</span>
+                            </div>
+                        </div>
+                        <div id="messages-table-container">
                         <!-- Messages table will be loaded here -->
                         <p style="text-align: center; color: var(--muted-color);">No messages to display.</p>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -789,10 +1461,10 @@
     <!-- Message View Modal -->
     <div id="message-view-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 3000;">
         <div class="card" style="width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; padding: 30px; position: relative;">
-            <button style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; color: var(--muted-color); cursor: pointer;" onclick="document.getElementById('message-view-modal').style.display = 'none';">
+            <button style="position: absolute; top: 10px; right: 10px; background: var(--primary-red); color: white; border: none; font-size: 1.2rem; cursor: pointer; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1001;" onclick="document.getElementById('message-view-modal').style.display = 'none';">
                 <i class="fas fa-times"></i>
             </button>
-            <h3 style="margin-bottom: 20px; color: var(--text-color);">Customer Message</h3>
+            <h3 style="margin-bottom: 20px; color: var(--text-color); margin-top: 10px;">Customer Message</h3>
             <div id="message-modal-content">
                 <!-- Message details will be populated here -->
             </div>
@@ -815,8 +1487,10 @@
     <!-- Product Add/Edit Modal -->
     <div id="product-manage-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000;">
         <div class="card" style="width: 90%; max-width: 600px; padding: 30px; position: relative;">
-            <button class="icon-btn" style="position: absolute; top: 10px; right: 10px; font-size: 1.5rem;" onclick="document.getElementById('product-manage-modal').style.display = 'none';"><i class="fas fa-times"></i></button>
-            <h3>Add/Edit Product</h3>
+            <button style="position: absolute; top: 10px; right: 10px; background: var(--primary-red); color: white; border: none; font-size: 1.2rem; cursor: pointer; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1001;" onclick="document.getElementById('product-manage-modal').style.display = 'none';">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 style="margin-top: 10px;">Add/Edit Product</h3>
             <form id="product-manage-form">
                 <input type="text" id="product-name" placeholder="Product Name" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
                 <input type="text" id="product-category" placeholder="Category" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
@@ -831,8 +1505,10 @@
     <!-- Add Slider Image Modal -->
     <div id="add-slider-image-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 2000;">
         <div class="card" style="width: 90%; max-width: 400px; padding: 30px; position: relative; text-align: center;">
-            <button class="icon-btn" style="position: absolute; top: 10px; right: 10px; font-size: 1.5rem;" onclick="document.getElementById('add-slider-image-modal').style.display = 'none';"><i class="fas fa-times"></i></button>
-            <h3>Add Slider Image</h3>
+            <button style="position: absolute; top: 10px; right: 10px; background: var(--primary-red); color: white; border: none; font-size: 1.2rem; cursor: pointer; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1001;" onclick="document.getElementById('add-slider-image-modal').style.display = 'none';">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 style="margin-top: 10px;">Add Slider Image</h3>
             <form id="add-slider-image-form">
                 <input type="url" id="slider-image-url-input" placeholder="Image URL" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); border-radius: 8px;">
                 <button type="submit" style="background-color: var(--primary-red); color: white; width: 100%;"><i class="fas fa-plus-circle" style="margin-right: 5px;"></i>Add Image</button>
@@ -840,28 +1516,191 @@
         </div>
     </div>
 
+    <!-- Order Details Full Screen Modal -->
+    <div id="order-details-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 3000;">
+        <div class="card" style="width: 95%; max-width: 800px; max-height: 90vh; overflow-y: auto; padding: 30px; position: relative;">
+            <button class="icon-btn" style="position: absolute; top: 15px; right: 15px; font-size: 1.5rem; color: white; background: var(--primary-red); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" onclick="document.getElementById('order-details-modal').style.display = 'none';">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div id="order-details-content">
+                <!-- Order details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Update Modal -->
+    <div id="status-update-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 3000;">
+        <div class="card" style="width: 90%; max-width: 400px; padding: 30px; position: relative; text-align: center;">
+            <button class="modal-close-btn" style="position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; border-radius: 50%; background: var(--primary-red); color: white; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; transition: all 0.2s ease;" onclick="document.getElementById('status-update-modal').style.display = 'none';">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 style="color: var(--primary-red); margin-bottom: 20px;">Update Order Status</h3>
+            <div style="margin-bottom: 20px;">
+                <label for="status-update-select" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-color);">Select New Status:</label>
+                <select id="status-update-select" style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                    <option value="Pending">Pending</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+            <button id="status-update-btn" style="background-color: var(--primary-red); color: white; padding: 12px 24px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: all 0.2s ease;">
+                Update Status
+            </button>
+        </div>
+    </div>
+
 
     <script type="module">
         // Firebase Configuration (Placeholder)
-        const firebaseConfig = {
-  apiKey: "AIzaSyBGh16sYlLk1e9nkhcLu7IPTZk807qeLZM",
-  authDomain: "test-60bf6.firebaseapp.com",
-  databaseURL: "https://test-60bf6-default-rtdb.firebaseio.com",
-  projectId: "test-60bf6",
-  storageBucket: "test-60bf6.firebasestorage.app",
-  messagingSenderId: "208881094528",
-  appId: "1:208881094528:web:114768e2de5956cae6fb65"
+const firebaseConfig = {
+  apiKey: "AIzaSyDTSCG-mP_Atcgpg1-JKhAlKKLjNug-PZk",
+  authDomain: "kirana-store-f55dd.firebaseapp.com",
+  databaseURL: "https://kirana-store-f55dd-default-rtdb.firebaseio.com",
+  projectId: "kirana-store-f55dd",
+  storageBucket: "kirana-store-f55dd.firebasestorage.app",
+  messagingSenderId: "584414364232",
+  appId: "1:584414364232:web:1a89c8c6b293be45e30e7d"
 };
+
+        // Telegram Bot Configuration
+        const TELEGRAM_BOT_TOKEN = '7119533193:AAGYRk2OO7D1xQAmeYeJA_FU7dPcrj35kGE';
+        const TELEGRAM_CHAT_IDS = ['7298169399', '5744191135'];
 
 
         // Initialize Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-        import { getDatabase, ref, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+        import { getDatabase, ref, push, set, onValue, remove, update, onDisconnect } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const database = getDatabase(app);
+        // --- Telegram Bot Integration for Admin ---
+        // Function to send Telegram notification
+        async function sendTelegramNotification(message) {
+            try {
+                for (const chatId of TELEGRAM_CHAT_IDS) {
+                    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            text: message,
+                            parse_mode: 'HTML'
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        console.error(`Failed to send Telegram notification to ${chatId}:`, response.statusText);
+                    }
+                }
+            } catch (error) {
+                console.error('Error sending Telegram notification:', error);
+            }
+        }
+
+        // Function to send message to specific chat ID
+        async function sendTelegramMessage(chatId, message) {
+            try {
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+                
+                if (!response.ok) {
+                    console.error(`Failed to send Telegram message to ${chatId}:`, response.statusText);
+                }
+                return response.ok;
+            } catch (error) {
+                console.error('Error sending Telegram message:', error);
+                return false;
+            }
+        }
+
+        // Function to send order status update notification
+        function sendOrderStatusUpdateNotification(orderData, oldStatus, newStatus) {
+            try {
+                // Validate input data
+                if (!orderData || !orderData.orderId) {
+                    console.error('Invalid order data for notification:', orderData);
+                    return;
+                }
+                
+                const orderId = orderData.orderId;
+                const customerName = orderData.shippingName || 'Unknown Customer';
+                const totalAmount = orderData.totalAmount || 0;
+                const date = new Date().toLocaleString('en-IN');
+            
+            const statusEmojis = {
+                'Pending': '⏳',
+                'Processing': '⚙️',
+                'Shipped': '🚚',
+                'Delivered': '✅',
+                'Cancelled': '❌'
+            };
+            
+            const statusDescriptions = {
+                'Pending': 'Order is pending and will be processed soon',
+                'Processing': 'Order is being processed and prepared for shipping',
+                'Shipped': 'Order has been shipped and is on its way',
+                'Delivered': 'Order has been successfully delivered',
+                'Cancelled': 'Order has been cancelled'
+            };
+            
+            const emoji = statusEmojis[newStatus] || '📋';
+            const description = statusDescriptions[newStatus] || 'Status updated';
+            
+            let message = `${emoji} <b>ORDER STATUS UPDATED!</b>\n\n`;
+            message += `📋 <b>Order ID:</b> <code>${orderId}</code>\n`;
+            message += `👤 <b>Customer:</b> ${customerName}\n`;
+            message += `💰 <b>Total Amount:</b> ₹${totalAmount.toFixed(2)}\n`;
+            message += `📅 <b>Update Date:</b> ${date}\n\n`;
+            message += `🔄 <b>Status Changed:</b>\n`;
+            message += `From: ${oldStatus} → To: <b>${newStatus}</b>\n\n`;
+            message += `ℹ️ <b>Description:</b>\n${description}`;
+            
+                sendTelegramNotification(message);
+            } catch (error) {
+                console.error('Error sending order status update notification:', error);
+            }
+        }
+
+        let app, auth, database;
+        
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            database = getDatabase(app);
+        } catch (error) {
+            console.error('Firebase initialization failed:', error);
+            showFallbackStats();
+        }
+
+        // Connection status indicator
+        function updateConnectionStatus(connected) {
+            const adminShieldIcon = document.getElementById('admin-shield-icon');
+            
+            if (adminShieldIcon) {
+                if (connected) {
+                    adminShieldIcon.style.color = '#28a745'; // Green for connected
+                    adminShieldIcon.title = 'Connected to Firebase';
+                } else {
+                    adminShieldIcon.style.color = '#dc3545'; // Red for disconnected
+                    adminShieldIcon.title = 'Disconnected from Firebase';
+                }
+            }
+        }
 
         // --- Skeleton Loading Functions ---
         function showTableSkeleton(container, title, buttonText, rowCount = 5) {
@@ -886,13 +1725,14 @@
 
         function showStatsSkeleton() {
             const statsContainer = document.getElementById('stats-cards');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'block';
+            }
+            
             if (statsContainer) {
                 statsContainer.innerHTML = `
-                    <div class="skeleton-stats-card">
-                        <div class="skeleton skeleton-stats-icon"></div>
-                        <div class="skeleton skeleton-stats-number"></div>
-                        <div class="skeleton skeleton-stats-label"></div>
-                    </div>
                     <div class="skeleton-stats-card">
                         <div class="skeleton skeleton-stats-icon"></div>
                         <div class="skeleton skeleton-stats-number"></div>
@@ -912,8 +1752,10 @@
             }
         }
 
+
+
         // --- Enhanced Image Loading for Admin ---
-        function loadAdminImageWithFallback(imgElement, src, fallbackSrc = 'https://via.placeholder.com/50') {
+        function loadAdminImageWithFallback(imgElement, src, fallbackSrc = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjRjBGMEYwIi8+CjxwYXRoIGQ9Ik0yNSAyNUgxNVYxNUgyNVYyNVoiIGZpbGw9IiNDQ0NDQ0MiLz4KPC9zdmc+') {
             return new Promise((resolve) => {
                 const img = new Image();
                 
@@ -938,18 +1780,10 @@
             });
         }
 
-        const adminSidebar = document.getElementById('admin-sidebar');
         const adminContent = document.getElementById('admin-content');
-        const adminContentWrapper = document.getElementById('admin-content-wrapper'); // New: Get content wrapper
-        const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
-        const sidebarCloseBtn = document.getElementById('sidebar-close-btn'); // Get the new close button
-        const sidebarBackdrop = document.getElementById('sidebar-backdrop'); // New: Get sidebar backdrop
+        const adminContentWrapper = document.getElementById('admin-content-wrapper');
 
-        // --- Robust Sidebar Class Reset on Load ---
-        // Ensures no conflicting 'collapsed' or 'open' classes persist from previous states
-        adminSidebar.classList.remove('collapsed');
-        adminSidebar.classList.remove('open');
-        // --- End Robust Sidebar Class Reset ---
+
 
         // --- Admin Authentication (Re-enabled) ---
         const adminAuthModal = document.getElementById('admin-auth-modal');
@@ -973,26 +1807,18 @@
             if (user) {
                 // User is signed in, hide login modal and show admin content
                 adminAuthModal.style.display = 'none';
-                adminSidebar.style.display = ''; // Let CSS control visibility (flex on desktop, none on mobile initially)
-                adminContent.style.display = ''; // Let CSS control visibility (block/flex)
-                adminContentWrapper.classList.remove('blur-overlay'); // Remove blur
-                document.body.style.display = 'flex'; // Show body content
-                document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
-                sidebarBackdrop.classList.remove('active'); // Hide backdrop
+                adminContent.style.display = 'block';
+                adminContentWrapper.classList.remove('blur-overlay');
 
-                // Trigger initial stats fetch if on dashboard
-                if (window.location.hash === '#dashboard') {
-                    fetchDashboardStats();
+                        // Trigger initial stats fetch if on today-orders
+        if (window.location.hash === '#today-orders') {
+            // No dashboard stats needed
                 }
             } else {
                 // User is signed out, show login modal and hide admin content
                 adminAuthModal.style.display = 'flex';
-                adminSidebar.style.display = 'none'; // Hide sidebar
-                adminContent.style.display = 'none'; // Hide main content
-                adminContentWrapper.classList.add('blur-overlay'); // Apply blur
-                document.body.style.display = 'flex'; // Only show the login modal, which is a child of body
-                document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
-                sidebarBackdrop.classList.remove('active'); // Hide backdrop
+                adminContent.style.display = 'none';
+                adminContentWrapper.classList.add('blur-overlay');
             }
         });
 
@@ -1020,21 +1846,89 @@
         function handleAdminLogout() {
             signOut(auth).then(() => {
                 // Sign-out successful, onAuthStateChanged will handle UI update
-                window.location.hash = '#dashboard'; // Redirect to dashboard after logout
+                window.location.hash = '#today-orders'; // Redirect to today orders after logout
                 document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
                 sidebarBackdrop.classList.remove('active'); // Hide backdrop
             }).catch((error) => {
                 console.error("Logout Error:", error);
-                alert("Failed to log out.");
+                // Logout failed - no alert needed
             });
         }
 
+
+        // Time period button functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('time-btn')) {
+                // Remove active class from all buttons in the same group
+                const buttonGroup = e.target.closest('div');
+                buttonGroup.querySelectorAll('.time-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                // Add active class to clicked button
+                e.target.classList.add('active');
+                
+                // Get the selected period and filter orders
+                const selectedPeriod = e.target.getAttribute('data-period');
+                filterOrdersByPeriod(selectedPeriod);
+            }
+        });
+
+        // Filter orders by time period
+        function filterOrdersByPeriod(period) {
+            if (!database) return;
+            
+            const ordersRef = ref(database, 'orders');
+            onValue(ordersRef, (snapshot) => {
+                const orders = snapshot.val();
+                if (orders) {
+                    const filteredOrders = filterOrders(orders, period);
+                    renderOrderTable(filteredOrders);
+                }
+            });
+        }
+
+        // Filter orders based on time period
+        function filterOrders(orders, period) {
+            const now = new Date();
+            const filtered = {};
+            
+            Object.keys(orders).forEach(orderId => {
+                const order = orders[orderId];
+                const orderDate = new Date(order.timestamp || order.orderDate || now);
+                
+                let shouldInclude = false;
+                
+                switch (period) {
+                    case 'daily':
+                        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                        shouldInclude = orderDate >= today;
+                        break;
+                    case 'weekly':
+                        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                        shouldInclude = orderDate >= weekAgo;
+                        break;
+                    case 'monthly':
+                        const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                        shouldInclude = orderDate >= monthAgo;
+                        break;
+                    default:
+                        shouldInclude = true;
+                }
+                
+                if (shouldInclude) {
+                    filtered[orderId] = order;
+                }
+            });
+            
+            return filtered;
+        }
 
         // --- SPA Routing Logic ---
         const adminRoutes = {
             '#dashboard': 'dashboard',
             '#products': 'products',
             '#orders': 'orders',
+            '#today-orders': 'today-orders',
             '#slider': 'slider',
             '#messages': 'messages',
             '#logout': 'logout' // Special case for logout
@@ -1051,10 +1945,18 @@
         }
 
         function handleAdminHashChange() {
-            const hash = window.location.hash || '#dashboard';
+            const hash = window.location.hash || '#today-orders';
             const route = adminRoutes[hash];
 
-            document.querySelectorAll('.admin-nav-link').forEach(item => {
+            // Ensure bottom navigation is always visible
+            const bottomNav = document.querySelector('.admin-bottom-nav');
+            if (bottomNav) {
+                bottomNav.style.display = 'flex';
+                bottomNav.style.zIndex = '9999';
+            }
+
+            // Update bottom navigation
+            document.querySelectorAll('.admin-nav-item').forEach(item => {
                 item.classList.remove('active');
             });
 
@@ -1064,187 +1966,107 @@
                     return;
                 }
                 showAdminSection(route);
-                const activeNavLink = document.querySelector(`.admin-nav-link[data-route="${route}"]`);
-                if (activeNavLink) {
-                    activeNavLink.classList.add('active');
+                const activeNavItem = document.querySelector(`.admin-nav-item[data-route="${route}"]`);
+                if (activeNavItem) {
+                    activeNavItem.classList.add('active');
                 }
             } else {
-                window.location.hash = '#dashboard';
-            }
-            // Close sidebar and hide backdrop on hash change (mobile only)
-            if (window.innerWidth <= 768) {
-                adminSidebar.classList.remove('open');
-                sidebarBackdrop.classList.remove('active');
-                document.body.classList.remove('sidebar-open-mobile');
-                updateSidebarToggleButtonIcon();
+                window.location.hash = '#today-orders';
             }
         }
 
         window.addEventListener('hashchange', handleAdminHashChange);
         window.addEventListener('load', handleAdminHashChange);
 
-        // Sidebar Toggle (for opening the sidebar)
-        sidebarToggleBtn.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                adminSidebar.style.display = 'flex'; // Show the sidebar immediately on mobile
-                setTimeout(() => {
-                    adminSidebar.classList.toggle('open');
-                    sidebarBackdrop.classList.toggle('active');
-                    document.body.classList.toggle('sidebar-open-mobile');
-                    updateSidebarToggleButtonIcon();
-                }, 10);
-            } else {
-                adminSidebar.classList.toggle('collapsed');
-                adminContent.classList.toggle('collapsed');
-                updateSidebarToggleButtonIcon(); // Always update icon after click
-            }
-        });
 
-        // New: Close button inside sidebar (for mobile)
-        sidebarCloseBtn.addEventListener('click', () => {
-            adminSidebar.classList.remove('open');
-            sidebarBackdrop.classList.remove('active');
-            document.body.classList.remove('sidebar-open-mobile');
-            updateSidebarToggleButtonIcon();
-            setTimeout(() => {
-                adminSidebar.style.display = 'none'; // Hide after animation
-            }, 300); // Match CSS transition duration
-        });
-
-        // Close sidebar when a navigation link is clicked on mobile
-        document.querySelectorAll('.admin-nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 768 && adminSidebar.classList.contains('open')) {
-                    adminSidebar.classList.remove('open');
-                    sidebarBackdrop.classList.remove('active');
-                    document.body.classList.remove('sidebar-open-mobile');
-                    updateSidebarToggleButtonIcon(); // Update icon when sidebar is closed
-                    setTimeout(() => {
-                        adminSidebar.style.display = 'none'; // Hide after animation
-                    }, 300); // Match CSS transition duration
-                }
-            });
-        });
-
-        // Close sidebar when backdrop is clicked
-        sidebarBackdrop.addEventListener('click', () => {
-            if (window.innerWidth <= 768 && adminSidebar.classList.contains('open')) {
-                adminSidebar.classList.remove('open');
-                sidebarBackdrop.classList.remove('active');
-                document.body.classList.remove('sidebar-open-mobile');
-                updateSidebarToggleButtonIcon();
-                setTimeout(() => {
-                    adminSidebar.style.display = 'none';
-                }, 300);
-            }
-        });
-
-        // Adjust sidebar on window resize
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                // On desktop: remove mobile-specific 'open' class, manage 'collapsed' for desktop
-                adminSidebar.classList.remove('open');
-                // We need to decide if desktop should be collapsed by default or open.
-                // Let's assume on resize to desktop, it should default to open (not collapsed).
-                adminSidebar.classList.remove('collapsed');
-                adminContent.classList.remove('collapsed');
-                document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
-                sidebarBackdrop.classList.remove('active'); // Hide backdrop
-                adminSidebar.style.display = ''; // Ensure sidebar is visible again on desktop
-            } else {
-                // On mobile: ensure both 'open' and 'collapsed' are removed
-                adminSidebar.classList.remove('open');
-                adminSidebar.classList.remove('collapsed');
-                adminContent.classList.remove('collapsed'); // Ensure content is not shifted
-                document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
-                sidebarBackdrop.classList.remove('active'); // Hide backdrop
-                adminSidebar.style.display = 'none'; // Hide sidebar on mobile if not open
-            }
-            updateSidebarToggleButtonIcon(); // Update icon after resize
-        });
-
-        // Initial checks on load
-        // Determine initial state based on screen width
-        if (window.innerWidth <= 768) {
-            // Mobile: Ensure sidebar is closed and not collapsed by default
-            adminSidebar.classList.remove('open');
-            adminSidebar.classList.remove('collapsed');
-            adminContent.classList.remove('collapsed');
-            adminSidebar.style.display = 'none'; // Ensure sidebar is hidden initially on mobile
-        } else {
-            // Desktop: Ensure sidebar is initially open (not collapsed)
-            adminSidebar.classList.remove('collapsed');
-            adminContent.classList.remove('collapsed');
-            adminSidebar.classList.remove('open'); // Ensure mobile 'open' is not active
-            adminSidebar.style.display = ''; // Ensure sidebar is visible on desktop
-        }
-        updateSidebarToggleButtonIcon(); // Set initial icon
-
-        // Function to update the sidebar toggle button icon AND close button visibility
-        function updateSidebarToggleButtonIcon() {
-           if (window.innerWidth <= 768) {
-               // On mobile, sidebarToggleBtn (in main content) shows 'bars'
-               sidebarToggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
-               // And the close button inside the sidebar is controlled by .admin-sidebar.open
-               if (adminSidebar.classList.contains('open')) {
-                   sidebarCloseBtn.style.display = 'block'; // Show the internal close button
-               } else {
-                   sidebarCloseBtn.style.display = 'none'; // Hide the internal close button
-               }
-           } else {
-               // On desktop, sidebarToggleBtn (in main content) shows chevron-left/right
-               if (adminSidebar.classList.contains('collapsed')) {
-                   sidebarToggleBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-               } else {
-                   sidebarToggleBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-               }
-               sidebarCloseBtn.style.display = 'none'; // Ensure internal close button is hidden on desktop
-           }
-        }
-
-        // Update the icon immediately on load
-        updateSidebarToggleButtonIcon();
 
         // --- Dashboard Stats ---
         const totalProductsSpan = document.getElementById('total-products');
         const totalOrdersSpan = document.getElementById('total-orders');
         const totalMessagesSpan = document.getElementById('total-messages');
 
-        function fetchDashboardStats() {
-            // Show skeleton loading for stats
-            showStatsSkeleton();
-            
-            // Total Products
-            onValue(ref(database, 'products'), (snapshot) => {
-                const products = snapshot.val();
-                totalProductsSpan.textContent = products ? Object.keys(products).length : 0;
-            });
+        
 
-            // Total Orders (aggregate across all users)
-            onValue(ref(database, 'orders'), (snapshot) => {
-                const allOrders = snapshot.val();
-                let orderCount = 0;
-                if (allOrders) {
-                    for (const userId in allOrders) {
-                        orderCount += Object.keys(allOrders[userId]).length;
-                    }
-                }
-                totalOrdersSpan.textContent = orderCount;
-            });
+        
 
-            // Total Messages
-            onValue(ref(database, 'messages'), (snapshot) => {
-                const messages = snapshot.val();
-                totalMessagesSpan.textContent = messages ? Object.keys(messages).length : 0;
-            });
-        }
-
-        // Fetch stats when dashboard is active or on load if already on dashboard
+        // Handle navigation changes
         window.addEventListener('hashchange', () => {
-            if (window.location.hash === '#dashboard') {
-                fetchDashboardStats();
+            if (window.location.hash === '#today-orders') {
+                renderTodayOrders();
             }
         });
+
+        // Handle hash changes for navigation
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1); // Remove the #
+            if (hash) {
+                showSection(hash);
+                
+                // Load specific content based on section
+                if (hash === 'today-orders') {
+                    renderTodayOrders();
+                } else if (hash === 'products') {
+                    // Products will be loaded automatically via Firebase listener
+                } else if (hash === 'orders') {
+                    // Load all orders when navigating to orders section
+                    onValue(ref(database, 'orders'), (snapshot) => {
+                        const allOrders = snapshot.val() || {};
+                        renderOrderTable(allOrders);
+                    }, { onlyOnce: true });
+                } else if (hash === 'slider') {
+                    // Slider will be loaded automatically via Firebase listener
+                } else if (hash === 'messages') {
+                    // Messages will be loaded automatically via Firebase listener
+                }
+            }
+        });
+
+        // Initial load - show correct section by default
+        window.addEventListener('load', () => {
+            // Ensure bottom navigation is always visible
+            const bottomNav = document.querySelector('.admin-bottom-nav');
+            if (bottomNav) {
+                bottomNav.style.display = 'flex';
+                bottomNav.style.zIndex = '9999';
+            }
+
+            // Show today's orders by default if no hash
+            if (!window.location.hash) {
+                showSection('today-orders');
+                setTimeout(() => {
+                    renderTodayOrders();
+                }, 100);
+            } else {
+                // Show the section based on current hash
+                const hash = window.location.hash.substring(1);
+                showSection(hash);
+                
+                if (hash === 'today-orders') {
+                    setTimeout(() => {
+                        renderTodayOrders();
+                    }, 100);
+                } else if (hash === 'orders') {
+                    setTimeout(() => {
+                        onValue(ref(database, 'orders'), (snapshot) => {
+                            const allOrders = snapshot.val() || {};
+                            renderOrderTable(allOrders);
+                        }, { onlyOnce: true });
+                    }, 100);
+                }
+            }
+        });
+
+        // Monitor Firebase connection status
+        if (database) {
+            const connectedRef = ref(database, '.info/connected');
+            onValue(connectedRef, (snapshot) => {
+                updateConnectionStatus(snapshot.val());
+            });
+        } else {
+            updateConnectionStatus(false);
+        }
+
+
 
         // --- Stat Card Click Handlers ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -1257,58 +2079,33 @@
                     }
                 });
             });
+
+            // --- Bottom Navigation Click Handlers ---
+            const bottomNavItems = document.querySelectorAll('.admin-nav-item');
+            bottomNavItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Get the route from data attribute
+                    const route = item.getAttribute('data-route');
+                    if (route) {
+                        showSection(route);
+                        window.location.hash = `#${route}`;
+                    }
+                });
+            });
         });
 
-        // --- Seed Demo Data ---
-        const seedDemoDataBtn = document.getElementById('seed-demo-data-btn');
-        const seedSliderDataBtn = document.getElementById('seed-slider-data-btn');
 
-        const mockSliderImages = [
-            { downloadURL: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" },
-            { downloadURL: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" },
-            { downloadURL: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" }
-        ];
+        const forceShowStatsBtn = document.getElementById('force-show-stats-btn');
 
-        const mockProducts = [
-            { name: "Stylish T-Shirt", price: 25.99, imageUrl: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Comfortable cotton t-shirt for everyday wear.", category: "Fashion" },
-            { name: "Wireless Headphones", price: 99.00, imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "High-quality sound with noise-cancellation.", category: "Electronics" },
-            { name: "Smartwatch", price: 199.50, imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Track your fitness and receive notifications.", category: "Electronics" },
-            { name: "Leather Wallet", price: 45.00, imageUrl: "https://images.unsplash.com/photo-1627123424574-724758594e93?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Genuine leather wallet with multiple card slots.", category: "Fashion" },
-            { name: "Desk Lamp", price: 35.75, imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Modern design LED desk lamp with adjustable brightness.", category: "Home" }
-        ];
+        // Force show stats button removed as dashboard is no longer needed
 
-        async function seedSliderImages() {
-            const sliderRef = ref(database, 'sliderImages');
-            await set(sliderRef, null); // Clear existing images completely
-            console.log("Cleared existing slider images");
-            
-            for (const image of mockSliderImages) {
-                const newImageRef = push(sliderRef);
-                await set(newImageRef, image);
-                console.log("Added slider image:", image.downloadURL);
-            }
-            console.log("Demo slider images seeded successfully!");
-        }
 
-        async function seedProducts() {
-            const productsRef = ref(database, 'products');
-            await set(productsRef, {}); // Clear existing products
-            for (const product of mockProducts) {
-                const newProductRef = push(productsRef);
-                await set(newProductRef, product);
-            }
-            console.log("Demo products seeded!");
-        }
 
-        seedDemoDataBtn.addEventListener('click', async () => {
-            await seedSliderImages();
-            await seedProducts();
-            fetchDashboardStats(); // Refresh stats after seeding
-        });
 
-        seedSliderDataBtn.addEventListener('click', async () => {
-            await seedSliderImages();
-        });
+
+
 
         // --- Product Management (CRUD) ---
         const addProductBtn = document.getElementById('add-product-btn');
@@ -1321,6 +2118,80 @@
         const productDescriptionTextarea = document.getElementById('product-description');
 
         let editingProductId = null; // To store the ID of the product being edited
+
+        // Add grocery products from Zepto
+        const groceryProducts = [
+            // Fruits & Vegetables
+            { name: "Fresh Apples", price: 120, imageUrl: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh and juicy apples, perfect for healthy snacking.", category: "Fruits & Vegetables" },
+            { name: "Organic Bananas", price: 60, imageUrl: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Organic bananas, rich in potassium and natural sweetness.", category: "Fruits & Vegetables" },
+            { name: "Fresh Strawberries", price: 180, imageUrl: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Sweet and juicy strawberries, perfect for desserts.", category: "Fruits & Vegetables" },
+            { name: "Fresh Pomegranate", price: 140, imageUrl: "https://images.unsplash.com/photo-1541344999737-9c6c2c7e1a3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh pomegranate seeds, rich in antioxidants.", category: "Fruits & Vegetables" },
+            { name: "Fresh Beetroot", price: 80, imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh beetroot, perfect for salads and juices.", category: "Fruits & Vegetables" },
+            { name: "Fresh Ash Gourd", price: 45, imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh ash gourd, great for cooking and health benefits.", category: "Fruits & Vegetables" },
+            { name: "Fresh Bottle Gourd", price: 35, imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh bottle gourd, excellent for weight loss.", category: "Fruits & Vegetables" },
+            { name: "Fresh Lady Finger", price: 60, imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh lady finger, perfect for curries and stir-fries.", category: "Fruits & Vegetables" },
+            { name: "Fresh Potatoes", price: 40, imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh potatoes, versatile for various dishes.", category: "Fruits & Vegetables" },
+            { name: "Fresh Lemons", price: 50, imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh lemons, great for cooking and beverages.", category: "Fruits & Vegetables" },
+            { name: "Fresh Blueberries", price: 220, imageUrl: "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh blueberries, rich in antioxidants and vitamins.", category: "Fruits & Vegetables" },
+            { name: "Fresh Papaya", price: 90, imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh papaya, great for digestion and health.", category: "Fruits & Vegetables" },
+            { name: "Fresh Dragon Fruit", price: 150, imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh dragon fruit, exotic and nutritious.", category: "Fruits & Vegetables" },
+            { name: "Fresh Mushroom", price: 120, imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh mushrooms, perfect for cooking and health.", category: "Fruits & Vegetables" },
+            { name: "Fresh Lettuce", price: 70, imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh lettuce, perfect for salads and sandwiches.", category: "Fruits & Vegetables" },
+            { name: "Fresh Avocado", price: 200, imageUrl: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh avocado, rich in healthy fats and nutrients.", category: "Fruits & Vegetables" },
+            // Dairy & Bread
+            { name: "Amul Butter", price: 55, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh Amul butter, perfect for cooking and spreading.", category: "Dairy & Bread" },
+            { name: "Cheese Slices", price: 120, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh cheese slices, great for sandwiches and burgers.", category: "Dairy & Bread" },
+            { name: "Fresh Milk", price: 65, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh milk, rich in calcium and nutrients.", category: "Dairy & Bread" },
+            { name: "Fresh Curd", price: 45, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh curd, perfect for raita and lassi.", category: "Dairy & Bread" },
+            { name: "Fresh Eggs", price: 80, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh eggs, rich in protein and nutrients.", category: "Dairy & Bread" },
+            { name: "Fresh Bread", price: 35, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh bread, perfect for sandwiches and toast.", category: "Dairy & Bread" },
+            // Grocery Essentials
+            { name: "Aashirvaad Atta", price: 55, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Premium quality wheat flour for rotis and breads.", category: "Grocery Essentials" },
+            { name: "Basmati Rice", price: 120, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Premium basmati rice, long grain and aromatic.", category: "Grocery Essentials" },
+            { name: "Refined Oil", price: 140, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Pure refined oil for cooking and frying.", category: "Grocery Essentials" },
+            { name: "Toor Dal", price: 85, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh toor dal, perfect for sambhar and dal.", category: "Grocery Essentials" },
+            { name: "Masoor Dal", price: 75, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh masoor dal, great for soups and curries.", category: "Grocery Essentials" },
+            // Snacks & Beverages
+            { name: "Lays Chips", price: 20, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Crunchy Lays chips, perfect for snacking.", category: "Snacks & Beverages" },
+            { name: "Kurkure", price: 10, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Spicy Kurkure, great for evening snacks.", category: "Snacks & Beverages" },
+            { name: "Apple Juice", price: 45, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh apple juice, rich in vitamins.", category: "Snacks & Beverages" },
+            { name: "Chocolate Box", price: 150, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Assorted chocolate box, perfect for gifting.", category: "Snacks & Beverages" },
+            { name: "Cold Coffee", price: 80, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Refreshing cold coffee, perfect for summers.", category: "Snacks & Beverages" },
+            // Spices & Masala
+            { name: "Dalchini (Cinnamon)", price: 25, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh dalchini for aromatic cooking.", category: "Spices & Masala" },
+            { name: "Fennel Seeds", price: 30, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh fennel seeds for mouth freshener.", category: "Spices & Masala" },
+            { name: "Turmeric Powder", price: 40, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Pure turmeric powder for cooking.", category: "Spices & Masala" },
+            { name: "Red Chili Powder", price: 35, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Spicy red chili powder for heat.", category: "Spices & Masala" },
+            { name: "Garam Masala", price: 45, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Aromatic garam masala blend.", category: "Spices & Masala" },
+            // Personal Care
+            { name: "Toothpaste", price: 65, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Fresh mint toothpaste for oral hygiene.", category: "Personal Care" },
+            { name: "Soap", price: 35, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Gentle soap for daily use.", category: "Personal Care" },
+            { name: "Shampoo", price: 85, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Nourishing shampoo for healthy hair.", category: "Personal Care" },
+            // Household Items
+            { name: "Detergent Powder", price: 120, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Powerful detergent for clean clothes.", category: "Household Items" },
+            { name: "Dish Soap", price: 55, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Effective dish soap for clean utensils.", category: "Household Items" },
+            { name: "Toilet Paper", price: 75, imageUrl: "https://images.unsplash.com/photo-1548907040-4baa7e7d0b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", description: "Soft toilet paper for comfort.", category: "Household Items" }
+        ];
+
+        // Function to add all grocery products to database
+        async function addGroceryProducts() {
+            try {
+                const productsRef = ref(database, 'products');
+                let addedCount = 0;
+                
+                for (const product of groceryProducts) {
+                    const newProductRef = push(productsRef);
+                    await set(newProductRef, product);
+                    addedCount++;
+                }
+                
+                // Products added successfully - no alert needed
+                fetchProducts(); // Refresh product list
+            } catch (error) {
+                console.error("Error adding grocery products:", error);
+                // Error adding products - no alert needed
+            }
+        }
 
         function renderProductTable(products) {
             const productTableContainer = document.getElementById('product-table-container');
@@ -1347,7 +2218,7 @@
                 const product = products[productId];
                 tableHtml += `
                     <tr style="border-bottom: 1px solid var(--border-color);">
-                        <td data-label="Image:" style="padding: 10px;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Crect width='100%25' height='100%25' fill='%23f0f0f0'/%3E%3C/svg%3E" alt="${product.name}" class="admin-product-image" data-src="${product.imageUrl || 'https://via.placeholder.com/50'}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
+                        <td data-label="Image:" style="padding: 10px;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Crect width='100%25' height='100%25' fill='%23f0f0f0'/%3E%3C/svg%3E" alt="${product.name}" class="admin-product-image" data-src="${product.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjRjBGMEYwIi8+CjxwYXRoIGQ9Ik0yNSAyNUgxNVYxNUgyNVYyNVoiIGZpbGw9IiNDQ0NDQ0MiLz4KPC9zdmc+'}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;"></td>
                         <td data-label="Name:" style="padding: 10px;">${product.name}</td>
                         <td data-label="Category:" style="padding: 10px;">${product.category}</td>
                         <td data-label="Price:" style="padding: 10px;">₹${product.price.toFixed(2)}</td>
@@ -1373,14 +2244,22 @@
                 }
             });
 
-            // Add event listeners for edit and delete buttons
-            productTableContainer.querySelectorAll('.edit-product-btn').forEach(button => {
-                button.addEventListener('click', (e) => openEditProductModal(e.currentTarget.dataset.productId, products[e.currentTarget.dataset.productId]));
+                    // Add event listeners for edit and delete buttons
+        productTableContainer.querySelectorAll('.edit-product-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                openEditProductModal(e.currentTarget.dataset.productId, products[e.currentTarget.dataset.productId]);
             });
+        });
 
-            productTableContainer.querySelectorAll('.delete-product-btn').forEach(button => {
-                button.addEventListener('click', (e) => deleteProduct(e.currentTarget.dataset.productId));
+        productTableContainer.querySelectorAll('.delete-product-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                deleteProduct(e.currentTarget.dataset.productId);
             });
+        });
         }
 
         addProductBtn.addEventListener('click', () => {
@@ -1426,10 +2305,9 @@
         });
 
         async function deleteProduct(productId) {
-            if (confirm("Are you sure you want to delete this product?")) {
+            // Product deletion confirmed - no confirm dialog needed
                 const productRef = ref(database, `products/${productId}`);
                 await remove(productRef);
-            }
         }
 
         // Show skeleton loading initially for products
@@ -1456,27 +2334,61 @@
 
         // --- Order Management ---
         const orderTableContainer = document.getElementById('order-table-container');
+        const orderSearchInput = document.getElementById('order-search-input');
+        const orderSearchBtn = document.getElementById('order-search-btn');
+        const orderClearSearchBtn = document.getElementById('order-clear-search-btn');
+        const searchResultsInfo = document.getElementById('search-results-info');
+        
+        let allOrders = {}; // Store all orders for search functionality
+        let filteredOrders = {}; // Store filtered orders
+
+        function renderOrderProducts(items) {
+            if (!items || !Array.isArray(items) || items.length === 0) {
+                return '<span style="color: var(--muted-color); font-size: 0.85rem;">No items</span>';
+            }
+            
+            let productsHtml = '';
+            items.forEach((item, index) => {
+                const imageUrl = item.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yMCAyNEMyMi4wOTExIDI0IDI0IDIyLjA5MTEgMjQgMjBDMjQgMTcuOTA4OSAyMi4wOTExIDE2IDIwIDE2QzE3LjkwODkgMTYgMTYgMTcuOTA4OSAxNiAyMEMxNiAyMi4wOTExIDE3LjkwODkgMjQgMjAgMjRaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0yMCAyOEMyNC40MTgzIDI4IDI4IDI0LjQxODMgMjggMjBIMTJDMTIgMjQuNDE4MyAxNS41ODE3IDI4IDIwIDI4WiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K';
+                const productName = item.name || 'Unknown Product';
+                const quantity = item.qty || 1;
+                
+                productsHtml += `
+                    <div style="display: flex; align-items: center; margin-bottom: ${index < items.length - 1 ? '10px' : '0'}; padding: 4px 0;">
+                        <img src="${imageUrl}" alt="${productName}" style="width: 32px; height: 32px; border-radius: 6px; object-fit: cover; margin-right: 10px; flex-shrink: 0; border: 1px solid var(--border-color);">
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-weight: 500; font-size: 0.9rem; color: var(--text-color); line-height: 1.2; margin-bottom: 2px; word-wrap: break-word; max-width: 130px;" title="${productName}">${productName}</div>
+                            <div style="font-size: 0.8rem; color: var(--muted-color); font-weight: 500;">Qty: ${quantity}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            return productsHtml;
+        }
+
+        function getStatusColor(status) {
+            switch(status) {
+                case 'Pending': return '#ffc107';
+                case 'Processing': return '#17a2b8';
+                case 'Shipped': return '#007bff';
+                case 'Delivered': return '#28a745';
+                case 'Cancelled': return '#dc3545';
+                default: return '#6c757d';
+            }
+        }
 
         function renderOrderTable(allOrders) {
             if (!allOrders || Object.keys(allOrders).length === 0) {
                 orderTableContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">No orders to display.</p>';
                 return;
             }
+            
+            // Store all orders for search functionality
+            window.allOrders = allOrders;
 
             let tableHtml = `
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <thead>
-                        <tr style="border-bottom: 1px solid var(--border-color);">
-                            <th style="padding: 10px;">Order ID</th>
-                            <th style="padding: 10px;">Customer</th>
-                            <th style="padding: 10px;">Address</th>
-                            <th style="padding: 10px;">Date</th>
-                            <th style="padding: 10px;">Total</th>
-                            <th style="padding: 10px;">Status</th>
-                            <th style="padding: 10px;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div style="display: grid; gap: 15px; padding: 10px; margin-top: 10px;">
             `;
 
             const ordersArray = [];
@@ -1491,65 +2403,303 @@
 
             ordersArray.forEach(order => {
                 const orderDate = new Date(order.date).toLocaleDateString();
+                const firstProduct = order.items && order.items.length > 0 ? order.items[0] : null;
+                const productImage = firstProduct ? (firstProduct.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yMCAyNEMyMi4wOTExIDI0IDI0IDIyLjA5MTEgMjQgMjBDMjQgMTcuOTA4OSAyMi4wOTExIDE2IDIwIDE2QzE3LjkwODkgMTYgMTYgMTcuOTA4OSAxNiAyMEMxNiAyMi4wOTExIDE3LjkwODkgMjQgMjAgMjRaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0yMCAyOEMyNC40MTgzIDI4IDI4IDI0LjQxODMgMjggMjBIMTJDMTIgMjQuNDE4MyAxNS41ODE3IDI4IDIwIDI4WiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K') : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yMCAyNEMyMi4wOTExIDI0IDI0IDIyLjA5MTEgMjQgMjBDMjQgMTcuOTA4OSAyMi4wOTExIDE2IDIwIDE2QzE3LjkwODkgMTYgMTYgMTcuOTA4OSAxNiAyMEMxNiAyMi4wOTExIDE3LjkwODkgMjQgMjAgMjRaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0yMCAyOEMyNC40MTgzIDI4IDI4IDI0LjQxODMgMjggMjBIMTJDMTIgMjQuNDE4MyAxNS41ODE3IDI4IDIwIDI4WiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K';
+                const productName = firstProduct ? firstProduct.name : 'No Product';
+                const totalItems = order.items ? order.items.length : 0;
+                
                 tableHtml += `
-                    <tr style="border-bottom: 1px solid var(--border-color);">
-                        <td data-label="Order ID:" style="padding: 10px;">${order.orderId}</td>
-                        <td data-label="Customer:" style="padding: 10px;">${order.shippingName}<br><small>${order.userEmail}</small></td>
-                        <td data-label="Address:" style="padding: 10px;">${order.shippingAddress}</td>
-                        <td data-label="Date:" style="padding: 10px;">${orderDate}</td>
-                        <td data-label="Total:" style="padding: 10px;">$${order.totalAmount.toFixed(2)}</td>
-                        <td data-label="Status:" style="padding: 10px;">
-                            <select class="order-status-select" data-user-id="${order.userId}" data-order-id="${order.orderId}" style="padding: 5px; border-radius: 4px; border: 1px solid var(--border-color);">
-                                <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                                <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
-                                <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
-                                <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                                <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                            </select>
-                        </td>
-                        <td data-label="Actions:" style="padding: 10px; text-align: center;">
-                            <button class="icon-btn delete-order-btn" data-user-id="${order.userId}" data-order-id="${order.orderId}" style="color: var(--primary-red);"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
+                    <div class="order-card" data-order='${JSON.stringify(order)}' style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="flex-shrink: 0;">
+                                <img src="${productImage}" alt="${productName}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color);">
+                            </div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="font-weight: 600; font-size: 1rem; color: var(--text-color); margin-bottom: 4px;">${order.shippingName}</div>
+                                <div style="font-size: 0.9rem; color: var(--muted-color); margin-bottom: 4px;">📱 ${order.shippingMobile || 'N/A'}</div>
+                                <div style="font-size: 0.85rem; color: var(--muted-color); line-height: 1.3; margin-bottom: 6px;">📍 ${order.shippingAddress || 'N/A'}</div>
+                                <div style="display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--muted-color);">
+                                    <span>📦 ${totalItems} item${totalItems !== 1 ? 's' : ''}</span>
+                                    <span>💰 ₹${order.totalAmount.toFixed(2)}</span>
+                                    <span>📅 ${orderDate}</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+                                <div class="order-status-badge status-${order.status.toLowerCase()}" style="padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; background: ${getStatusColor(order.status)}; color: white; min-width: 70px; text-align: center;">
+                                    ${order.status}
+                                </div>
+                                <button class="update-status-btn" data-user-id="${order.userId}" data-order-id="${order.orderId}" style="background: var(--primary-red); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease;">
+                                    <i class="fas fa-edit" style="font-size: 14px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 `;
             });
 
             tableHtml += `
-                    </tbody>
-                </table>
+                </div>
             `;
             orderTableContainer.innerHTML = tableHtml;
 
-            // Add event listeners for status change
-            orderTableContainer.querySelectorAll('.order-status-select').forEach(select => {
-                select.addEventListener('change', (e) => updateOrderStatus(
-                    e.currentTarget.dataset.userId,
-                    e.currentTarget.dataset.orderId,
-                    e.currentTarget.value
-                ));
+            // Add event listeners for order cards (click to view details)
+            orderTableContainer.querySelectorAll('.order-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Don't trigger if clicking on the update status button
+                    if (e.target.closest('.update-status-btn')) {
+                        return;
+                    }
+                    const orderData = JSON.parse(card.dataset.order);
+                    showOrderDetailsModal(orderData);
+                });
             });
 
-            // Add event listeners for delete buttons
-            orderTableContainer.querySelectorAll('.delete-order-btn').forEach(button => {
-                button.addEventListener('click', (e) => deleteOrder(
-                    e.currentTarget.dataset.userId,
-                    e.currentTarget.dataset.orderId
-                ));
+            // Add event listeners for update status buttons
+            orderTableContainer.querySelectorAll('.update-status-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent card click
+                    const userId = button.dataset.userId;
+                    const orderId = button.dataset.orderId;
+                    showStatusUpdateModal(userId, orderId);
+                });
+            });
+        }
+
+        // Search functionality for orders
+        function searchOrders(searchTerm) {
+            if (!searchTerm || searchTerm.trim() === '') {
+                // If search is empty, show all orders
+                renderOrderTable(window.allOrders);
+                searchResultsInfo.style.display = 'none';
+                return;
+            }
+
+            const searchLower = searchTerm.toLowerCase().trim();
+            const filteredOrders = {};
+
+            // Search through all orders
+            for (const userId in window.allOrders) {
+                for (const orderId in window.allOrders[userId]) {
+                    const order = window.allOrders[userId][orderId];
+                    
+                    // Search by Order ID
+                    if (orderId.toLowerCase().includes(searchLower)) {
+                        if (!filteredOrders[userId]) filteredOrders[userId] = {};
+                        filteredOrders[userId][orderId] = order;
+                        continue;
+                    }
+                    
+                    // Search by Customer Name
+                    if (order.shippingName && order.shippingName.toLowerCase().includes(searchLower)) {
+                        if (!filteredOrders[userId]) filteredOrders[userId] = {};
+                        filteredOrders[userId][orderId] = order;
+                        continue;
+                    }
+                    
+                    // Search by Customer Mobile
+                    if (order.shippingMobile && order.shippingMobile.includes(searchTerm)) {
+                        if (!filteredOrders[userId]) filteredOrders[userId] = {};
+                        filteredOrders[userId][orderId] = order;
+                        continue;
+                    }
+                }
+            }
+
+            // Show filtered results
+            renderOrderTable(filteredOrders);
+            
+            // Show search results info
+            const resultCount = Object.keys(filteredOrders).length > 0 ? 
+                Object.values(filteredOrders).reduce((total, userOrders) => total + Object.keys(userOrders).length, 0) : 0;
+            
+            if (resultCount > 0) {
+                searchResultsInfo.innerHTML = `<i class="fas fa-check-circle" style="color: #28a745; margin-right: 5px;"></i>Found ${resultCount} order(s) matching "${searchTerm}"`;
+                searchResultsInfo.style.display = 'block';
+            } else {
+                searchResultsInfo.innerHTML = `<i class="fas fa-info-circle" style="color: #ffc107; margin-right: 5px;"></i>No orders found matching "${searchTerm}"`;
+                searchResultsInfo.style.display = 'block';
+            }
+        }
+
+        // Add event listeners for search functionality
+        if (orderSearchBtn) {
+            orderSearchBtn.addEventListener('click', () => {
+                const searchTerm = orderSearchInput.value;
+                searchOrders(searchTerm);
+            });
+        }
+
+        if (orderClearSearchBtn) {
+            orderClearSearchBtn.addEventListener('click', () => {
+                orderSearchInput.value = '';
+                searchResultsInfo.style.display = 'none';
+                renderOrderTable(window.allOrders);
+            });
+        }
+
+        // Add enter key support for search input
+        if (orderSearchInput) {
+            orderSearchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const searchTerm = orderSearchInput.value;
+                    searchOrders(searchTerm);
+                }
             });
         }
 
         async function updateOrderStatus(userId, orderId, newStatus) {
-            const orderRef = ref(database, `orders/${userId}/${orderId}`);
-            await update(orderRef, { status: newStatus });
-            console.log(`Order ${orderId} status updated to ${newStatus}`);
+            try {
+                const orderRef = ref(database, `orders/${userId}/${orderId}`);
+                
+                // Get current order data to compare status
+                const orderSnapshot = await new Promise((resolve, reject) => {
+                    onValue(orderRef, resolve, { onlyOnce: true });
+                });
+                const orderData = orderSnapshot.val();
+                
+                if (orderData && orderData.status !== newStatus) {
+                    // Send Telegram notification for status change
+                    sendOrderStatusUpdateNotification(orderData, orderData.status, newStatus);
+                }
+                
+                await update(orderRef, { status: newStatus });
+                console.log(`Order ${orderId} status updated to ${newStatus}`);
+            } catch (error) {
+                console.error('Error updating order status:', error);
+                throw error;
+            }
         }
 
         async function deleteOrder(userId, orderId) {
-            if (confirm("Are you sure you want to delete this order permanently?")) {
+            // Order deletion confirmed - no confirm dialog needed
                 const orderRef = ref(database, `orders/${userId}/${orderId}`);
                 await remove(orderRef);
                 console.log(`Order ${orderId} deleted.`);
             }
+
+        // Function to render today's orders
+        function renderTodayOrders() {
+            const todayOrdersContainer = document.getElementById('today-orders-container');
+            if (!todayOrdersContainer) return;
+
+            // Get today's date (start of day)
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const todayTimestamp = today.getTime();
+
+            // Check if database is available
+            if (!database) {
+                todayOrdersContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">Database not available.</p>';
+                return;
+            }
+
+            // Show loading state
+            todayOrdersContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">Loading today\'s orders...</p>';
+
+            // Listen to orders data
+            onValue(ref(database, 'orders'), (snapshot) => {
+                const allOrders = snapshot.val();
+                if (!allOrders || Object.keys(allOrders).length === 0) {
+                    todayOrdersContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">No orders placed today.</p>';
+                    return;
+                }
+
+                const todayOrders = [];
+                for (const userId in allOrders) {
+                    for (const orderId in allOrders[userId]) {
+                        const order = allOrders[userId][orderId];
+                        const orderDate = new Date(order.date);
+                        orderDate.setHours(0, 0, 0, 0);
+                        
+                        // Check if order was placed today
+                        if (orderDate.getTime() === todayTimestamp) {
+                            todayOrders.push({ userId, ...order });
+                        }
+                    }
+                }
+
+                if (todayOrders.length === 0) {
+                    todayOrdersContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">No orders placed today.</p>';
+                    return;
+                }
+
+                // Sort orders by time (most recent first)
+                todayOrders.sort((a, b) => b.date - a.date);
+
+                let todayOrdersHtml = `
+                    <div style="display: grid; gap: 15px; padding: 10px; margin-top: 10px;">
+                `;
+
+                todayOrders.forEach(order => {
+                    const orderTime = new Date(order.date).toLocaleTimeString('en-US', { 
+                        hour: '2-digit', 
+                        minute: '2-digit',
+                        hour12: true 
+                    });
+                    const firstProduct = order.items && order.items.length > 0 ? order.items[0] : null;
+                    const productImage = firstProduct ? (firstProduct.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yMCAyNEMyMi4wOTExIDI0IDI0IDIyLjA5MTEgMjQgMjBDMjQgMTcuOTA4OSAyMi4wOTExIDE2IDIwIDE2QzE3LjkwODkgMTYgMTYgMTcuOTA4OSAxNiAyMEMxNiAyMi4wOTExIDE3LjkwODkgMjQgMjAgMjRaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0yMCAyOEMyNC40MTgzIDI4IDI4IDI0LjQxODMgMjggMjBIMTJDMTIgMjQuNDE4MyAxNS41ODE3IDI4IDIwIDI4WiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K') : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yMCAyNEMyMi4wOTExIDI0IDI0IDIyLjA5MTEgMjQgMjBDMjQgMTcuOTA4OSAyMi4wOTExIDE2IDIwIDE2QzE3LjkwODkgMTYgMTYgMTcuOTA4OSAxNiAyMEMxNiAyMi4wOTExIDE3LjkwODkgMjQgMjAgMjRaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0yMCAyOEMyNC40MTgzIDI4IDI4IDI0LjQxODMgMjggMjBIMTJDMTIgMjQuNDE4MyAxNS41ODE3IDI4IDIwIDI4WiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K';
+                    const productName = firstProduct ? firstProduct.name : 'No Product';
+                    const totalItems = order.items ? order.items.length : 0;
+                    
+                    todayOrdersHtml += `
+                        <div class="order-card" data-order='${JSON.stringify(order)}' style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="flex-shrink: 0;">
+                                    <img src="${productImage}" alt="${productName}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color);">
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="font-weight: 600; font-size: 1rem; color: var(--text-color); margin-bottom: 4px;">${order.shippingName}</div>
+                                    <div style="font-size: 0.9rem; color: var(--muted-color); margin-bottom: 4px;">📱 ${order.shippingMobile || 'N/A'}</div>
+                                    <div style="font-size: 0.85rem; color: var(--muted-color); line-height: 1.3; margin-bottom: 6px;">📍 ${order.shippingAddress || 'N/A'}</div>
+                                    <div style="display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--muted-color);">
+                                        <span>📦 ${totalItems} item${totalItems !== 1 ? 's' : ''}</span>
+                                        <span>💰 ₹${order.totalAmount.toFixed(2)}</span>
+                                        <span>🕐 ${orderTime}</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+                                    <div class="order-status-badge status-${order.status.toLowerCase()}" style="padding: 4px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; background: ${getStatusColor(order.status)}; color: white; min-width: 70px; text-align: center;">
+                                        ${order.status}
+                                    </div>
+                                    <button class="update-status-btn" data-user-id="${order.userId}" data-order-id="${order.orderId}" style="background: var(--primary-red); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease;">
+                                        <i class="fas fa-edit" style="font-size: 14px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                todayOrdersHtml += `
+                    </div>
+                `;
+                todayOrdersContainer.innerHTML = todayOrdersHtml;
+
+                // Add event listeners for today's order cards (click to view details)
+                todayOrdersContainer.querySelectorAll('.order-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        // Don't trigger if clicking on the update status button
+                        if (e.target.closest('.update-status-btn')) {
+                            return;
+                        }
+                        const orderData = JSON.parse(card.dataset.order);
+                        showOrderDetailsModal(orderData);
+                    });
+                });
+
+                // Add event listeners for update status buttons
+                todayOrdersContainer.querySelectorAll('.update-status-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent card click
+                        const userId = button.dataset.userId;
+                        const orderId = button.dataset.orderId;
+                        showStatusUpdateModal(userId, orderId);
+                    });
+                });
+            }, (error) => {
+                console.error('Error loading today\'s orders:', error);
+                todayOrdersContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">Error loading today\'s orders.</p>';
+            });
         }
 
         // Listen for all orders changes to re-render the table
@@ -1600,7 +2750,14 @@
                         <td data-label="Preview:" style="padding: 10px;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60'%3E%3Crect width='100%25' height='100%25' fill='%23f0f0f0'/%3E%3C/svg%3E" alt="Slider Image" class="admin-slider-image" data-src="${image.downloadURL}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 4px;"></td>
                         <td data-label="URL:" style="padding: 10px; word-break: break-all;">${image.downloadURL}</td>
                         <td data-label="Actions:" style="padding: 10px; text-align: center;">
-                            <button class="icon-btn delete-slider-image-btn" data-image-id="${imageId}" style="color: var(--primary-red);"><i class="fas fa-trash"></i></button>
+                            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                                <button class="icon-btn edit-slider-image-btn" data-image-id="${imageId}" data-image-url="${image.downloadURL}" style="color: #007bff; background: #f8f9fa; border: 1px solid #dee2e6; padding: 6px 10px; border-radius: 4px;">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="icon-btn delete-slider-image-btn" data-image-id="${imageId}" style="color: white; background: var(--primary-red); border: none; padding: 6px 10px; border-radius: 4px;">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -1616,13 +2773,20 @@
             sliderImageTableContainer.querySelectorAll('.admin-slider-image').forEach(img => {
                 const imageSrc = img.getAttribute('data-src');
                 if (imageSrc) {
-                    loadAdminImageWithFallback(img, imageSrc, 'https://via.placeholder.com/100x60');
+                    loadAdminImageWithFallback(img, imageSrc, 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjYwIiB2aWV3Qm94PSIwIDAgMTAwIDYwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik01MCAzNkM1Mi4wOTExIDM2IDU0IDM0LjA5MTEgNTQgMzJDNTQgMjkuOTA4OSA1Mi4wOTExIDI4IDUwIDI4QzQ3LjkwODkgMjggNDYgMjkuOTA4OSA0NiAzMkM0NiAzNC4wOTExIDQ3LjkwODkgMzYgNTAgMzZaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik01MCA0MEM1NC40MTgzIDQwIDU4IDM2LjQxODMgNTggMzJIMjJDMTIgMzYuNDE4MyAxNS41ODE3IDQwIDIwIDQwWiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K');
                 }
             });
 
             // Add event listeners for delete buttons
-            sliderImageTableContainer.querySelectorAll('.delete-slider-image-btn').forEach(button => {
+            const deleteButtons = sliderImageTableContainer.querySelectorAll('.delete-slider-image-btn');
+            deleteButtons.forEach(button => {
                 button.addEventListener('click', (e) => deleteSliderImage(e.currentTarget.dataset.imageId));
+            });
+
+            // Add event listeners for edit buttons
+            const editButtons = sliderImageTableContainer.querySelectorAll('.edit-slider-image-btn');
+            editButtons.forEach(button => {
+                button.addEventListener('click', (e) => editSliderImage(e.currentTarget.dataset.imageId, e.currentTarget.dataset.imageUrl));
             });
         }
 
@@ -1635,11 +2799,28 @@
             e.preventDefault();
             const imageUrl = sliderImageUrlInput.value;
             if (imageUrl) {
-                const sliderRef = ref(database, 'sliderImages');
-                const newImageRef = push(sliderRef);
-                await set(newImageRef, { downloadURL: imageUrl });
+                const editingImageId = addSliderImageForm.dataset.editingImageId;
+                
+                if (editingImageId) {
+                    // Update existing image
+                    const imageRef = ref(database, `sliderImages/${editingImageId}`);
+                    await update(imageRef, { downloadURL: imageUrl });
+                    delete addSliderImageForm.dataset.editingImageId;
+                } else {
+                    // Add new image
+                    const sliderRef = ref(database, 'sliderImages');
+                    const newImageRef = push(sliderRef);
+                    await set(newImageRef, { downloadURL: imageUrl });
+                }
+                
                 addSliderImageModal.style.display = 'none';
                 addSliderImageForm.reset();
+                
+                // Reset modal title and button text
+                const modalTitle = addSliderImageModal.querySelector('h2');
+                const submitBtn = addSliderImageForm.querySelector('button[type="submit"]');
+                if (modalTitle) modalTitle.textContent = 'Add New Slider Image';
+                if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-plus" style="margin-right: 5px;"></i>Add Image';
             }
         });
 
@@ -1648,6 +2829,21 @@
                 const imageRef = ref(database, `sliderImages/${imageId}`);
                 await remove(imageRef);
             }
+        }
+
+        function editSliderImage(imageId, currentUrl) {
+            sliderImageUrlInput.value = currentUrl;
+            addSliderImageModal.style.display = 'flex';
+            
+            // Change modal title and button text for editing
+            const modalTitle = addSliderImageModal.querySelector('h2');
+            const submitBtn = addSliderImageForm.querySelector('button[type="submit"]');
+            
+            if (modalTitle) modalTitle.textContent = 'Edit Slider Image';
+            if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-save" style="margin-right: 5px;"></i>Update Image';
+            
+            // Store the editing image ID
+            addSliderImageForm.dataset.editingImageId = imageId;
         }
 
         // Show skeleton loading initially for slider images
@@ -1708,7 +2904,7 @@
                         <td data-label="Date:" style="padding: 10px;">${messageDate}</td>
                         <td data-label="Sender Name:" style="padding: 10px;">${message.name}</td>
                         <td data-label="Email:" style="padding: 10px;">${message.email}</td>
-                        <td data-label="Message:" style="padding: 10px; cursor: pointer; color: var(--primary-color); text-decoration: underline;" 
+                        <td data-label="Message:" style="padding: 10px; cursor: pointer; color: var(--primary-red); text-decoration: underline;" 
                             class="message-cell" 
                             data-message-id="${messageId}"
                             data-name="${message.name.replace(/"/g, '&quot;')}" 
@@ -1754,7 +2950,7 @@
                         </div>
                         <div>
                             <strong style="color: var(--muted-color); display: block; margin-bottom: 5px;">Email:</strong>
-                            <div style="color: var(--primary-color);">${email}</div>
+                            <div style="color: var(--primary-red);">${email}</div>
                         </div>
                         <div>
                             <strong style="color: var(--muted-color); display: block; margin-bottom: 5px;">Date:</strong>
@@ -1763,7 +2959,7 @@
                     </div>
                     <div>
                         <strong style="color: var(--muted-color); display: block; margin-bottom: 10px;">Message:</strong>
-                        <div style="background: var(--card-background); padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color); line-height: 1.6; white-space: pre-wrap; word-wrap: break-word;">${message}</div>
+                        <div style="background: var(--surface-dark-color); padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-red); line-height: 1.6; white-space: pre-wrap; word-wrap: break-word;">${message}</div>
                     </div>
                 </div>
             `;
@@ -1794,6 +2990,572 @@
             }
         });
 
+
+
+
+        // Function to show status update modal
+        function showStatusUpdateModal(userId, orderId) {
+            const modal = document.getElementById('status-update-modal');
+            const statusSelect = document.getElementById('status-update-select');
+            const updateBtn = document.getElementById('status-update-btn');
+            
+            // Set current order data
+            updateBtn.dataset.userId = userId;
+            updateBtn.dataset.orderId = orderId;
+            
+            // Add event listener for update button
+            updateBtn.onclick = async () => {
+                const newStatus = statusSelect.value;
+                try {
+                    await updateOrderStatus(userId, orderId, newStatus);
+                    modal.style.display = 'none';
+                    // Refresh the orders display
+                    renderTodayOrders();
+                    // Show success message
+                    // Status updated successfully - no alert needed
+                } catch (error) {
+                    console.error('Error updating order status:', error);
+                    // Error updating status - no alert needed
+                }
+            };
+            
+            // Show modal
+            modal.style.display = 'flex';
+        }
+
+        // Function to show/hide sections based on navigation
+        function showSection(sectionId) {
+            console.log('showSection called with:', sectionId);
+            
+            // Hide all sections
+            const allSections = document.querySelectorAll('.admin-section');
+            allSections.forEach(section => {
+                section.style.display = 'none';
+                section.classList.remove('active');
+            });
+            
+            // Show the selected section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                targetSection.classList.add('active');
+                console.log('Section shown:', sectionId);
+            } else {
+                console.error('Section not found:', sectionId);
+            }
+            
+            // Update active navigation item
+            const allNavItems = document.querySelectorAll('.admin-nav-item');
+            allNavItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const activeNavItem = document.querySelector(`[data-route="${sectionId}"]`);
+            if (activeNavItem) {
+                activeNavItem.classList.add('active');
+                console.log('Navigation updated for:', sectionId);
+            } else {
+                console.error('Navigation item not found for:', sectionId);
+            }
+        }
+
+        // Function to show order details in full screen modal
+        function showOrderDetailsModal(order) {
+            const modal = document.getElementById('order-details-modal');
+            const content = document.getElementById('order-details-content');
+            
+            const orderDate = new Date(order.date).toLocaleDateString() + ' ' + new Date(order.date).toLocaleTimeString();
+            
+            content.innerHTML = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="color: var(--primary-red); margin-bottom: 10px;">Order Details</h2>
+                    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                        <div class="status-badge status-${order.status.toLowerCase()}" style="padding: 10px 20px; font-size: 1rem;">
+                            ${order.status}
+                        </div>
+                        <div style="background: var(--surface-dark-color); padding: 10px 20px; border-radius: 8px;">
+                            <strong>Order ID:</strong> ${order.orderId}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                    <!-- Customer Information -->
+                    <div class="card" style="margin: 0;">
+                        <h3 style="color: var(--primary-red); margin-bottom: 20px; display: flex; align-items: center;">
+                            <i class="fas fa-user" style="margin-right: 10px;"></i>Customer Information
+                        </h3>
+                        <div style="display: grid; gap: 15px;">
+                            <div>
+                                <strong style="color: var(--muted-color); display: block; margin-bottom: 5px;">Name:</strong>
+                                <span style="font-size: 1.1rem;">${order.shippingName}</span>
+                            </div>
+                            <div>
+                                <strong style="color: var(--muted-color); display: block; margin-bottom: 5px;">Contact & Address:</strong>
+                                <div style="margin-bottom: 8px;">
+                                    <span style="font-size: 1.1rem; font-family: monospace; color: var(--primary-red); font-weight: 600;">📱 ${order.shippingMobile || 'Not provided'}</span>
+                                </div>
+                                <div>
+                                    <span style="font-size: 1rem; line-height: 1.4; color: var(--text-color);">📍 ${order.shippingAddress || 'Not provided'}</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <strong style="color: var(--muted-color); display: block; margin-bottom: 5px;">Order Date:</strong>
+                                <span style="font-size: 1.1rem;">${orderDate}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary -->
+                    <div class="card" style="margin: 0;">
+                        <h3 style="color: var(--primary-red); margin-bottom: 20px; display: flex; align-items: center;">
+                            <i class="fas fa-receipt" style="margin-right: 10px;"></i>Order Summary
+                        </h3>
+                        <div style="display: grid; gap: 15px;">
+                            <div>
+                                <strong style="color: var(--muted-color); display: block; margin-bottom: 5px;">Total Amount:</strong>
+                                <span style="font-size: 1.5rem; font-weight: 700; color: var(--primary-red);">₹${order.totalAmount.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Items -->
+                <div class="card" style="margin-bottom: 30px;">
+                    <h3 style="color: var(--primary-red); margin-bottom: 20px; display: flex; align-items: center;">
+                        <i class="fas fa-shopping-cart" style="margin-right: 10px;"></i>Order Items
+                    </h3>
+                    <div style="display: grid; gap: 15px;">
+                        ${order.items.map(item => `
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--surface-dark-color); border-radius: 8px;">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <img src="${item.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjRjBGMEYwIi8+CjxwYXRoIGQ9Ik0yNSAyNUgxNVYxNUgyNVYyNVoiIGZpbGw9IiNDQ0NDQ0MiLz4KPC9zdmc+'}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                    <div>
+                                        <div style="font-weight: 600; margin-bottom: 5px;">${item.name}</div>
+                                        <div style="color: var(--muted-color); font-size: 0.9rem;">Quantity: ${item.qty}</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-weight: 600; color: var(--primary-red);">₹${(item.price * item.qty).toFixed(2)}</div>
+                                    <div style="color: var(--muted-color); font-size: 0.9rem;">₹${item.price.toFixed(2)} each</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Order Progress -->
+                <div class="card" style="margin-bottom: 30px;">
+                    <h3 style="color: var(--primary-red); margin-bottom: 20px; display: flex; align-items: center;">
+                        <i class="fas fa-chart-line" style="margin-right: 10px;"></i>Order Progress
+                    </h3>
+                    <div class="order-progress-bar" style="margin: 20px 0;">
+                        <div class="order-progress-step ${getProgressStepClass(order.status, 'Pending')}" data-step="Pending">
+                            <div class="progress-step-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <span class="progress-step-label">Pending</span>
+                        </div>
+                        <div class="order-progress-step ${getProgressStepClass(order.status, 'Processing')}" data-step="Processing">
+                            <div class="progress-step-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <span class="progress-step-label">Processing</span>
+                        </div>
+                        <div class="order-progress-step ${getProgressStepClass(order.status, 'Shipped')}" data-step="Shipped">
+                            <div class="progress-step-icon">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <span class="progress-step-label">Shipped</span>
+                        </div>
+                        <div class="order-progress-step ${getProgressStepClass(order.status, 'Delivered')}" data-step="Delivered">
+                            <div class="progress-step-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="progress-step-label">Delivered</span>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <div style="font-size: 1.2rem; font-weight: 600; color: var(--primary-red);">
+                            ${getOrderProgressPercentage(order.status)}% Complete
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                    <button onclick="updateOrderStatusFromModal('${order.userId}', '${order.orderId}', 'Processing')" style="background-color: #007bff; color: white; padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer;">
+                        <i class="fas fa-cog" style="margin-right: 8px;"></i>Mark as Processing
+                    </button>
+                    <button onclick="updateOrderStatusFromModal('${order.userId}', '${order.orderId}', 'Shipped')" style="background-color: #28a745; color: white; padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer;">
+                        <i class="fas fa-shipping-fast" style="margin-right: 8px;"></i>Mark as Shipped
+                    </button>
+                    <button onclick="updateOrderStatusFromModal('${order.userId}', '${order.orderId}', 'Delivered')" style="background-color: #17a2b8; color: white; padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer;">
+                        <i class="fas fa-check-circle" style="margin-right: 8px;"></i>Mark as Delivered
+                    </button>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+
+        // Helper function to update order status from modal
+        function updateOrderStatusFromModal(userId, orderId, newStatus) {
+            updateOrderStatus(userId, orderId, newStatus);
+            // Close modal after status update
+            document.getElementById('order-details-modal').style.display = 'none';
+        }
+
+        // Make function globally accessible for onclick handlers
+        window.updateOrderStatusFromModal = updateOrderStatusFromModal;
+        window.addGroceryProducts = addGroceryProducts;
+
+        // Helper functions for order progress
+        function getProgressStepClass(currentStatus, stepStatus) {
+            const statusOrder = ['Pending', 'Processing', 'Shipped', 'Delivered'];
+            const currentIndex = statusOrder.indexOf(currentStatus);
+            const stepIndex = statusOrder.indexOf(stepStatus);
+            
+            if (stepIndex < currentIndex) {
+                return 'completed';
+            } else if (stepIndex === currentIndex) {
+                return 'current';
+            } else {
+                return '';
+            }
+        }
+
+        function getOrderProgressPercentage(status) {
+            const statusOrder = ['Pending', 'Processing', 'Shipped', 'Delivered'];
+            const currentIndex = statusOrder.indexOf(status);
+            if (currentIndex === -1) return 0;
+            return Math.round(((currentIndex + 1) / statusOrder.length) * 100);
+        }
+
+        // --- Telegram Command System ---
+        // Function to handle Telegram commands for order management
+        async function handleTelegramCommand(chatId, command, orderId) {
+            try {
+                console.log(`Handling Telegram command: ${command} for order: ${orderId}`);
+                
+                // Validate inputs
+                if (!orderId || typeof orderId !== 'string') {
+                    console.error('Invalid order ID:', orderId);
+                    await sendTelegramMessage(chatId, '❌ Invalid order ID provided.');
+                    return;
+                }
+                
+                if (!database) {
+                    console.error('Database not available');
+                    await sendTelegramMessage(chatId, '❌ Database connection not available. Please try again.');
+                    return;
+                }
+                
+                // Get all orders to find the specific order
+                const ordersRef = ref(database, 'orders');
+                const snapshot = await new Promise((resolve, reject) => {
+                    onValue(ordersRef, resolve, { onlyOnce: true });
+                });
+                
+                const allOrders = snapshot.val();
+                if (!allOrders) {
+                    console.log('No orders found in database');
+                    await sendTelegramMessage(chatId, '❌ No orders found in the system.');
+                    return;
+                }
+
+                console.log('Searching for order ID:', orderId);
+                console.log('Available orders:', Object.keys(allOrders));
+
+                // Find the order by ID across all users
+                let foundOrder = null;
+                let foundUserId = null;
+                
+                for (const userId in allOrders) {
+                    console.log(`Checking user ${userId} for order ${orderId}`);
+                    if (allOrders[userId] && allOrders[userId][orderId]) {
+                        foundOrder = allOrders[userId][orderId];
+                        foundUserId = userId;
+                        console.log(`Order found! User: ${userId}, Order:`, foundOrder);
+                        break;
+                    }
+                }
+
+                if (!foundOrder) {
+                    console.log(`Order ${orderId} not found in any user's orders`);
+                    await sendTelegramMessage(chatId, `❌ Order with ID <code>${orderId}</code> not found.`);
+                    return;
+                }
+
+                console.log(`Processing command ${command} for order:`, foundOrder);
+
+                // Handle different commands
+                switch (command.toLowerCase()) {
+                    case 'processing':
+                        console.log('Marking order as Processing');
+                        await updateOrderStatus(foundUserId, orderId, 'Processing');
+                        await sendTelegramMessage(chatId, `✅ Order <code>${orderId}</code> marked as <b>Processing</b>`);
+                        break;
+                        
+                    case 'shipped':
+                        console.log('Marking order as Shipped');
+                        await updateOrderStatus(foundUserId, orderId, 'Shipped');
+                        await sendTelegramMessage(chatId, `🚚 Order <code>${orderId}</code> marked as <b>Shipped</b>`);
+                        break;
+                        
+                    case 'delivered':
+                        console.log('Marking order as Delivered');
+                        await updateOrderStatus(foundUserId, orderId, 'Delivered');
+                        await sendTelegramMessage(chatId, `✅ Order <code>${orderId}</code> marked as <b>Delivered</b>`);
+                        break;
+                        
+                    case 'cancel':
+                        console.log('Marking order as Cancelled');
+                        await updateOrderStatus(foundUserId, orderId, 'Cancelled');
+                        await sendTelegramMessage(chatId, `❌ Order <code>${orderId}</code> marked as <b>Cancelled</b>`);
+                        break;
+                        
+                    default:
+                        console.log('Invalid command:', command);
+                        await sendTelegramMessage(chatId, `❌ Invalid command. Use: processing, shipped, delivered, or cancel`);
+                        break;
+                }
+                
+                console.log(`Command ${command} completed successfully for order ${orderId}`);
+                
+            } catch (error) {
+                console.error('Error handling Telegram command:', error);
+                await sendTelegramMessage(chatId, '❌ Error processing command. Please try again.');
+            }
+        }
+
+        // Function to send help message with available commands
+        async function sendTelegramHelp(chatId) {
+            const helpMessage = `🤖 <b>TELEGRAM BOT COMMANDS</b>\n\n` +
+                `📋 <b>Available Commands:</b>\n\n` +
+                `⚙️ <b>Mark as Processing:</b>\n` +
+                `<code>/processing ORDER_ID</code>\n\n` +
+                `🚚 <b>Mark as Shipped:</b>\n` +
+                `<code>/shipped ORDER_ID</code>\n\n` +
+                `✅ <b>Mark as Delivered:</b>\n` +
+                `<code>/delivered ORDER_ID</code>\n\n` +
+                `❌ <b>Cancel Order:</b>\n` +
+                `<code>/cancel ORDER_ID</code>\n\n` +
+                `📊 <b>List Recent Orders:</b>\n` +
+                `<code>/orders</code>\n\n` +
+                `💡 <b>How to Use:</b>\n` +
+                `1️⃣ Copy Order ID from any notification\n` +
+                `2️⃣ Type command: <code>/processing ORDER_ID</code>\n` +
+                `3️⃣ Bot confirms status update\n` +
+                `4️⃣ Order status changes immediately\n\n` +
+                `🚀 <b>Ready to manage orders!</b>`;
+            
+            await sendTelegramMessage(chatId, helpMessage);
+        }
+
+        // Function to list recent orders
+        async function listRecentOrders(chatId) {
+            try {
+                const ordersRef = ref(database, 'orders');
+                const snapshot = await new Promise((resolve, reject) => {
+                    onValue(ordersRef, resolve, { onlyOnce: true });
+                });
+                
+                const allOrders = snapshot.val();
+                if (!allOrders) {
+                    await sendTelegramMessage(chatId, '❌ No orders found in the system.');
+                    return;
+                }
+
+                // Collect all orders and sort by date
+                const ordersList = [];
+                for (const userId in allOrders) {
+                    for (const orderId in allOrders[userId]) {
+                        const order = allOrders[userId][orderId];
+                        ordersList.push({
+                            orderId,
+                            userId,
+                            ...order
+                        });
+                    }
+                }
+
+                // Sort by date (most recent first) and take last 10
+                ordersList.sort((a, b) => b.date - a.date);
+                const recentOrders = ordersList.slice(0, 10);
+
+                let message = `📊 <b>RECENT ORDERS (Last 10)</b>\n\n`;
+                
+                recentOrders.forEach((order, index) => {
+                    const orderDate = new Date(order.date).toLocaleString('en-IN');
+                    const status = order.status || 'Pending';
+                    const statusEmoji = {
+                        'Pending': '⏳',
+                        'Processing': '⚙️',
+                        'Shipped': '🚚',
+                        'Delivered': '✅',
+                        'Cancelled': '❌'
+                    }[status] || '📋';
+                    
+                    message += `${index + 1}. <b>${statusEmoji} ${status}</b>\n`;
+                    message += `   📋 ID: <code>${order.orderId}</code>\n`;
+                    message += `   👤 Customer: ${order.shippingName}\n`;
+                    message += `   💰 Amount: ₹${order.totalAmount.toFixed(2)}\n`;
+                    message += `   📅 Date: ${orderDate}\n\n`;
+                });
+
+                message += `💡 <b>Use commands like:</b>\n`;
+                message += `<code>/processing ORDER_ID</code> to update status`;
+                
+                await sendTelegramMessage(chatId, message);
+                
+            } catch (error) {
+                console.error('Error listing recent orders:', error);
+                await sendTelegramMessage(chatId, '❌ Error fetching orders. Please try again.');
+            }
+        }
+
+        // Function to set up webhook for Telegram commands
+        // This function will be called periodically to check for new messages
+        async function checkTelegramUpdates() {
+            try {
+                // Get updates from Telegram
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.ok && data.result.length > 0) {
+                    console.log('Telegram updates received:', data.result.length);
+                    
+                    // Process each update
+                    for (const update of data.result) {
+                        if (update.message && update.message.text) {
+                            const chatId = update.message.chat.id.toString();
+                            const text = update.message.text.trim();
+                            
+                            console.log('Processing message:', { chatId, text, authorized: TELEGRAM_CHAT_IDS.includes(chatId) });
+                            
+                            // Check if this is an authorized chat
+                            if (!TELEGRAM_CHAT_IDS.includes(chatId)) {
+                                console.log('Unauthorized chat ID:', chatId);
+                                continue; // Skip unauthorized chats
+                            }
+                            
+                            // Handle commands
+                            if (text.startsWith('/')) {
+                                const parts = text.split(' ');
+                                const command = parts[0].substring(1); // Remove the /
+                                const orderId = parts[1];
+                                
+                                console.log('Command detected:', { command, orderId });
+                                
+                                switch (command.toLowerCase()) {
+                                    case 'help':
+                                        console.log('Sending help message');
+                                        await sendTelegramHelp(chatId);
+                                        break;
+                                        
+                                    case 'orders':
+                                        console.log('Listing recent orders');
+                                        await listRecentOrders(chatId);
+                                        break;
+                                        
+                                    case 'processing':
+                                    case 'shipped':
+                                    case 'delivered':
+                                    case 'cancel':
+                                        if (orderId) {
+                                            console.log('Processing status update command:', command, orderId);
+                                            await handleTelegramCommand(chatId, command, orderId);
+                                        } else {
+                                            console.log('Missing order ID for command:', command);
+                                            await sendTelegramMessage(chatId, `❌ Please provide an order ID. Example: <code>/${command} ORDER_ID</code>`);
+                                        }
+                                        break;
+                                        
+                                    default:
+                                        console.log('Unknown command:', command);
+                                        await sendTelegramMessage(chatId, `❌ Unknown command. Type <code>/help</code> for available commands.`);
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Mark updates as processed (optional)
+                    if (data.result.length > 0) {
+                        const lastUpdateId = data.result[data.result.length - 1].update_id;
+                        console.log('Marking updates as processed, last update ID:', lastUpdateId);
+                        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
+                    }
+                } else {
+                    console.log('No new Telegram updates');
+                }
+            } catch (error) {
+                console.error('Error checking Telegram updates:', error);
+            }
+        }
+
+        // Start checking for Telegram commands every 10 seconds for better responsiveness
+        setInterval(checkTelegramUpdates, 10000);
+        
+        // Also check immediately when admin panel loads
+        setTimeout(checkTelegramUpdates, 2000);
+
+        // Send initial help message to all authorized chats
+        async function sendInitialHelp() {
+            console.log('Sending initial help messages...');
+            for (const chatId of TELEGRAM_CHAT_IDS) {
+                const welcomeMessage = `🎉 <b>WELCOME TO CHAUDHARY KIRANA STORE BOT!</b>\n\n` +
+                    `🤖 <b>Bot Status:</b> Online and Ready\n` +
+                    `📅 <b>Time:</b> ${new Date().toLocaleString('en-IN')}\n\n` +
+                    `🚀 <b>You can now manage orders directly from Telegram!</b>\n\n` +
+                    `📋 <b>Quick Start:</b>\n` +
+                    `• Type <code>/orders</code> to see recent orders\n` +
+                    `• Use <code>/processing ORDER_ID</code> to mark as processing\n` +
+                    `• Use <code>/shipped ORDER_ID</code> to mark as shipped\n` +
+                    `• Use <code>/delivered ORDER_ID</code> to mark as delivered\n` +
+                    `• Use <code>/cancel ORDER_ID</code> to cancel orders\n\n` +
+                    `💡 <b>Type</b> <code>/help</code> <b>for detailed commands</b>`;
+                
+                await sendTelegramMessage(chatId, welcomeMessage);
+            }
+        }
+
+        // Send help message when admin panel loads
+        setTimeout(sendInitialHelp, 5000);
+
+
+
+        // Make functions globally accessible
+        window.handleTelegramCommand = handleTelegramCommand;
+        window.sendTelegramHelp = sendTelegramHelp;
+        window.listRecentOrders = listRecentOrders;
     </script>
+
+    <!-- Fixed Bottom Navigation -->
+    <nav class="admin-bottom-nav">
+        <a href="#today-orders" class="admin-nav-item active" data-route="today-orders">
+            <i class="fas fa-calendar-day"></i>
+            <span>Today</span>
+        </a>
+        <a href="#products" class="admin-nav-item" data-route="products">
+            <i class="fas fa-boxes"></i>
+            <span>Products</span>
+        </a>
+        <a href="#orders" class="admin-nav-item" data-route="orders">
+            <i class="fas fa-receipt"></i>
+            <span>Orders</span>
+        </a>
+        <a href="#slider" class="admin-nav-item" data-route="slider">
+            <i class="fas fa-images"></i>
+            <span>Slider</span>
+        </a>
+        <a href="#messages" class="admin-nav-item" data-route="messages">
+            <i class="fas fa-envelope"></i>
+            <span>Messages</span>
+        </a>
+    </nav>
 </body>
 </html>
