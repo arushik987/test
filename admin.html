@@ -2245,13 +2245,14 @@
 
 
         // --- Admin Authentication (Re-enabled) ---
-        const adminAuthModal = document.getElementById('admin-auth-modal');
-        const adminAuthForm = document.getElementById('admin-auth-form');
-        const adminEmailInput = document.getElementById('admin-email');
-        const adminPasswordInput = document.getElementById('admin-password');
-        const adminAuthError = document.getElementById('admin-auth-error');
-        const adminLoginBtn = document.getElementById('admin-login-btn'); // Get the login button
-        const adminResendVerificationBtn = document.getElementById('admin-resend-verification-btn'); // Get the resend verification button
+        document.addEventListener('DOMContentLoaded', () => {
+            const adminAuthModal = document.getElementById('admin-auth-modal');
+            const adminAuthForm = document.getElementById('admin-auth-form');
+            const adminEmailInput = document.getElementById('admin-email');
+            const adminPasswordInput = document.getElementById('admin-password');
+            const adminAuthError = document.getElementById('admin-auth-error');
+            const adminLoginBtn = document.getElementById('admin-login-btn'); // Get the login button
+            const adminResendVerificationBtn = document.getElementById('admin-resend-verification-btn'); // Get the resend verification button
 
         // Add event listeners to hide resend button when user starts typing
         if (adminEmailInput && adminResendVerificationBtn) {
@@ -2266,12 +2267,12 @@
             });
         }
 
-        function showAdminAuthError(message) {
+            function showAdminAuthError(message) {
             adminAuthError.textContent = message;
             adminAuthError.style.display = 'block';
         }
 
-        function hideAdminAuthError() {
+            function hideAdminAuthError() {
             adminAuthError.textContent = '';
             adminAuthError.style.display = 'none';
             
@@ -2281,39 +2282,39 @@
             }
         }
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // Check if user is verified (only for Email/Password users)
-                if (user.providerData[0]?.providerId === 'password' && !user.emailVerified) {
-                    // Email/Password user is not verified, sign them out
-                    signOut(auth);
-                    return;
-                }
-                
-                // User is signed in and verified, hide login modal and show admin content
-                adminAuthModal.style.display = 'none';
-                adminContent.style.display = 'block';
-                adminContentWrapper.classList.remove('blur-overlay');
-                
-                // Update admin profile information
-                updateAdminProfile(user);
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // Check if user is verified (only for Email/Password users)
+                    if (user.providerData[0]?.providerId === 'password' && !user.emailVerified) {
+                        // Email/Password user is not verified, sign them out
+                        signOut(auth);
+                        return;
+                    }
+                    
+                    // User is signed in and verified, hide login modal and show admin content
+                    adminAuthModal.style.display = 'none';
+                    adminContent.style.display = 'block';
+                    adminContentWrapper.classList.remove('blur-overlay');
+                    
+                    // Update admin profile information
+                    updateAdminProfile(user);
 
-                // Trigger initial stats fetch if on today-orders
-                if (window.location.hash === '#today-orders') {
-                    // No dashboard stats needed
+                    // Trigger initial stats fetch if on today-orders
+                    if (window.location.hash === '#today-orders') {
+                        // No dashboard stats needed
+                    }
+                } else {
+                    // User is signed out, show login modal and hide admin content
+                    adminAuthModal.style.display = 'flex';
+                    adminContent.style.display = 'none';
+                    adminContentWrapper.classList.add('blur-overlay');
+                    
+                    // Clear admin profile information
+                    clearAdminProfile();
                 }
-            } else {
-                // User is signed out, show login modal and hide admin content
-                adminAuthModal.style.display = 'flex';
-                adminContent.style.display = 'none';
-                adminContentWrapper.classList.add('blur-overlay');
-                
-                // Clear admin profile information
-                clearAdminProfile();
-            }
-        });
+            });
 
-        adminAuthForm.addEventListener('submit', async (e) => {
+            adminAuthForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             hideAdminAuthError();
 
@@ -2350,8 +2351,8 @@
             }
         });
         
-        // Set up Google Sign-In functionality for admin
-        const adminGoogleSignInBtn = document.getElementById('admin-google-signin-btn');
+            // Set up Google Sign-In functionality for admin
+            const adminGoogleSignInBtn = document.getElementById('admin-google-signin-btn');
         if (adminGoogleSignInBtn) {
             adminGoogleSignInBtn.addEventListener('click', async () => {
                 try {
@@ -2395,8 +2396,8 @@
             });
                 }
         
-        // Set up resend verification functionality for admin
-        if (adminResendVerificationBtn) {
+            // Set up resend verification functionality for admin
+            if (adminResendVerificationBtn) {
             adminResendVerificationBtn.addEventListener('click', async () => {
                 try {
                     const email = adminEmailInput.value;
@@ -2469,7 +2470,7 @@
             updateConnectionStatus(true);
         }
         
-        // Function to clear admin profile information
+        // Function to update admin profile information
         function clearAdminProfile() {
             const adminName = document.getElementById('admin-name');
             const adminDropdownName = document.getElementById('admin-dropdown-name');
@@ -2724,6 +2725,8 @@
         }
 
 
+
+        }); // Close Admin Authentication DOMContentLoaded
 
         // --- Stat Card Click Handlers ---
         document.addEventListener('DOMContentLoaded', () => {
