@@ -1898,6 +1898,22 @@
                 <p id="admin-auth-error" style="color: var(--primary-red); margin-bottom: 15px; display: none;"></p>
                 <button type="submit" id="admin-login-btn" style="background-color: var(--primary-red); color: white; width: 100%;"><i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>Login</button>
                 
+                <!-- Resend Verification Button (hidden by default) -->
+                <button type="button" id="admin-resend-verification-btn" style="
+                    background-color: #28a745; 
+                    color: white; 
+                    width: 100%; 
+                    margin: 10px 0; 
+                    display: none;
+                    padding: 10px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                ">
+                    <i class="fas fa-envelope" style="margin-right: 8px;"></i>Resend Verification Email
+                </button>
+                
                 <!-- Google Sign-In Button -->
                 <div style="margin: 15px 0; text-align: center;">
                     <div style="margin-bottom: 10px; color: var(--muted-color); font-size: 0.9rem;">Or</div>
@@ -2235,6 +2251,20 @@
         const adminPasswordInput = document.getElementById('admin-password');
         const adminAuthError = document.getElementById('admin-auth-error');
         const adminLoginBtn = document.getElementById('admin-login-btn'); // Get the login button
+        const adminResendVerificationBtn = document.getElementById('admin-resend-verification-btn'); // Get the resend verification button
+
+        // Add event listeners to hide resend button when user starts typing
+        if (adminEmailInput && adminResendVerificationBtn) {
+            adminEmailInput.addEventListener('input', () => {
+                adminResendVerificationBtn.style.display = 'none';
+            });
+        }
+        
+        if (adminPasswordInput && adminResendVerificationBtn) {
+            adminPasswordInput.addEventListener('input', () => {
+                adminResendVerificationBtn.style.display = 'none';
+            });
+        }
 
         function showAdminAuthError(message) {
             adminAuthError.textContent = message;
@@ -2244,6 +2274,11 @@
         function hideAdminAuthError() {
             adminAuthError.textContent = '';
             adminAuthError.style.display = 'none';
+            
+            // Also hide the resend verification button when clearing errors
+            if (adminResendVerificationBtn) {
+                adminResendVerificationBtn.style.display = 'none';
+            }
         }
 
         onAuthStateChanged(auth, (user) => {
@@ -2297,6 +2332,11 @@
                     // Sign out immediately if email is not verified
                     await signOut(auth);
                     showAdminAuthError('❌ Please verify your email before logging in. Check your inbox for the verification link.');
+                    
+                    // Show resend verification button
+                    if (adminResendVerificationBtn) {
+                        adminResendVerificationBtn.style.display = 'block';
+                    }
                     return;
                 }
                 
@@ -2353,8 +2393,47 @@
                     }
                 }
             });
+                }
+        
+        // Set up resend verification functionality for admin
+        if (adminResendVerificationBtn) {
+            adminResendVerificationBtn.addEventListener('click', async () => {
+                try {
+                    const email = adminEmailInput.value;
+                    if (!email) {
+                        showAdminAuthError('Please enter your email address first.');
+                        return;
+                    }
+                    
+                    // Try to sign in to get the user object
+                    const userCredential = await signInWithEmailAndPassword(auth, email, adminPasswordInput.value);
+                    const user = userCredential.user;
+                    
+                    // Send verification email
+                    await sendEmailVerification(user);
+                    
+                    // Sign out immediately
+                    await signOut(auth);
+                    
+                    // Show success message
+                    showAdminAuthError('✅ Verification email resent! Please check your inbox.');
+                    
+                    // Hide the resend button
+                    adminResendVerificationBtn.style.display = 'none';
+                } catch (error) {
+                    if (error.code === 'auth/user-not-found') {
+                        showAdminAuthError('User not found. Please check your email address.');
+                    } else if (error.code === 'auth/wrong-password') {
+                        showAdminAuthError('Wrong password. Please check your credentials.');
+                    } else if (error.code === 'auth/too-many-requests') {
+                        showAdminAuthError('Too many attempts. Please try again later.');
+                    } else {
+                        showAdminAuthError(`Failed to resend verification: ${error.message}`);
+                    }
+                }
+            });
         }
-
+        
         function handleAdminLogout() {
             signOut(auth).then(() => {
                 // Sign-out successful, onAuthStateChanged will handle UI update

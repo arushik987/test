@@ -1645,6 +1645,11 @@
                 authError.textContent = '';
                 authError.style.display = 'none';
             }
+            
+            // Also hide the resend verification button when clearing errors
+            if (resendVerificationBtn) {
+                resendVerificationBtn.style.display = 'none';
+            }
         }
 
         onAuthStateChanged(auth, async (user) => {
@@ -2360,6 +2365,19 @@
             // Get resend verification button
             const resendVerificationBtn = document.getElementById('resend-verification-btn');
             
+            // Add event listeners to hide resend button when user starts typing
+            if (authEmailInput && resendVerificationBtn) {
+                authEmailInput.addEventListener('input', () => {
+                    resendVerificationBtn.style.display = 'none';
+                });
+            }
+            
+            if (authPasswordInput && resendVerificationBtn) {
+                authPasswordInput.addEventListener('input', () => {
+                    resendVerificationBtn.style.display = 'none';
+                });
+            }
+            
             // Get profile elements
             loginStatusIndicator = document.getElementById('login-status-indicator');
             menuLoginLink = document.getElementById('menu-login-link');
@@ -2543,9 +2561,9 @@
                     if (authGenderSelect) authGenderSelect.style.display = isLoginMode ? 'none' : 'block';
                     if (authAgeInput) authAgeInput.style.display = isLoginMode ? 'none' : 'block';
                     
-                    // Show resend verification button only in login mode
+                    // Hide resend verification button by default (only show when verification fails)
                     if (resendVerificationBtn) {
-                        resendVerificationBtn.style.display = isLoginMode ? 'block' : 'none';
+                        resendVerificationBtn.style.display = 'none';
                     }
 
                     hideAuthError();
@@ -2657,6 +2675,11 @@
                                 // Sign out immediately if email is not verified
                                 await signOut(auth);
                                 showAuthError('❌ Please verify your email before logging in. Check your inbox for the verification link.');
+                                
+                                // Show resend verification button
+                                if (resendVerificationBtn) {
+                                    resendVerificationBtn.style.display = 'block';
+                                }
                                 return;
                             }
                             
