@@ -2278,7 +2278,21 @@ const firebaseConfig = {
         // Initialize Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-        import { getDatabase, ref, push, set, onValue, remove, update, onDisconnect } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+        import { getDatabase, ref, push, set, get, onValue, remove, update, onDisconnect } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+        // --- Admin User Check Function ---
+        // List of admin UIDs based on database rules
+        const ADMIN_UIDS = [
+            '5oXdBFMHCbfnDyqszm7nfbmz9m82',
+            'YKynnNVdY7XnAsNN7vp1KWZ2nkt1', 
+            'r4axMIf3PiVq0IpxKhkW57U4HvW2',
+            'HALMb0ZqcrNXvzxE5cQyjARrtMW2'
+        ];
+        
+        // Function to check if a user UID is in the admin list
+        function isAdminUser(uid) {
+            return ADMIN_UIDS.includes(uid);
+        }
 
         // --- Telegram Bot Integration for Admin ---
         // Function to send Telegram notification
@@ -2710,7 +2724,15 @@ const firebaseConfig = {
                         return;
                     }
                     
-                    // User is signed in and verified, hide login modal and show admin content
+                    // Check if user has admin privileges
+                    if (!isAdminUser(user.uid)) {
+                        // User is not in admin list, sign them out
+                        signOut(auth);
+                        showAdminAuthError('❌ Access Denied: Only admin users can access this panel.');
+                        return;
+                    }
+                    
+                    // User is signed in, verified, and has admin privileges - show admin content
                     adminAuthModal.style.display = 'none';
                     adminContent.style.display = 'block';
                     adminContentWrapper.classList.remove('blur-overlay');
@@ -2760,8 +2782,32 @@ const firebaseConfig = {
                     return;
                 }
                 
-                // Email is verified, proceed with login
-                // Login successful, onAuthStateChanged will handle UI update
+                // Check if user has admin role
+                if (!isAdminUser(user.uid)) {
+                    // User is not in admin list, sign them out
+                    await signOut(auth);
+                    showAdminAuthError('❌ Access Denied: Only admin users can access this panel.');
+                    return;
+                }
+                
+                try {
+                    // Additional check for admin role in database (if accessible)
+                    const userProfileRef = ref(database, `users/${user.uid}/profile`);
+                    const snapshot = await get(userProfileRef);
+                    
+                    if (snapshot.exists() && snapshot.val().isAdmin === false) {
+                        // User explicitly marked as non-admin, sign them out
+                        await signOut(auth);
+                        showAdminAuthError('❌ Access Denied: Admin privileges have been revoked.');
+                        return;
+                    }
+                    
+                    // User is admin, proceed with login
+                    // Login successful, onAuthStateChanged will handle UI update
+                } catch (error) {
+                    console.log('Could not check database admin role, proceeding with UID check only:', error);
+                    // Proceed if user is in admin UID list even if database check fails
+                }
             } catch (error) {
                 showAdminAuthError(error.message);
             } finally {
@@ -2797,13 +2843,60 @@ const firebaseConfig = {
                                     name: user.displayName || user.email.split('@')[0],
                                     registrationDate: Date.now(),
                                     authProvider: 'google',
-                                    emailVerified: true // Google accounts are pre-verified
+                                    emailVerified: true, // Google accounts are pre-verified
+                                    isAdmin: false // New users are not admin by default
                                 });
                             } catch (dbError) {
                                 console.warn('Could not save user profile to database:', dbError);
                                 // Continue with sign-in even if database save fails
                             }
                         }
+                        
+                        // Check if user has admin privileges
+                        if (!isAdminUser(user.uid)) {
+                            // User is not in admin list, sign them out
+                            await signOut(auth);
+                            showAdminAuthError('❌ Access Denied: Only admin users can access this panel.');
+                            return;
+                        }
+                        
+                        // Check if existing user has admin role in database
+                        if (!result._tokenResponse?.isNewUser) {
+                            try {
+                                // Additional check for admin role in database (if accessible)
+                                const userProfileRef = ref(database, `users/${user.uid}/profile`);
+                                const snapshot = await get(userProfileRef);
+                                
+                                if (snapshot.exists() && snapshot.val().isAdmin === false) {
+                                    // User explicitly marked as non-admin, sign them out
+                                    await signOut(auth);
+                                    showAdminAuthError('❌ Access Denied: Admin privileges have been revoked.');
+                                    return;
+                                }
+                            } catch (error) {
+                                console.log('Could not check database admin role, proceeding with UID check only:', error);
+                                // Proceed if user is in admin UID list even if database check fails
+                            }
+                        } else {
+                            // New user - only allow if they're in the admin UID list
+                            try {
+                                // Save admin user data to Realtime Database for new Google users
+                                const userProfileRef = ref(database, `users/${user.uid}/profile`);
+                                await set(userProfileRef, {
+                                    email: user.email,
+                                    name: user.displayName || user.email.split('@')[0],
+                                    registrationDate: Date.now(),
+                                    authProvider: 'google',
+                                    emailVerified: true, // Google accounts are pre-verified
+                                    isAdmin: true // They're in the admin list, so mark as admin
+                                });
+                            } catch (dbError) {
+                                console.warn('Could not save admin user profile to database:', dbError);
+                                // Continue with sign-in even if database save fails
+                            }
+                        }
+                        
+                        // Login successful, onAuthStateChanged will handle UI update
                     } catch (popupError) {
                         // Handle specific popup errors
                         if (popupError.code === 'auth/popup-closed-by-user') {
@@ -2820,8 +2913,6 @@ const firebaseConfig = {
                             throw popupError;
                         }
                     }
-                    
-                    // Login successful, onAuthStateChanged will handle UI update
                 } catch (error) {
                     console.error('Google Sign-In Error:', error);
                     if (error.code === 'auth/popup-closed-by-user') {
@@ -2969,7 +3060,7 @@ const firebaseConfig = {
             '#logout': 'logout' // Special case for logout
         };
 
-        function showAdminSection(sectionId) {
+        function showSection(sectionId) {
             document.querySelectorAll('.admin-section').forEach(section => {
                 section.classList.remove('active');
             });
@@ -3000,7 +3091,7 @@ const firebaseConfig = {
                     handleAdminLogout();
                     return;
                 }
-                showAdminSection(route);
+                showSection(route);
                 const activeNavItem = document.querySelector(`.admin-nav-item[data-route="${route}"]`);
                 if (activeNavItem) {
                     activeNavItem.classList.add('active');

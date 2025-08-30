@@ -2604,7 +2604,8 @@ const firebaseConfig = {
                                         name: user.displayName || user.email.split('@')[0],
                                         registrationDate: Date.now(),
                                         authProvider: 'google',
-                                        emailVerified: true // Google accounts are pre-verified
+                                        emailVerified: true, // Google accounts are pre-verified
+                                        isAdmin: false // Normal users are not admin
                                     });
                                 } catch (dbError) {
                                     console.warn('Could not save user profile to database:', dbError);
