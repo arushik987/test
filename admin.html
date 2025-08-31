@@ -2734,9 +2734,14 @@ const firebaseConfig = {
         }
 
             onAuthStateChanged(auth, (user) => {
+                console.log('Auth state changed:', user ? 'User logged in' : 'User logged out');
+                
                 if (user) {
+                    console.log('User UID:', user.uid, 'Is admin:', isAdminUser(user.uid));
+                    
                     // Check if user is verified (only for Email/Password users)
                     if (user.providerData[0]?.providerId === 'password' && !user.emailVerified) {
+                        console.log('Email not verified, signing out');
                         // Email/Password user is not verified, sign them out
                         signOut(auth);
                         return;
@@ -2744,28 +2749,41 @@ const firebaseConfig = {
                     
                     // Check if user has admin privileges
                     if (!isAdminUser(user.uid)) {
+                        console.log('User not admin, signing out');
                         // User is not in admin list, sign them out and show error
                         isUserAdmin = false;
                         signOut(auth);
                         // Show error message in the modal
+                        const adminAuthError = document.getElementById('admin-auth-error');
                         if (adminAuthError) {
                             adminAuthError.textContent = '❌ Access Denied: Only admin users can access this panel.';
                             adminAuthError.style.display = 'block';
                         }
                         // Keep showing the login modal
-                        adminAuthModal.style.display = 'flex';
-                        adminContent.style.display = 'none';
-                        adminContentWrapper.classList.add('blur-overlay');
+                        const adminAuthModal = document.getElementById('admin-auth-modal');
+                        const adminContent = document.getElementById('admin-content');
+                        const adminContentWrapper = document.getElementById('admin-content-wrapper');
+                        
+                        if (adminAuthModal) adminAuthModal.style.display = 'flex';
+                        if (adminContent) adminContent.style.display = 'none';
+                        if (adminContentWrapper) adminContentWrapper.classList.add('blur-overlay');
+                        
                         clearAdminProfile();
                         clearAdminLoginForm();
                         return;
                     }
                     
+                    console.log('User is admin, showing admin content');
                     // User is signed in, verified, and has admin privileges - show admin content
                     isUserAdmin = true;
-                    adminAuthModal.style.display = 'none';
-                    adminContent.style.display = 'block';
-                    adminContentWrapper.classList.remove('blur-overlay');
+                    
+                    const adminAuthModal = document.getElementById('admin-auth-modal');
+                    const adminContent = document.getElementById('admin-content');
+                    const adminContentWrapper = document.getElementById('admin-content-wrapper');
+                    
+                    if (adminAuthModal) adminAuthModal.style.display = 'none';
+                    if (adminContent) adminContent.style.display = 'block';
+                    if (adminContentWrapper) adminContentWrapper.classList.remove('blur-overlay');
                     
                     // Update admin profile information
                     updateAdminProfile(user);
@@ -2775,11 +2793,17 @@ const firebaseConfig = {
                         // No dashboard stats needed
                     }
                 } else {
+                    console.log('User signed out, showing login modal');
                     // User is signed out, show login modal and hide admin content
                     isUserAdmin = false;
-                    adminAuthModal.style.display = 'flex';
-                    adminContent.style.display = 'none';
-                    adminContentWrapper.classList.add('blur-overlay');
+                    
+                    const adminAuthModal = document.getElementById('admin-auth-modal');
+                    const adminContent = document.getElementById('admin-content');
+                    const adminContentWrapper = document.getElementById('admin-content-wrapper');
+                    
+                    if (adminAuthModal) adminAuthModal.style.display = 'flex';
+                    if (adminContent) adminContent.style.display = 'none';
+                    if (adminContentWrapper) adminContentWrapper.classList.add('blur-overlay');
                     
                     // Clear admin profile information and form
                     clearAdminProfile();
@@ -3315,6 +3339,10 @@ const firebaseConfig = {
         
         // Function to clear admin login form
         function clearAdminLoginForm() {
+            const adminAuthForm = document.getElementById('admin-auth-form');
+            const adminAuthError = document.getElementById('admin-auth-error');
+            const adminResendVerificationBtn = document.getElementById('admin-resend-verification-btn');
+            
             if (adminAuthForm) {
                 adminAuthForm.reset();
             }
@@ -3361,55 +3389,83 @@ const firebaseConfig = {
         
         // Function to initialize product loading
         function initializeProductLoading() {
-            // Show skeleton loading initially for products
-            const productTableContainer = document.getElementById('product-table-container');
-            if (productTableContainer) {
-                showTableSkeleton(productTableContainer, 'Products', 'Add Product', 6);
-            }
-
-            // Listen for product changes to re-render the table
-            onValue(ref(database, 'products'), (snapshot) => {
-                const products = snapshot.val() || {};
-                renderProductTable(products);
-            });
-
-            // Refresh product table when navigating to the products section
-            window.addEventListener('hashchange', () => {
-                if (window.location.hash === '#products') {
-                    onValue(ref(database, 'products'), (snapshot) => {
-                        const products = snapshot.val() || {};
-                        renderProductTable(products);
-                    }, { onlyOnce: true });
+            try {
+                // Show skeleton loading initially for products
+                const productTableContainer = document.getElementById('product-table-container');
+                if (productTableContainer) {
+                    showTableSkeleton(productTableContainer, 'Products', 'Add Product', 6);
                 }
-            });
+
+                // Listen for product changes to re-render the table
+                onValue(ref(database, 'products'), (snapshot) => {
+                    const products = snapshot.val() || {};
+                    renderProductTable(products);
+                }, (error) => {
+                    console.log('Products access error:', error);
+                    if (productTableContainer) {
+                        productTableContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">Products data not accessible. Please check database permissions.</p>';
+                    }
+                });
+
+                // Refresh product table when navigating to the products section
+                window.addEventListener('hashchange', () => {
+                    if (window.location.hash === '#products') {
+                        onValue(ref(database, 'products'), (snapshot) => {
+                            const products = snapshot.val() || {};
+                            renderProductTable(products);
+                        }, { onlyOnce: true });
+                    }
+                });
+            } catch (error) {
+                console.log('Error initializing product loading:', error);
+            }
         }
         
         // Function to initialize order loading
         function initializeOrderLoading() {
-            // Initialize today's orders
-            renderTodayOrders();
-            
-            // Listen for order changes
-            onValue(ref(database, 'orders'), (snapshot) => {
-                const allOrders = snapshot.val() || {};
-                window.allOrders = allOrders;
-                renderOrderTable(allOrders);
-            });
+            try {
+                // Initialize today's orders
+                renderTodayOrders();
+                
+                // Listen for order changes
+                onValue(ref(database, 'orders'), (snapshot) => {
+                    const allOrders = snapshot.val() || {};
+                    window.allOrders = allOrders;
+                    renderOrderTable(allOrders);
+                }, (error) => {
+                    console.log('Orders access error (may be permission restricted):', error);
+                    // Show user-friendly message
+                    const orderTableContainer = document.getElementById('order-table-container');
+                    if (orderTableContainer) {
+                        orderTableContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">Orders data not accessible. Please check database permissions.</p>';
+                    }
+                });
+            } catch (error) {
+                console.log('Error initializing order loading:', error);
+            }
         }
         
         // Function to initialize other data loading
         function initializeOtherDataLoading() {
-            // Initialize slider images
-            onValue(ref(database, 'slider'), (snapshot) => {
-                const sliderImages = snapshot.val() || {};
-                renderSliderImageTable(sliderImages);
-            });
-            
-            // Initialize messages
-            onValue(ref(database, 'messages'), (snapshot) => {
-                const messages = snapshot.val() || {};
-                renderMessagesTable(messages);
-            });
+            try {
+                // Initialize slider images
+                onValue(ref(database, 'slider'), (snapshot) => {
+                    const sliderImages = snapshot.val() || {};
+                    renderSliderImageTable(sliderImages);
+                }, (error) => {
+                    console.log('Slider access error:', error);
+                });
+                
+                // Initialize messages
+                onValue(ref(database, 'messages'), (snapshot) => {
+                    const messages = snapshot.val() || {};
+                    renderMessagesTable(messages);
+                }, (error) => {
+                    console.log('Messages access error:', error);
+                });
+            } catch (error) {
+                console.log('Error initializing other data loading:', error);
+            }
         }
         
         // Theme functionality
