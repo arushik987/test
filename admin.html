@@ -2402,14 +2402,6 @@ const firebaseConfig = {
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             database = getDatabase(app);
-            
-                    // Initialize Google Auth Provider
-        const googleProvider = new GoogleAuthProvider();
-        
-        // Add custom parameters to help with popup issues
-        googleProvider.setCustomParameters({
-            prompt: 'select_account'
-        });
         } catch (error) {
             console.error('Firebase initialization failed:', error);
             showFallbackStats();
@@ -2680,6 +2672,14 @@ const firebaseConfig = {
 
         // --- Admin Authentication (Re-enabled) ---
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Google Auth Provider
+            const googleProvider = new GoogleAuthProvider();
+            
+            // Add custom parameters to help with popup issues
+            googleProvider.setCustomParameters({
+                prompt: 'select_account'
+            });
+            
             // Check if user is already logged in and is admin
             if (auth.currentUser) {
                 if (!isAdminUser(auth.currentUser.uid)) {
@@ -3347,6 +3347,71 @@ const firebaseConfig = {
             return true;
         }
         
+        // Function to initialize all data loading after admin authentication
+        function initializeDataLoading() {
+            // Initialize product loading
+            initializeProductLoading();
+            
+            // Initialize order loading
+            initializeOrderLoading();
+            
+            // Initialize other data loading functions
+            initializeOtherDataLoading();
+        }
+        
+        // Function to initialize product loading
+        function initializeProductLoading() {
+            // Show skeleton loading initially for products
+            const productTableContainer = document.getElementById('product-table-container');
+            if (productTableContainer) {
+                showTableSkeleton(productTableContainer, 'Products', 'Add Product', 6);
+            }
+
+            // Listen for product changes to re-render the table
+            onValue(ref(database, 'products'), (snapshot) => {
+                const products = snapshot.val() || {};
+                renderProductTable(products);
+            });
+
+            // Refresh product table when navigating to the products section
+            window.addEventListener('hashchange', () => {
+                if (window.location.hash === '#products') {
+                    onValue(ref(database, 'products'), (snapshot) => {
+                        const products = snapshot.val() || {};
+                        renderProductTable(products);
+                    }, { onlyOnce: true });
+                }
+            });
+        }
+        
+        // Function to initialize order loading
+        function initializeOrderLoading() {
+            // Initialize today's orders
+            renderTodayOrders();
+            
+            // Listen for order changes
+            onValue(ref(database, 'orders'), (snapshot) => {
+                const allOrders = snapshot.val() || {};
+                window.allOrders = allOrders;
+                renderOrderTable(allOrders);
+            });
+        }
+        
+        // Function to initialize other data loading
+        function initializeOtherDataLoading() {
+            // Initialize slider images
+            onValue(ref(database, 'slider'), (snapshot) => {
+                const sliderImages = snapshot.val() || {};
+                renderSliderImageTable(sliderImages);
+            });
+            
+            // Initialize messages
+            onValue(ref(database, 'messages'), (snapshot) => {
+                const messages = snapshot.val() || {};
+                renderMessagesTable(messages);
+            });
+        }
+        
         // Theme functionality
         function initializeTheme() {
             // Load saved theme from localStorage
@@ -3418,15 +3483,18 @@ const firebaseConfig = {
             }
         }
         
-        // Refresh order cards to ensure proper encoding
-        setTimeout(() => {
-            refreshOrderCards();
-        }, 1000); // Wait 1 second for data to load
-        
-        // Clean up any corrupted order data
-        setTimeout(() => {
-            cleanupCorruptedOrders();
-        }, 2000); // Wait 2 seconds for data to load
+                    // Initialize all data loading after admin authentication
+            initializeDataLoading();
+            
+            // Refresh order cards to ensure proper encoding
+            setTimeout(() => {
+                refreshOrderCards();
+            }, 1000); // Wait 1 second for data to load
+            
+            // Clean up any corrupted order data
+            setTimeout(() => {
+                cleanupCorruptedOrders();
+            }, 2000); // Wait 2 seconds for data to load
             
             if (themeToggleIcon) {
                 themeToggleIcon.addEventListener('click', () => {
@@ -3686,27 +3754,7 @@ const firebaseConfig = {
                 await remove(productRef);
         }
 
-        // Show skeleton loading initially for products
-        const productTableContainer = document.getElementById('product-table-container');
-        if (productTableContainer) {
-            showTableSkeleton(productTableContainer, 'Products', 'Add Product', 6);
-        }
-
-        // Listen for product changes to re-render the table
-        onValue(ref(database, 'products'), (snapshot) => {
-            const products = snapshot.val() || {};
-            renderProductTable(products);
-        });
-
-        // Refresh product table when navigating to the products section
-        window.addEventListener('hashchange', () => {
-            if (window.location.hash === '#products') {
-                onValue(ref(database, 'products'), (snapshot) => {
-                    const products = snapshot.val() || {};
-                    renderProductTable(products);
-                }, { onlyOnce: true });
-            }
-        });
+        // Product loading logic will be moved inside DOMContentLoaded
 
         // --- Order Management ---
         const orderTableContainer = document.getElementById('order-table-container');
