@@ -19,26 +19,6 @@
             --shadow-color: rgba(0, 0, 0, 0.08);
             --card-border-radius: 18px;
         }
-        
-        /* Dark Mode Colors */
-        [data-theme="dark"] {
-            --primary-red: #ff6b6b;
-            --text-color: #ffffff;
-            --muted-color: #b0b0b0;
-            --surface-color: #2d2d2d;
-            --surface-dark-color: #1a1a1a;
-            --border-color: #444;
-            --shadow-color: rgba(0, 0, 0, 0.3);
-            --card-bg: #3a3a3a;
-            --input-bg: #2d2d2d;
-            --button-bg: #4a4a4a;
-            --button-hover-bg: #5a5a5a;
-        }
-        
-        /* Smooth theme transitions */
-        * {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-        }
 
         * {
             margin: 0;
@@ -53,15 +33,10 @@
             line-height: 1.6;
             padding-bottom: 80px; /* Space for bottom navigation */
         }
-        
-        /* Dark mode body */
-        [data-theme="dark"] body {
-            background-color: var(--surface-dark-color);
-        }
 
         /* Fixed Top Header */
         .admin-header {
-            background-color: var(--surface-color);
+            background-color: white;
             padding: 15px 20px;
             box-shadow: 0 2px 10px var(--shadow-color);
             display: flex;
@@ -72,289 +47,15 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        /* Dark mode header */
-        [data-theme="dark"] .admin-header {
-            background-color: var(--surface-color);
-            border-bottom: 1px solid var(--border-color);
         }
 
-        /* Dark mode main content */
-        [data-theme="dark"] .admin-content {
-            background-color: var(--surface-dark-color);
-        }
-
-        /* Dark mode cards and sections */
-        [data-theme="dark"] .card,
-        [data-theme="dark"] .section-card,
-        [data-theme="dark"] .product-card,
-        [data-theme="dark"] .order-card,
-        [data-theme="dark"] .message-card,
-        [data-theme="dark"] .slider-image-card {
-            background-color: var(--card-bg) !important;
-            border-color: var(--border-color) !important;
-            color: var(--text-color) !important;
-        }
-
-        /* Dark mode section headers */
-        [data-theme="dark"] .section-header,
-        [data-theme="dark"] .section-title {
-            color: var(--text-color) !important;
-        }
-
-        /* Dark mode buttons */
-        [data-theme="dark"] .btn-primary,
-        [data-theme="dark"] .add-product-btn,
-        [data-theme="dark"] .add-slider-image-btn {
-            background-color: var(--button-bg);
-            color: var(--text-color);
-        }
-
-        [data-theme="dark"] .btn-secondary,
-        [data-theme="dark"] .edit-btn,
-        [data-theme="dark"] .edit-product-btn,
-        [data-theme="dark"] .edit-slider-image-btn {
-            background-color: var(--button-bg) !important;
-            color: var(--text-color) !important;
-            border-color: var(--border-color) !important;
-        }
-
-        /* Dark mode for white elements in Products, Messages, and Slider tabs */
-        [data-theme="dark"] .product-card,
-        [data-theme="dark"] .message-card,
-        [data-theme="dark"] .slider-image-card {
-            background-color: var(--card-bg) !important;
-            border-color: var(--border-color) !important;
-            color: var(--text-color) !important;
-        }
-
-        /* Dark mode for main section cards (Products, Messages, Slider) */
-        [data-theme="dark"] #products .card,
-        [data-theme="dark"] #messages .card,
-        [data-theme="dark"] #slider .card {
-            background-color: var(--card-bg) !important;
-            border-color: var(--border-color) !important;
-            color: var(--text-color) !important;
-        }
-
-        /* Force dark theme for all cards in dark mode */
-        [data-theme="dark"] .card {
-            background-color: var(--card-bg) !important;
-            border-color: var(--border-color) !important;
-            color: var(--text-color) !important;
-        }
-
-        /* Force dark theme for specific section cards */
-        [data-theme="dark"] .admin-section .card {
-            background-color: var(--card-bg) !important;
-            border-color: var(--border-color) !important;
-            color: var(--text-color) !important;
-        }
-
-        /* Dark mode for text elements in cards */
-        [data-theme="dark"] .product-card .product-name,
-        [data-theme="dark"] .product-card .product-category,
-        [data-theme="dark"] .product-card .product-price,
-        [data-theme="dark"] .message-card .message-sender,
-        [data-theme="dark"] .message-card .message-email,
-        [data-theme="dark"] .message-card .message-content,
-        [data-theme="dark"] .slider-image-card .slider-url-label {
-            color: var(--text-color) !important;
-        }
-
-        /* Dark mode for labels in cards */
-        [data-theme="dark"] .product-card .product-label,
-        [data-theme="dark"] .message-card .message-label,
-        [data-theme="dark"] .slider-image-card .slider-url-label {
-            color: var(--primary-red) !important;
-        }
-
-        /* Dark mode for input fields in cards */
-        [data-theme="dark"] .slider-image-card input[type="text"],
-        [data-theme="dark"] .slider-image-card input[type="url"] {
-            background-color: var(--input-bg) !important;
-            color: var(--text-color) !important;
-            border-color: var(--border-color) !important;
-        }
-
-        [data-theme="dark"] .btn-secondary:hover,
-        [data-theme="dark"] .edit-btn:hover,
-        [data-theme="dark"] .edit-product-btn:hover,
-        [data-theme="dark"] .edit-slider-image-btn:hover {
-            background-color: var(--button-hover-bg) !important;
-        }
-
-        [data-theme="dark"] .btn-danger,
-        [data-theme="dark"] .delete-btn,
-        [data-theme="dark"] .delete-product-btn,
-        [data-theme="dark"] .delete-slider-image-btn {
-            background-color: var(--primary-red) !important;
-            color: white !important;
-        }
-
-        /* Dark mode form elements */
-        [data-theme="dark"] input,
-        [data-theme="dark"] textarea,
-        [data-theme="dark"] select {
-            background-color: var(--input-bg) !important;
-            color: var(--text-color) !important;
-            border-color: var(--border-color) !important;
-        }
-
-        /* Dark mode tables */
-        [data-theme="dark"] table {
-            background-color: var(--card-bg) !important;
-            color: var(--text-color) !important;
-        }
-
-        [data-theme="dark"] th,
-        [data-theme="dark"] td {
-            border-color: var(--border-color) !important;
-            color: var(--text-color) !important;
-        }
-
-        /* Dark mode modals */
-        [data-theme="dark"] .modal-content,
-        [data-theme="dark"] .modal-header,
-        [data-theme="dark"] .modal-body {
-            background-color: var(--card-bg) !important;
-            color: var(--text-color) !important;
-            border-color: var(--border-color) !important;
-        }
-
-        /* Dark mode status badges */
-        [data-theme="dark"] .status-badge,
-        [data-theme="dark"] .order-status-badge {
-            color: white !important;
-        }
-
-        /* Dark mode icons */
-        [data-theme="dark"] .icon-btn {
-            color: var(--text-color) !important;
-        }
-
-        /* Dark mode search inputs */
-        [data-theme="dark"] .search-input,
-        [data-theme="dark"] #order-search-input {
-            background-color: var(--input-bg) !important;
-            color: var(--text-color) !important;
-            border-color: var(--border-color) !important;
-        }
-
-        /* Dark mode product cards */
-        [data-theme="dark"] .product-card {
-            background-color: var(--card-bg) !important;
-            border-color: var(--border-color) !important;
-        }
-
-        [data-theme="dark"] .product-card .product-name,
-        [data-theme="dark"] .product-card .product-category,
-        [data-theme="dark"] .product-card .product-price {
-            color: var(--text-color) !important;
-        }
-
-        [data-theme="dark"] .product-card .product-label {
-            color: var(--primary-red) !important;
-        }
-
-
-
-
-
-
-
-        /* Dark mode order cards */
-        [data-theme="dark"] .order-card {
-            background-color: var(--card-bg) !important;
-            border-color: var(--border-color) !important;
-        }
-
-        [data-theme="dark"] .order-card .order-customer-name,
-        [data-theme="dark"] .order-card .order-mobile,
-        [data-theme="dark"] .order-card .order-address,
-        [data-theme="dark"] .order-card .order-details {
-            color: var(--text-color) !important;
-        }
-
-        /* Dark mode message cards */
-        [data-theme="dark"] .message-card {
-            background-color: var(--card-bg) !important;
-            border-color: var(--border-color) !important;
-        }
-
-        [data-theme="dark"] .message-card .message-sender,
-        [data-theme="dark"] .message-card .message-email,
-        [data-theme="dark"] .message-card .message-content {
-            color: var(--text-color) !important;
-        }
-
-        [data-theme="dark"] .message-card .message-label {
-            color: var(--primary-red) !important;
-        }
-
-        /* Dark mode slider image cards */
-        [data-theme="dark"] .slider-image-card {
-            background-color: var(--card-bg) !important;
-            border-color: var(--border-color) !important;
-        }
-
-        [data-theme="dark"] .slider-image-card .slider-url-label {
-            color: var(--primary-red) !important;
-        }
-
-        [data-theme="dark"] .slider-image-card .slider-url-input {
-            background-color: var(--input-bg) !important;
-            color: var(--text-color) !important;
-            border-color: var(--border-color) !important;
-        }
-
-        /* Dark mode section titles and descriptions */
-        [data-theme="dark"] .section-title,
-        [data-theme="dark"] .section-description {
-            color: var(--text-color) !important;
-        }
-
-        [data-theme="dark"] .section-description {
-            color: var(--muted-color) !important;
-        }
-
-                .admin-header .logo {
+        .admin-header .logo {
             display: flex;
             align-items: center;
             gap: 12px;
             color: var(--primary-red);
-                font-size: 1.2rem;
+            font-size: 1.2rem;
                 font-weight: 700;
-        }
-        
-        /* Theme Toggle Styles */
-        .theme-toggle-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .theme-toggle-icon {
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 8px;
-            border-radius: 8px;
-        }
-        
-        .theme-toggle-icon:hover {
-            background-color: rgba(231, 74, 59, 0.1);
-            transform: scale(1.1);
-        }
-        
-        .theme-toggle-icon:active {
-            transform: scale(0.95);
-        }
-        
-        /* Dark mode logo text */
-        [data-theme="dark"] .admin-header .logo span {
-            color: var(--text-color);
         }
 
         .admin-header .logo span {
@@ -374,241 +75,6 @@
                 font-size: 0.9rem;
             font-weight: 600;
         }
-        
-        /* Admin Profile Container */
-        .admin-profile-container {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .admin-profile-info {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-        
-        .admin-profile-info:hover {
-            background-color: rgba(231, 74, 59, 0.1);
-        }
-        
-        /* Admin Profile Dropdown */
-        .admin-profile-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 
-                        0 4px 16px rgba(0, 0, 0, 0.1),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            min-width: 280px;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-            margin-top: 8px;
-        }
-        
-        .admin-profile-dropdown.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        
-        .admin-profile-dropdown-content {
-            padding: 24px;
-            background: transparent;
-        }
-        
-        .admin-profile-header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 18px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        
-        .admin-profile-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .admin-profile-action-btn {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 12px 16px;
-            border-radius: 12px;
-            color: #2c3e50;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-            width: 100%;
-            text-align: left;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500;
-            justify-content: flex-start;
-        }
-        
-        .admin-profile-action-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            border-color: rgba(231, 74, 59, 0.5);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-        }
-        
-        .admin-profile-action-btn i {
-            color: var(--primary-red);
-        }
-        
-        /* Dark mode support for admin dropdown */
-        [data-theme="dark"] .admin-profile-dropdown {
-            background: rgba(30, 30, 30, 0.98);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 
-                        0 4px 16px rgba(0, 0, 0, 0.2),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Dark mode admin profile info */
-        [data-theme="dark"] .admin-profile-info:hover {
-            background-color: rgba(255, 107, 107, 0.1);
-        }
-        
-        [data-theme="dark"] .admin-profile-header {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        [data-theme="dark"] .admin-profile-action-btn {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-        
-        [data-theme="dark"] .admin-profile-action-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: var(--primary-red);
-        }
-        
-        [data-theme="dark"] .admin-profile-action-btn i {
-            color: #ffffff;
-        }
-        
-        /* Mobile responsiveness for admin profile */
-        @media (max-width: 768px) {
-            .admin-profile-dropdown {
-                min-width: 250px;
-                right: -10px;
-            }
-            
-            .admin-profile-dropdown-content {
-                padding: 20px;
-            }
-            
-            .admin-profile-action-btn {
-                padding: 10px 14px;
-                font-size: 0.85rem;
-            }
-            
-            .admin-name {
-                font-size: 0.9rem;
-            }
-        }
-        
-        /* Dark mode modal styles */
-        [data-theme="dark"] #admin-auth-modal .card,
-        [data-theme="dark"] #product-manage-modal .card,
-        [data-theme="dark"] #add-slider-image-modal .card,
-        [data-theme="dark"] #order-details-modal .card,
-        [data-theme="dark"] #status-update-modal .card {
-            background-color: var(--card-bg) !important;
-            border-color: var(--border-color) !important;
-            color: var(--text-color) !important;
-        }
-        
-        /* Dark mode search section */
-        [data-theme="dark"] #order-search-input {
-            background-color: var(--surface-dark-color);
-            border-color: var(--border-color);
-            color: var(--text-color);
-        }
-        
-        [data-theme="dark"] #order-search-input:focus {
-            background-color: var(--surface-color);
-            border-color: var(--primary-red);
-        }
-        
-        @media (max-width: 480px) {
-            .admin-profile-dropdown {
-                min-width: 220px;
-                right: -15px;
-            }
-            
-            .admin-profile-dropdown-content {
-                padding: 16px;
-            }
-            
-            .admin-profile-action-btn {
-                padding: 8px 12px;
-                font-size: 0.8rem;
-            }
-        }
-
-
-
-
-        
-        /* Google Sign-In Button Hover Effects */
-        #admin-google-signin-btn:hover {
-            background-color: #3367d6 !important;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
-        }
-        
-        /* Dark mode input fields */
-        [data-theme="dark"] input,
-        [data-theme="dark"] textarea,
-        [data-theme="dark"] select {
-            background-color: var(--surface-dark-color);
-            border-color: var(--border-color);
-            color: var(--text-color);
-        }
-        
-        [data-theme="dark"] input:focus,
-        [data-theme="dark"] textarea:focus,
-        [data-theme="dark"] select:focus {
-            background-color: var(--surface-color);
-            border-color: var(--primary-red);
-        }
-        
-        /* Dark mode table styles */
-        [data-theme="dark"] table {
-            background-color: var(--surface-color);
-            color: var(--text-color);
-        }
-        
-        [data-theme="dark"] th,
-        [data-theme="dark"] td {
-            border-color: var(--border-color);
-        }
-        
-        [data-theme="dark"] th {
-            background-color: var(--surface-dark-color);
-        }
 
 
 
@@ -617,11 +83,6 @@
             padding: 100px 15px 20px 15px;
             max-width: 1200px;
                 margin: 0 auto;
-        }
-        
-        /* Dark mode content */
-        [data-theme="dark"] .admin-content {
-            background-color: var(--surface-dark-color);
         }
 
         /* Section Styling */
@@ -713,18 +174,7 @@
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px var(--shadow-color);
-        }
-        
-        /* Dark mode stat cards */
-        [data-theme="dark"] .stat-card {
-            background: var(--surface-color);
-            border-color: var(--border-color);
-            box-shadow: 0 4px 12px var(--shadow-color);
-        }
-        
-        [data-theme="dark"] .stat-card:hover {
-            box-shadow: 0 8px 25px var(--shadow-color);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .stat-card .stat-number {
@@ -753,12 +203,6 @@
             transition: all 0.3s ease;
             font-family: 'Poppins', sans-serif;
             }
-            
-        /* Dark mode buttons */
-        [data-theme="dark"] button, [data-theme="dark"] .btn {
-            background: var(--primary-red);
-            color: white;
-        }
 
             button:hover, .btn:hover {
                 background: #c0392b;
@@ -789,13 +233,6 @@
             transition: all 0.3s ease;
                 display: inline-block;
             }
-            
-        /* Dark mode time buttons */
-        [data-theme="dark"] .time-btn {
-            background: var(--surface-dark-color);
-            color: var(--muted-color);
-            border-color: var(--border-color);
-        }
 
             .time-btn.active {
                 background: var(--primary-red);
@@ -963,19 +400,6 @@
             padding: 12px 10px;
             border-top: 1px solid var(--border-color);
         }
-        
-        /* Dark mode bottom navigation */
-        [data-theme="dark"] .admin-bottom-nav {
-            background-color: var(--surface-color);
-            border-top-color: var(--border-color);
-            box-shadow: 0 -2px 10px var(--shadow-color);
-        }
-        
-        /* Enhanced dark mode navigation styling */
-        [data-theme="dark"] .admin-bottom-nav {
-            background-color: #2d2d2d;
-            border-top-color: #444;
-        }
 
         .admin-nav-item {
             display: flex;
@@ -989,37 +413,15 @@
             min-width: 50px;
             flex: 1;
         }
-        
-        /* Dark mode navigation items - better contrast */
-        [data-theme="dark"] .admin-nav-item {
-            color: var(--muted-color);
-        }
 
         .admin-nav-item:hover {
             color: var(--primary-red);
             background-color: var(--surface-dark-color);
         }
-        
-        /* Enhanced hover effects for dark mode */
-        [data-theme="dark"] .admin-nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
 
         .admin-nav-item.active {
             color: var(--primary-red);
             background-color: rgba(231, 74, 59, 0.1);
-        }
-        
-        /* Dark mode navigation items */
-        [data-theme="dark"] .admin-nav-item:hover {
-            background-color: var(--surface-color);
-        }
-        
-        [data-theme="dark"] .admin-nav-item.active {
-            background-color: rgba(255, 107, 107, 0.2);
-            color: var(--primary-red);
-            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
         }
 
         .admin-nav-item i {
@@ -1030,23 +432,6 @@
         .admin-nav-item span {
             font-size: 0.75rem;
             font-weight: 500;
-        }
-        
-        /* Dark mode navigation icons and text */
-        [data-theme="dark"] .admin-nav-item i {
-            color: var(--muted-color);
-        }
-        
-        [data-theme="dark"] .admin-nav-item.active i {
-            color: var(--primary-red);
-        }
-        
-        [data-theme="dark"] .admin-nav-item span {
-            color: var(--muted-color);
-        }
-        
-        [data-theme="dark"] .admin-nav-item.active span {
-            color: var(--primary-red);
         }
 
         /* Loading States */
@@ -1060,34 +445,10 @@
             color: var(--primary-red);
             animation: spin 1s linear infinite;
         }
-        
-        /* Dark mode loading */
-        [data-theme="dark"] .loading {
-            color: var(--text-color);
-        }
-        
-        /* Skeleton Loading Styles */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 8px;
-        }
-        
-        /* Dark mode skeleton */
-        [data-theme="dark"] .skeleton {
-            background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
-            background-size: 200% 100%;
-        }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-        
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
         }
 
         /* Mobile Responsive Design */
@@ -1132,8 +493,6 @@
                 padding: 15px;
                 margin-bottom: 15px;
             }
-
-
 
             #stats-cards {
                 grid-template-columns: 1fr;
@@ -1959,37 +1318,11 @@
     <!-- Fixed Top Header -->
     <header class="admin-header">
         <div class="logo">
-            <div class="theme-toggle-container" id="theme-toggle-container">
-                <i class="fas fa-store theme-toggle-icon" style="color: var(--primary-red); font-size: 1.5rem; margin-right: 12px; cursor: pointer; transition: all 0.3s ease;" title="Toggle Dark/Light Mode"></i>
-                <span style="font-weight: 700; font-size: 1.2rem; color: var(--text-color);">Chaudhary Kirana Store</span>
-            </div>
+            <i class="fas fa-store" style="color: var(--primary-red); font-size: 1.5rem; margin-right: 12px;"></i>
+            <span style="font-weight: 700; font-size: 1.2rem; color: white;">Chaudhary Kirana Store</span>
         </div>
         <div class="admin-profile">
-            <div class="admin-profile-container">
-                <div class="admin-profile-info" id="admin-profile-info">
-                    <i id="admin-shield-icon" class="fas fa-user-shield" style="color: var(--primary-red); font-size: 1.2rem; transition: color 0.3s ease; cursor: pointer;" title="Admin Profile"></i>
-                    <span id="admin-name" style="color: var(--primary-red); font-weight: 600; margin-left: 8px; display: none;">Admin</span>
-                </div>
-                
-                <!-- Admin Profile Dropdown -->
-                <div class="admin-profile-dropdown" id="admin-profile-dropdown">
-                    <div class="admin-profile-dropdown-content">
-                        <div class="admin-profile-header">
-                            <i class="fas fa-user-shield" style="color: var(--primary-red); font-size: 2rem; margin-bottom: 10px;"></i>
-                            <div id="admin-dropdown-name" style="font-weight: 600; color: var(--text-color); margin-bottom: 5px;">Admin User</div>
-                            <div id="admin-dropdown-email" style="color: var(--muted-color); font-size: 0.9rem;">admin@example.com</div>
-                        </div>
-                        <div class="admin-profile-actions">
-                            <button class="admin-profile-action-btn" id="admin-profile-settings-btn">
-                                <i class="fas fa-cog"></i> Profile Settings
-                            </button>
-                            <button class="admin-profile-action-btn" id="admin-logout-btn">
-                                <i class="fas fa-sign-out-alt"></i> Logout
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <i id="admin-shield-icon" class="fas fa-user-shield" style="color: var(--primary-red); font-size: 1.2rem; transition: color 0.3s ease;" title="Checking connection..."></i>
         </div>
     </header>
 
@@ -2147,45 +1480,6 @@
                 <input type="password" id="admin-password" placeholder="Password" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); border-radius: 8px;">
                 <p id="admin-auth-error" style="color: var(--primary-red); margin-bottom: 15px; display: none;"></p>
                 <button type="submit" id="admin-login-btn" style="background-color: var(--primary-red); color: white; width: 100%;"><i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>Login</button>
-                
-                <!-- Resend Verification Button (hidden by default) -->
-                <button type="button" id="admin-resend-verification-btn" style="
-                    background-color: #28a745; 
-                    color: white; 
-                    width: 100%; 
-                    margin: 10px 0; 
-                    display: none;
-                    padding: 10px;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 0.9rem;
-                    cursor: pointer;
-                ">
-                    <i class="fas fa-envelope" style="margin-right: 8px;"></i>Resend Verification Email
-                </button>
-                
-                <!-- Google Sign-In Button -->
-                <div style="margin: 15px 0; text-align: center;">
-                    <div style="margin-bottom: 10px; color: var(--muted-color); font-size: 0.9rem;">Or</div>
-                    <button type="button" id="admin-google-signin-btn" style="
-                        background-color: #4285f4; 
-                        color: white; 
-                        width: 100%; 
-                        padding: 12px; 
-                        border: none; 
-                        border-radius: 8px; 
-                        font-size: 1rem; 
-                        cursor: pointer; 
-                        display: flex; 
-                        align-items: center; 
-                        justify-content: center; 
-                        gap: 10px;
-                        transition: background-color 0.2s ease;
-                    ">
-                        <i class="fab fa-google" style="font-size: 1.1rem;"></i>
-                        Sign in with Google
-                    </button>
-                </div>
             </form>
         </div>
     </div>
@@ -2261,15 +1555,16 @@
 
     <script type="module">
         // Firebase Configuration (Placeholder)
-const firebaseConfig = {
-  apiKey: "AIzaSyDTSCG-mP_Atcgpg1-JKhAlKKLjNug-PZk",
-  authDomain: "kirana-store-f55dd.firebaseapp.com",
-  databaseURL: "https://kirana-store-f55dd-default-rtdb.firebaseio.com",
-  projectId: "kirana-store-f55dd",
-  storageBucket: "kirana-store-f55dd.firebasestorage.app",
-  messagingSenderId: "584414364232",
-  appId: "1:584414364232:web:1a89c8c6b293be45e30e7d"
+        const firebaseConfig = {
+  apiKey: "AIzaSyBGh16sYlLk1e9nkhcLu7IPTZk807qeLZM",
+  authDomain: "test-60bf6.firebaseapp.com",
+  databaseURL: "https://test-60bf6-default-rtdb.firebaseio.com",
+  projectId: "test-60bf6",
+  storageBucket: "test-60bf6.firebasestorage.app",
+  messagingSenderId: "208881094528",
+  appId: "1:208881094528:web:114768e2de5956cae6fb65"
 };
+
         // Telegram Bot Configuration
         const TELEGRAM_BOT_TOKEN = '7119533193:AAGYRk2OO7D1xQAmeYeJA_FU7dPcrj35kGE';
         const TELEGRAM_CHAT_IDS = ['7298169399', '5744191135'];
@@ -2277,22 +1572,8 @@ const firebaseConfig = {
 
         // Initialize Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-        import { getDatabase, ref, push, set, get, onValue, remove, update, onDisconnect } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
-
-        // --- Admin User Check Function ---
-        // List of admin UIDs based on database rules
-        const ADMIN_UIDS = [
-            '5oXdBFMHCbfnDyqszm7nfbmz9m82',
-            'YKynnNVdY7XnAsNN7vp1KWZ2nkt1', 
-            'r4axMIf3PiVq0IpxKhkW57U4HvW2',
-            'HALMb0ZqcrNXvzxE5cQyjARrtMW2'
-        ];
-        
-        // Function to check if a user UID is in the admin list
-        function isAdminUser(uid) {
-            return ADMIN_UIDS.includes(uid);
-        }
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getDatabase, ref, push, set, onValue, remove, update, onDisconnect } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
         // --- Telegram Bot Integration for Admin ---
         // Function to send Telegram notification
@@ -2396,7 +1677,6 @@ const firebaseConfig = {
         }
 
         let app, auth, database;
-        let isUserAdmin = false; // Flag to track if current user is admin
         
         try {
             app = initializeApp(firebaseConfig);
@@ -2414,177 +1694,12 @@ const firebaseConfig = {
             if (adminShieldIcon) {
                 if (connected) {
                     adminShieldIcon.style.color = '#28a745'; // Green for connected
-                    adminShieldIcon.title = 'Admin Logged In - Click for Profile';
+                    adminShieldIcon.title = 'Connected to Firebase';
                 } else {
                     adminShieldIcon.style.color = '#dc3545'; // Red for disconnected
-                    adminShieldIcon.title = 'Not Connected - Please Login';
+                    adminShieldIcon.title = 'Disconnected from Firebase';
                 }
             }
-        }
-
-        // Helper function to safely encode order data for HTML attributes
-        function encodeOrderData(order) {
-            try {
-                // Validate the order object first
-                if (!order || typeof order !== 'object') {
-                    console.error('Invalid order object:', order);
-                    return '';
-                }
-                
-                // Check for required fields
-                if (!order.orderId || !order.userId) {
-                    console.error('Order missing required fields:', order);
-                    return '';
-                }
-                
-                // Instead of storing the entire order data, just store the order ID and user ID
-                // This avoids HTML attribute length limitations and JSON parsing issues
-                const minimalData = {
-                    orderId: order.orderId,
-                    userId: order.userId
-                };
-                
-                const encoded = JSON.stringify(minimalData);
-                console.log('Successfully encoded minimal order data:', minimalData);
-                return encoded;
-            } catch (error) {
-                console.error('Error encoding order data:', error);
-                // Return a safe fallback
-                return '';
-            }
-        }
-
-        // Helper function to decode order data from HTML attributes
-        function decodeOrderData(encodedData) {
-            try {
-                if (!encodedData) {
-                    console.warn('No encoded data provided to decodeOrderData');
-                    return null;
-                }
-                
-                // Parse the minimal data (just orderId and userId)
-                const minimalData = JSON.parse(encodedData);
-                console.log('Successfully parsed minimal order data:', minimalData);
-                
-                // If we have the minimal data, fetch the full order from the database
-                if (minimalData.orderId && minimalData.userId) {
-                    // Try to find the order in the current orders data
-                    if (window.allOrders && 
-                        window.allOrders[minimalData.userId] && 
-                        window.allOrders[minimalData.userId][minimalData.orderId]) {
-                        const fullOrder = window.allOrders[minimalData.userId][minimalData.orderId];
-                        console.log('Found full order data for:', minimalData.orderId);
-                        return fullOrder;
-                    }
-                    
-                    // If not found in current data, return the minimal data for now
-                    // The order details modal will need to handle this case
-                    console.warn('Full order data not found, returning minimal data:', minimalData);
-                    return minimalData;
-                }
-                
-                console.warn('Minimal data missing required fields:', minimalData);
-                return null;
-            } catch (error) {
-                console.error('Error decoding order data:', error);
-                console.log('Raw encoded data length:', encodedData ? encodedData.length : 0);
-                console.log('Raw encoded data preview:', encodedData ? encodedData.substring(0, 200) + '...' : 'null');
-                return null;
-            }
-        }
-
-        // Function to refresh all existing order cards to ensure proper encoding
-        function refreshOrderCards() {
-            console.log('Refreshing order cards to ensure proper encoding...');
-            
-            // Refresh main orders table
-            if (window.allOrders) {
-                renderOrderTable(window.allOrders);
-            }
-            
-            // Refresh today's orders
-            renderTodayOrders();
-        }
-
-        // Function to handle corrupted order data gracefully
-        function handleCorruptedOrderData(card, error) {
-            console.error('Handling corrupted order data:', error);
-            
-            // Show user-friendly error message
-            card.innerHTML = `
-                <div style="text-align: center; padding: 20px; color: var(--muted-color);">
-                    <div style="font-size: 1.2rem; margin-bottom: 10px;">⚠️</div>
-                    <div>This order data is corrupted</div>
-                    <div style="font-size: 0.8rem; margin-top: 5px;">Click to remove</div>
-                </div>
-            `;
-            
-            // Make the card clickable to remove it
-            card.style.cursor = 'pointer';
-            card.onclick = () => {
-                card.remove();
-                console.log('User removed corrupted order card');
-            };
-        }
-
-        // Function to validate order data integrity
-        function validateOrderData(order) {
-            if (!order) return false;
-            
-            const requiredFields = ['orderId', 'userId', 'shippingName', 'items', 'totalAmount', 'status', 'date'];
-            const missingFields = requiredFields.filter(field => !order[field]);
-            
-            if (missingFields.length > 0) {
-                console.warn('Order missing required fields:', missingFields);
-                return false;
-            }
-            
-            if (!Array.isArray(order.items) || order.items.length === 0) {
-                console.warn('Order has invalid items array:', order.items);
-                return false;
-            }
-            
-            return true;
-        }
-
-        // Function to clean up corrupted order data
-        function cleanupCorruptedOrders() {
-            console.log('Cleaning up corrupted order data...');
-            
-            if (!database) {
-                console.error('Database not available for cleanup');
-                return;
-            }
-            
-            // Listen to orders data to identify and fix corrupted entries
-            onValue(ref(database, 'orders'), (snapshot) => {
-                const allOrders = snapshot.val();
-                if (!allOrders) return;
-                
-                let hasCorruptedData = false;
-                
-                for (const userId in allOrders) {
-                    for (const orderId in allOrders[userId]) {
-                        const order = allOrders[userId][orderId];
-                        
-                        // Check if order data is corrupted
-                        if (!order || !order.orderId || !order.userId) {
-                            console.warn('Found corrupted order, removing:', { userId, orderId, order });
-                            hasCorruptedData = true;
-                            
-                            // Remove corrupted order
-                            remove(ref(database, `orders/${userId}/${orderId}`));
-                        }
-                    }
-                }
-                
-                if (hasCorruptedData) {
-                    console.log('Cleaned up corrupted orders, refreshing display...');
-                    setTimeout(() => {
-                        refreshOrderCards();
-                    }, 1000);
-                }
-            });
         }
 
         // --- Skeleton Loading Functions ---
@@ -2671,147 +1786,43 @@ const firebaseConfig = {
 
 
         // --- Admin Authentication (Re-enabled) ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Google Auth Provider
-            const googleProvider = new GoogleAuthProvider();
-            
-            // Add custom parameters to help with popup issues
-            googleProvider.setCustomParameters({
-                prompt: 'select_account'
-            });
-            
-            // Check if user is already logged in and is admin
-            if (auth.currentUser) {
-                if (!isAdminUser(auth.currentUser.uid)) {
-                    // Current user is not admin, sign them out immediately
-                    signOut(auth);
-                }
-            }
-            
-            const adminAuthModal = document.getElementById('admin-auth-modal');
-            const adminAuthForm = document.getElementById('admin-auth-form');
-            const adminEmailInput = document.getElementById('admin-email');
-            const adminPasswordInput = document.getElementById('admin-password');
-            const adminAuthError = document.getElementById('admin-auth-error');
-            const adminLoginBtn = document.getElementById('admin-login-btn'); // Get the login button
-            const adminResendVerificationBtn = document.getElementById('admin-resend-verification-btn'); // Get the resend verification button
-            
-            // Ensure admin content is hidden by default until proper authentication
-            const adminContent = document.getElementById('admin-content');
-            const adminContentWrapper = document.getElementById('admin-content-wrapper');
-            if (adminContent) adminContent.style.display = 'none';
-            if (adminContentWrapper) adminContentWrapper.classList.add('blur-overlay');
-            
-            // Always show login modal first
-            if (adminAuthModal) adminAuthModal.style.display = 'flex';
+        const adminAuthModal = document.getElementById('admin-auth-modal');
+        const adminAuthForm = document.getElementById('admin-auth-form');
+        const adminEmailInput = document.getElementById('admin-email');
+        const adminPasswordInput = document.getElementById('admin-password');
+        const adminAuthError = document.getElementById('admin-auth-error');
+        const adminLoginBtn = document.getElementById('admin-login-btn'); // Get the login button
 
-        // Add event listeners to hide resend button when user starts typing
-        if (adminEmailInput && adminResendVerificationBtn) {
-            adminEmailInput.addEventListener('input', () => {
-                adminResendVerificationBtn.style.display = 'none';
-            });
-        }
-        
-        if (adminPasswordInput && adminResendVerificationBtn) {
-            adminPasswordInput.addEventListener('input', () => {
-                adminResendVerificationBtn.style.display = 'none';
-            });
-        }
-
-            function showAdminAuthError(message) {
+        function showAdminAuthError(message) {
             adminAuthError.textContent = message;
             adminAuthError.style.display = 'block';
         }
 
-            function hideAdminAuthError() {
+        function hideAdminAuthError() {
             adminAuthError.textContent = '';
             adminAuthError.style.display = 'none';
-            
-            // Also hide the resend verification button when clearing errors
-            if (adminResendVerificationBtn) {
-                adminResendVerificationBtn.style.display = 'none';
-            }
         }
 
-            onAuthStateChanged(auth, (user) => {
-                console.log('Auth state changed:', user ? 'User logged in' : 'User logged out');
-                
-                if (user) {
-                    console.log('User UID:', user.uid, 'Is admin:', isAdminUser(user.uid));
-                    
-                    // Check if user is verified (only for Email/Password users)
-                    if (user.providerData[0]?.providerId === 'password' && !user.emailVerified) {
-                        console.log('Email not verified, signing out');
-                        // Email/Password user is not verified, sign them out
-                        signOut(auth);
-                        return;
-                    }
-                    
-                    // Check if user has admin privileges
-                    if (!isAdminUser(user.uid)) {
-                        console.log('User not admin, signing out');
-                        // User is not in admin list, sign them out and show error
-                        isUserAdmin = false;
-                        signOut(auth);
-                        // Show error message in the modal
-                        const adminAuthError = document.getElementById('admin-auth-error');
-                        if (adminAuthError) {
-                            adminAuthError.textContent = '❌ Access Denied: Only admin users can access this panel.';
-                            adminAuthError.style.display = 'block';
-                        }
-                        // Keep showing the login modal
-                        const adminAuthModal = document.getElementById('admin-auth-modal');
-                        const adminContent = document.getElementById('admin-content');
-                        const adminContentWrapper = document.getElementById('admin-content-wrapper');
-                        
-                        if (adminAuthModal) adminAuthModal.style.display = 'flex';
-                        if (adminContent) adminContent.style.display = 'none';
-                        if (adminContentWrapper) adminContentWrapper.classList.add('blur-overlay');
-                        
-                        clearAdminProfile();
-                        clearAdminLoginForm();
-                        return;
-                    }
-                    
-                    console.log('User is admin, showing admin content');
-                    // User is signed in, verified, and has admin privileges - show admin content
-                    isUserAdmin = true;
-                    
-                    const adminAuthModal = document.getElementById('admin-auth-modal');
-                    const adminContent = document.getElementById('admin-content');
-                    const adminContentWrapper = document.getElementById('admin-content-wrapper');
-                    
-                    if (adminAuthModal) adminAuthModal.style.display = 'none';
-                    if (adminContent) adminContent.style.display = 'block';
-                    if (adminContentWrapper) adminContentWrapper.classList.remove('blur-overlay');
-                    
-                    // Update admin profile information
-                    updateAdminProfile(user);
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, hide login modal and show admin content
+                adminAuthModal.style.display = 'none';
+                adminContent.style.display = 'block';
+                adminContentWrapper.classList.remove('blur-overlay');
 
-                    // Trigger initial stats fetch if on today-orders
-                    if (window.location.hash === '#today-orders') {
-                        // No dashboard stats needed
-                    }
-                } else {
-                    console.log('User signed out, showing login modal');
-                    // User is signed out, show login modal and hide admin content
-                    isUserAdmin = false;
-                    
-                    const adminAuthModal = document.getElementById('admin-auth-modal');
-                    const adminContent = document.getElementById('admin-content');
-                    const adminContentWrapper = document.getElementById('admin-content-wrapper');
-                    
-                    if (adminAuthModal) adminAuthModal.style.display = 'flex';
-                    if (adminContent) adminContent.style.display = 'none';
-                    if (adminContentWrapper) adminContentWrapper.classList.add('blur-overlay');
-                    
-                    // Clear admin profile information and form
-                    clearAdminProfile();
-                    clearAdminLoginForm();
+                        // Trigger initial stats fetch if on today-orders
+        if (window.location.hash === '#today-orders') {
+            // No dashboard stats needed
                 }
-            });
+            } else {
+                // User is signed out, show login modal and hide admin content
+                adminAuthModal.style.display = 'flex';
+                adminContent.style.display = 'none';
+                adminContentWrapper.classList.add('blur-overlay');
+            }
+        });
 
-            adminAuthForm.addEventListener('submit', async (e) => {
+        adminAuthForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             hideAdminAuthError();
 
@@ -2822,48 +1833,8 @@ const firebaseConfig = {
             adminLoginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 5px;"></i>Logging in...'; // Show loading indicator
 
             try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                
-                // Check if email is verified for Email/Password users
-                if (!user.emailVerified) {
-                    // Sign out immediately if email is not verified
-                    await signOut(auth);
-                    showAdminAuthError('❌ Please verify your email before logging in. Check your inbox for the verification link.');
-                    
-                    // Show resend verification button
-                    if (adminResendVerificationBtn) {
-                        adminResendVerificationBtn.style.display = 'block';
-                    }
-                    return;
-                }
-                
-                // Check if user has admin role
-                if (!isAdminUser(user.uid)) {
-                    // User is not in admin list, sign them out
-                    await signOut(auth);
-                    showAdminAuthError('❌ Access Denied: Only admin users can access this panel.');
-                    return;
-                }
-                
-                try {
-                    // Additional check for admin role in database (if accessible)
-                    const userProfileRef = ref(database, `users/${user.uid}/profile`);
-                    const snapshot = await get(userProfileRef);
-                    
-                    if (snapshot.exists() && snapshot.val().isAdmin === false) {
-                        // User explicitly marked as non-admin, sign them out
-                        await signOut(auth);
-                        showAdminAuthError('❌ Access Denied: Admin privileges have been revoked.');
-                        return;
-                    }
-                    
-                    // User is admin, proceed with login
-                    // Login successful, onAuthStateChanged will handle UI update
-                } catch (error) {
-                    console.log('Could not check database admin role, proceeding with UID check only:', error);
-                    // Proceed if user is in admin UID list even if database check fails
-                }
+                await signInWithEmailAndPassword(auth, email, password);
+                // Login successful, onAuthStateChanged will handle UI update
             } catch (error) {
                 showAdminAuthError(error.message);
             } finally {
@@ -2871,134 +1842,7 @@ const firebaseConfig = {
                 adminLoginBtn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right: 5px;"></i>Login'; // Restore original text
             }
         });
-        
-            // Set up Google Sign-In functionality for admin
-            const adminGoogleSignInBtn = document.getElementById('admin-google-signin-btn');
-        if (adminGoogleSignInBtn) {
-            adminGoogleSignInBtn.addEventListener('click', async () => {
-                try {
-                    hideAdminAuthError();
-                    
-                    // Check if we're in a secure context (required for popup)
-                    if (!window.isSecureContext && location.protocol !== 'https:' && location.hostname !== 'localhost') {
-                        showAdminAuthError('Google Sign-In requires a secure connection (HTTPS) or localhost. Please use HTTPS or localhost for testing.');
-                        return;
-                    }
-                    
-                    // Check if popups are blocked
-                    if (window.opener || window.name) {
-                        showAdminAuthError('Google Sign-In popup may not work properly in this context. Please try using email/password sign-in instead.');
-                        return;
-                    }
-                    
-                    try {
-                        const result = await signInWithPopup(auth, googleProvider);
-                        const user = result.user;
-                        
-                        // Check if this is a new user
-                        if (result._tokenResponse?.isNewUser) {
-                            try {
-                                // Save additional user data to Realtime Database for new Google users
-                                const userProfileRef = ref(database, `users/${user.uid}/profile`);
-                                await set(userProfileRef, {
-                                    email: user.email,
-                                    name: user.displayName || user.email.split('@')[0],
-                                    registrationDate: Date.now(),
-                                    authProvider: 'google',
-                                    emailVerified: true, // Google accounts are pre-verified
-                                    isAdmin: isAdminUser(user.uid) // Check if they're in admin list
-                                });
-                                console.log('User profile saved successfully');
-                            } catch (dbError) {
-                                console.warn('Could not save user profile to database (permission issue):', dbError);
-                                // Continue with sign-in even if database save fails
-                                // This is expected for non-admin users due to database rules
-                            }
-                        }
-                        
-                        // Check if user has admin privileges
-                        if (!isAdminUser(user.uid)) {
-                            // User is not in admin list, sign them out
-                            await signOut(auth);
-                            showAdminAuthError('❌ Access Denied: Only admin users can access this panel.');
-                            return;
-                        }
-                        
-                        // For existing users, we only check the UID list
-                        // Database admin role check is not needed and may cause permission issues
-                        console.log('Existing user, checking admin status from UID list');
-                        
-                        // Login successful, onAuthStateChanged will handle UI update
-                    } catch (popupError) {
-                        // Handle specific popup errors
-                        if (popupError.code === 'auth/popup-closed-by-user') {
-                            // User closed the popup - no error message needed
-                            return;
-                        } else if (popupError.code === 'auth/popup-blocked') {
-                            showAdminAuthError('Google Sign-In popup was blocked. Please allow popups for this site and try again.');
-                            return;
-                        } else if (popupError.code === 'auth/unauthorized-domain') {
-                            showAdminAuthError('This domain is not authorized for Google Sign-In. Please contact the administrator or use a different domain.');
-                            return;
-                        } else {
-                            // Re-throw other errors to be handled by the outer catch block
-                            throw popupError;
-                        }
-                    }
-                } catch (error) {
-                    console.error('Google Sign-In Error:', error);
-                    if (error.code === 'auth/popup-closed-by-user') {
-                        // User closed the popup - no error message needed
-                    } else if (error.code === 'auth/unauthorized-domain') {
-                        showAdminAuthError('This domain is not authorized for Google Sign-In. Please contact the administrator or use a different domain.');
-                    } else if (error.code === 'auth/popup-blocked') {
-                        showAdminAuthError('Google Sign-In popup was blocked. Please allow popups for this site and try again.');
-                    } else {
-                        showAdminAuthError(`Google Sign-In failed: ${error.message}`);
-                    }
-                }
-            });
-                }
-        
-            // Set up resend verification functionality for admin
-            if (adminResendVerificationBtn) {
-            adminResendVerificationBtn.addEventListener('click', async () => {
-                try {
-                    const email = adminEmailInput.value;
-                    if (!email) {
-                        showAdminAuthError('Please enter your email address first.');
-                        return;
-                    }
-                    
-                    // Try to sign in to get the user object
-                    const userCredential = await signInWithEmailAndPassword(auth, email, adminPasswordInput.value);
-                    const user = userCredential.user;
-                    
-                    // Send verification email
-                    await sendEmailVerification(user);
-                    
-                    // Sign out immediately
-                    await signOut(auth);
-                    
-                    // Show success message
-                    showAdminAuthError('✅ Verification email resent! Please check your inbox.');
-                    
-                    // Hide the resend button
-                    adminResendVerificationBtn.style.display = 'none';
-                } catch (error) {
-                    if (error.code === 'auth/user-not-found') {
-                        showAdminAuthError('User not found. Please check your email address.');
-                    } else if (error.code === 'auth/wrong-password') {
-                        showAdminAuthError('Wrong password. Please check your credentials.');
-                    } else if (error.code === 'auth/too-many-requests') {
-                        showAdminAuthError('Too many attempts. Please try again later.');
-                    } else {
-                        showAdminAuthError(`Failed to resend verification: ${error.message}`);
-                    }
-                }
-            });
-        }
-        
+
         function handleAdminLogout() {
             signOut(auth).then(() => {
                 // Sign-out successful, onAuthStateChanged will handle UI update
@@ -3010,8 +1854,6 @@ const firebaseConfig = {
                 // Logout failed - no alert needed
             });
         }
-        
-
 
 
         // Time period button functionality
@@ -3092,12 +1934,7 @@ const firebaseConfig = {
             '#logout': 'logout' // Special case for logout
         };
 
-        function showSection(sectionId) {
-            // Check if user has admin access before showing any section
-            if (!protectAdminRoute()) {
-                return;
-            }
-            
+        function showAdminSection(sectionId) {
             document.querySelectorAll('.admin-section').forEach(section => {
                 section.classList.remove('active');
             });
@@ -3110,11 +1947,6 @@ const firebaseConfig = {
         function handleAdminHashChange() {
             const hash = window.location.hash || '#today-orders';
             const route = adminRoutes[hash];
-
-            // Check admin access before proceeding
-            if (!protectAdminRoute()) {
-                return;
-            }
 
             // Ensure bottom navigation is always visible
             const bottomNav = document.querySelector('.admin-bottom-nav');
@@ -3133,7 +1965,7 @@ const firebaseConfig = {
                     handleAdminLogout();
                     return;
                 }
-                showSection(route);
+                showAdminSection(route);
                 const activeNavItem = document.querySelector(`.admin-nav-item[data-route="${route}"]`);
                 if (activeNavItem) {
                     activeNavItem.classList.add('active');
@@ -3159,11 +1991,6 @@ const firebaseConfig = {
 
         // Handle navigation changes
         window.addEventListener('hashchange', () => {
-            // Check admin access before proceeding
-            if (!protectAdminRoute()) {
-                return;
-            }
-            
             if (window.location.hash === '#today-orders') {
                 renderTodayOrders();
             }
@@ -3171,11 +1998,6 @@ const firebaseConfig = {
 
         // Handle hash changes for navigation
         window.addEventListener('hashchange', () => {
-            // Check admin access before proceeding
-            if (!protectAdminRoute()) {
-                return;
-            }
-            
             const hash = window.location.hash.substring(1); // Remove the #
             if (hash) {
                 showSection(hash);
@@ -3201,11 +2023,6 @@ const firebaseConfig = {
 
         // Initial load - show correct section by default
         window.addEventListener('load', () => {
-            // Check admin access before proceeding
-            if (!protectAdminRoute()) {
-                return;
-            }
-            
             // Ensure bottom navigation is always visible
             const bottomNav = document.querySelector('.admin-bottom-nav');
             if (bottomNav) {
@@ -3251,220 +2068,6 @@ const firebaseConfig = {
 
 
 
-        }); // Close Admin Authentication DOMContentLoaded
-
-        // Global admin functions that need to be accessible from other parts
-        function handleAdminLogout() {
-            signOut(auth).then(() => {
-                // Sign-out successful, onAuthStateChanged will handle UI update
-                window.location.hash = '#today-orders'; // Redirect to today orders after logout
-                document.body.classList.remove('sidebar-open-mobile'); // Ensure body overflow is reset
-                if (typeof sidebarBackdrop !== 'undefined') {
-                    sidebarBackdrop.classList.remove('active'); // Hide backdrop
-                }
-            }).catch((error) => {
-                console.error("Logout Error:", error);
-                // Logout failed - no alert needed
-            });
-        }
-
-        // Function to update admin profile information
-        function updateAdminProfile(user) {
-            const adminName = document.getElementById('admin-name');
-            const adminDropdownName = document.getElementById('admin-dropdown-name');
-            const adminDropdownEmail = document.getElementById('admin-dropdown-email');
-            
-            if (adminName) {
-                adminName.textContent = user.displayName || user.email.split('@')[0];
-                adminName.style.display = 'inline';
-            }
-            
-            if (adminDropdownName) {
-                adminDropdownName.textContent = user.displayName || user.email.split('@')[0];
-            }
-            
-            if (adminDropdownEmail) {
-                adminDropdownEmail.textContent = user.email;
-            }
-            
-            // Update connection status to show admin is logged in
-            updateConnectionStatus(true);
-        }
-        
-        // Function to clear admin profile information
-        function clearAdminProfile() {
-            const adminName = document.getElementById('admin-name');
-            const adminDropdownName = document.getElementById('admin-dropdown-name');
-            const adminDropdownEmail = document.getElementById('admin-dropdown-email');
-            
-            if (adminName) {
-                adminName.style.display = 'none';
-            }
-            
-            if (adminDropdownName) {
-                adminDropdownName.textContent = 'Admin User';
-            }
-            
-            if (adminDropdownEmail) {
-                adminDropdownEmail.textContent = 'admin@example.com';
-            }
-            
-            // Update connection status to show admin is logged out
-            updateConnectionStatus(false);
-        }
-        
-        // Function to clear admin login form
-        function clearAdminLoginForm() {
-            const adminAuthForm = document.getElementById('admin-auth-form');
-            const adminAuthError = document.getElementById('admin-auth-error');
-            const adminResendVerificationBtn = document.getElementById('admin-resend-verification-btn');
-            
-            if (adminAuthForm) {
-                adminAuthForm.reset();
-            }
-            if (adminAuthError) {
-                adminAuthError.textContent = '';
-                adminAuthError.style.display = 'none';
-            }
-            if (adminResendVerificationBtn) {
-                adminResendVerificationBtn.style.display = 'none';
-            }
-        }
-        
-        // Function to check if user can access admin functions
-        function checkAdminAccess() {
-            if (!isUserAdmin || !auth.currentUser || !isAdminUser(auth.currentUser.uid)) {
-                // User is not admin, sign them out
-                signOut(auth);
-                return false;
-            }
-            return true;
-        }
-        
-        // Function to protect admin routes
-        function protectAdminRoute() {
-            if (!checkAdminAccess()) {
-                // Redirect to login or show error
-                window.location.hash = '#today-orders';
-                return false;
-            }
-            return true;
-        }
-        
-        // Function to initialize all data loading after admin authentication
-        function initializeDataLoading() {
-            // Initialize product loading
-            initializeProductLoading();
-            
-            // Initialize order loading
-            initializeOrderLoading();
-            
-            // Initialize other data loading functions
-            initializeOtherDataLoading();
-        }
-        
-        // Function to initialize product loading
-        function initializeProductLoading() {
-            try {
-                // Show skeleton loading initially for products
-                const productTableContainer = document.getElementById('product-table-container');
-                if (productTableContainer) {
-                    showTableSkeleton(productTableContainer, 'Products', 'Add Product', 6);
-                }
-
-                // Listen for product changes to re-render the table
-                onValue(ref(database, 'products'), (snapshot) => {
-                    const products = snapshot.val() || {};
-                    renderProductTable(products);
-                }, (error) => {
-                    console.log('Products access error:', error);
-                    if (productTableContainer) {
-                        productTableContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">Products data not accessible. Please check database permissions.</p>';
-                    }
-                });
-
-                // Refresh product table when navigating to the products section
-                window.addEventListener('hashchange', () => {
-                    if (window.location.hash === '#products') {
-                        onValue(ref(database, 'products'), (snapshot) => {
-                            const products = snapshot.val() || {};
-                            renderProductTable(products);
-                        }, { onlyOnce: true });
-                    }
-                });
-            } catch (error) {
-                console.log('Error initializing product loading:', error);
-            }
-        }
-        
-        // Function to initialize order loading
-        function initializeOrderLoading() {
-            try {
-                // Initialize today's orders
-                renderTodayOrders();
-                
-                // Listen for order changes
-                onValue(ref(database, 'orders'), (snapshot) => {
-                    const allOrders = snapshot.val() || {};
-                    window.allOrders = allOrders;
-                    renderOrderTable(allOrders);
-                }, (error) => {
-                    console.log('Orders access error (may be permission restricted):', error);
-                    // Show user-friendly message
-                    const orderTableContainer = document.getElementById('order-table-container');
-                    if (orderTableContainer) {
-                        orderTableContainer.innerHTML = '<p style="text-align: center; color: var(--muted-color);">Orders data not accessible. Please check database permissions.</p>';
-                    }
-                });
-            } catch (error) {
-                console.log('Error initializing order loading:', error);
-            }
-        }
-        
-        // Function to initialize other data loading
-        function initializeOtherDataLoading() {
-            try {
-                // Initialize slider images
-                onValue(ref(database, 'slider'), (snapshot) => {
-                    const sliderImages = snapshot.val() || {};
-                    renderSliderImageTable(sliderImages);
-                }, (error) => {
-                    console.log('Slider access error:', error);
-                });
-                
-                // Initialize messages
-                onValue(ref(database, 'messages'), (snapshot) => {
-                    const messages = snapshot.val() || {};
-                    renderMessagesTable(messages);
-                }, (error) => {
-                    console.log('Messages access error:', error);
-                });
-            } catch (error) {
-                console.log('Error initializing other data loading:', error);
-            }
-        }
-        
-        // Theme functionality
-        function initializeTheme() {
-            // Load saved theme from localStorage
-            const savedTheme = localStorage.getItem('admin-theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeIcon(savedTheme);
-        }
-        
-        function updateThemeIcon(theme) {
-            const themeToggleIcon = document.querySelector('.theme-toggle-icon');
-            if (themeToggleIcon) {
-                if (theme === 'dark') {
-                    themeToggleIcon.title = 'Switch to Light Mode';
-                    // You can change the icon here if you want
-                } else {
-                    themeToggleIcon.title = 'Switch to Light Mode';
-                    // You can change the icon here if you want
-                }
-            }
-        }
-
         // --- Stat Card Click Handlers ---
         document.addEventListener('DOMContentLoaded', () => {
             const statCards = document.querySelectorAll('.stat-card');
@@ -3491,85 +2094,6 @@ const firebaseConfig = {
                     }
                 });
             });
-            
-            // --- Admin Profile Dropdown Functionality ---
-            const adminProfileInfo = document.getElementById('admin-profile-info');
-            const adminProfileDropdown = document.getElementById('admin-profile-dropdown');
-            const adminProfileSettingsBtn = document.getElementById('admin-profile-settings-btn');
-            const adminLogoutBtn = document.getElementById('admin-logout-btn');
-            
-            // --- Theme Toggle Functionality ---
-            const themeToggleIcon = document.querySelector('.theme-toggle-icon');
-            
-                    // Initialize theme functionality
-        initializeTheme();
-        
-        // Check if current user is admin when page loads
-        if (auth.currentUser && !isAdminUser(auth.currentUser.uid)) {
-            // Current user is not admin, sign them out immediately
-            signOut(auth);
-            // Show error message
-            if (adminAuthError) {
-                adminAuthError.textContent = '❌ Access Denied: Only admin users can access this panel.';
-                adminAuthError.style.display = 'block';
-            }
-        }
-        
-                    // Initialize all data loading after admin authentication
-            initializeDataLoading();
-            
-            // Refresh order cards to ensure proper encoding
-            setTimeout(() => {
-                refreshOrderCards();
-            }, 1000); // Wait 1 second for data to load
-            
-            // Clean up any corrupted order data
-            setTimeout(() => {
-                cleanupCorruptedOrders();
-            }, 2000); // Wait 2 seconds for data to load
-            
-            if (themeToggleIcon) {
-                themeToggleIcon.addEventListener('click', () => {
-                    const currentTheme = document.documentElement.getAttribute('data-theme');
-                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                    
-                    document.documentElement.setAttribute('data-theme', newTheme);
-                    localStorage.setItem('admin-theme', newTheme);
-                    updateThemeIcon(newTheme);
-                });
-            }
-            
-            // Toggle dropdown on profile click
-            if (adminProfileInfo && adminProfileDropdown) {
-                adminProfileInfo.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    adminProfileDropdown.classList.toggle('show');
-                });
-                
-                // Close dropdown when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!adminProfileInfo.contains(e.target) && !adminProfileDropdown.contains(e.target)) {
-                        adminProfileDropdown.classList.remove('show');
-                    }
-                });
-            }
-            
-            // Profile settings button
-            if (adminProfileSettingsBtn) {
-                adminProfileSettingsBtn.addEventListener('click', () => {
-                    adminProfileDropdown.classList.remove('show');
-                    // You can add profile settings functionality here
-                    console.log('Profile settings clicked');
-                });
-            }
-            
-            // Admin logout button
-            if (adminLogoutBtn) {
-                adminLogoutBtn.addEventListener('click', () => {
-                    adminProfileDropdown.classList.remove('show');
-                    handleAdminLogout();
-                });
-            }
         });
 
 
@@ -3786,7 +2310,27 @@ const firebaseConfig = {
                 await remove(productRef);
         }
 
-        // Product loading logic will be moved inside DOMContentLoaded
+        // Show skeleton loading initially for products
+        const productTableContainer = document.getElementById('product-table-container');
+        if (productTableContainer) {
+            showTableSkeleton(productTableContainer, 'Products', 'Add Product', 6);
+        }
+
+        // Listen for product changes to re-render the table
+        onValue(ref(database, 'products'), (snapshot) => {
+            const products = snapshot.val() || {};
+            renderProductTable(products);
+        });
+
+        // Refresh product table when navigating to the products section
+        window.addEventListener('hashchange', () => {
+            if (window.location.hash === '#products') {
+                onValue(ref(database, 'products'), (snapshot) => {
+                    const products = snapshot.val() || {};
+                    renderProductTable(products);
+                }, { onlyOnce: true });
+            }
+        });
 
         // --- Order Management ---
         const orderTableContainer = document.getElementById('order-table-container');
@@ -3858,12 +2402,6 @@ const firebaseConfig = {
             ordersArray.sort((a, b) => b.date - a.date);
 
             ordersArray.forEach(order => {
-                // Validate order data before rendering
-                if (!validateOrderData(order)) {
-                    console.warn('Skipping invalid order:', { userId: order.userId, orderId: order.orderId, order });
-                    return; // Skip this order
-                }
-                
                 const orderDate = new Date(order.date).toLocaleDateString();
                 const firstProduct = order.items && order.items.length > 0 ? order.items[0] : null;
                 const productImage = firstProduct ? (firstProduct.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yMCAyNEMyMi4wOTExIDI0IDI0IDIyLjA5MTEgMjQgMjBDMjQgMTcuOTA4OSAyMi4wOTExIDE2IDIwIDE2QzE3LjkwODkgMTYgMTYgMTcuOTA4OSAxNiAyMEMxNiAyMi4wOTExIDE3LjkwODkgMjQgMjAgMjRaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0yMCAyOEMyNC40MTgzIDI4IDI4IDI0LjQxODMgMjggMjBIMTJDMTIgMjQuNDE4MyAxNS41ODE3IDI4IDIwIDI4WiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K') : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yMCAyNEMyMi4wOTExIDI0IDI0IDIyLjA5MTEgMjQgMjBDMjQgMTcuOTA4OSAyMi4wOTExIDE2IDIwIDE2QzE3LjkwODkgMTYgMTYgMTcuOTA4OSAxNiAyMEMxNiAyMi4wOTExIDE3LjkwODkgMjQgMjAgMjRaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0yMCAyOEMyNC40MTgzIDI4IDI4IDI0LjQxODMgMjggMjBIMTJDMTIgMjQuNDE4MyAxNS41ODE3IDI4IDIwIDI4WiIgZmlsbD0iI0NDQyIvPgo8L3N2Zz4K';
@@ -3871,7 +2409,7 @@ const firebaseConfig = {
                 const totalItems = order.items ? order.items.length : 0;
                 
                 tableHtml += `
-                    <div class="order-card" data-order='${encodeOrderData(order)}' style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <div class="order-card" data-order='${JSON.stringify(order)}' style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         <div style="display: flex; align-items: center; gap: 15px;">
                             <div style="flex-shrink: 0;">
                                 <img src="${productImage}" alt="${productName}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color);">
@@ -3911,16 +2449,8 @@ const firebaseConfig = {
                     if (e.target.closest('.update-status-btn')) {
                         return;
                     }
-                    
-                    // Debug: Log the raw data
-                    console.log('Raw order data:', card.dataset.order);
-                    
-                    const orderData = decodeOrderData(card.dataset.order);
-                    if (orderData) {
-                        showOrderDetailsModal(orderData);
-                    } else {
-                        handleCorruptedOrderData(card, new Error('Failed to parse order data'));
-                    }
+                    const orderData = JSON.parse(card.dataset.order);
+                    showOrderDetailsModal(orderData);
                 });
             });
 
@@ -4101,12 +2631,6 @@ const firebaseConfig = {
                 `;
 
                 todayOrders.forEach(order => {
-                    // Validate order data before rendering
-                    if (!validateOrderData(order)) {
-                        console.warn('Skipping invalid today order:', { userId: order.userId, orderId: order.orderId, order });
-                        return; // Skip this order
-                    }
-                    
                     const orderTime = new Date(order.date).toLocaleTimeString('en-US', { 
                         hour: '2-digit', 
                         minute: '2-digit',
@@ -4118,7 +2642,7 @@ const firebaseConfig = {
                     const totalItems = order.items ? order.items.length : 0;
                     
                     todayOrdersHtml += `
-                        <div class="order-card" data-order='${encodeOrderData(order)}' style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div class="order-card" data-order='${JSON.stringify(order)}' style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                             <div style="display: flex; align-items: center; gap: 15px;">
                                 <div style="flex-shrink: 0;">
                                     <img src="${productImage}" alt="${productName}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color);">
@@ -4158,16 +2682,8 @@ const firebaseConfig = {
                         if (e.target.closest('.update-status-btn')) {
                             return;
                         }
-                        
-                        // Debug: Log the raw data
-                        console.log('Raw today order data:', card.dataset.order);
-                        
-                        const orderData = decodeOrderData(card.dataset.order);
-                        if (orderData) {
-                            showOrderDetailsModal(orderData);
-                        } else {
-                            handleCorruptedOrderData(card, new Error('Failed to parse today order data'));
-                        }
+                        const orderData = JSON.parse(card.dataset.order);
+                        showOrderDetailsModal(orderData);
                     });
                 });
 
@@ -4547,42 +3063,6 @@ const firebaseConfig = {
         function showOrderDetailsModal(order) {
             const modal = document.getElementById('order-details-modal');
             const content = document.getElementById('order-details-content');
-            
-            // Check if we have minimal data (just orderId and userId) and need to fetch full order
-            if (order && order.orderId && order.userId && !order.shippingName) {
-                // We have minimal data, try to fetch the full order from the database
-                if (window.allOrders && 
-                    window.allOrders[order.userId] && 
-                    window.allOrders[order.userId][order.orderId]) {
-                    order = window.allOrders[order.userId][order.orderId];
-                } else {
-                    // Show error message if we can't find the full order data
-                    content.innerHTML = `
-                        <div style="text-align: center; padding: 40px; color: var(--muted-color);">
-                            <div style="font-size: 2rem; margin-bottom: 20px;">⚠️</div>
-                            <div style="font-size: 1.2rem; margin-bottom: 10px;">Order Data Not Found</div>
-                            <div>Unable to load complete order details.</div>
-                            <div style="font-size: 0.9rem; margin-top: 10px;">Order ID: ${order.orderId}</div>
-                        </div>
-                    `;
-                    modal.style.display = 'flex';
-                    return;
-                }
-            }
-            
-            // Validate that we have the required order data
-            if (!validateOrderData(order)) {
-                content.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: var(--muted-color);">
-                        <div style="font-size: 2rem; margin-bottom: 20px;">⚠️</div>
-                        <div style="font-size: 1.2rem; margin-bottom: 10px;">Invalid Order Data</div>
-                        <div>This order appears to be corrupted or incomplete.</div>
-                        <div style="font-size: 0.9rem; margin-top: 10px;">Order ID: ${order?.orderId || 'Unknown'}</div>
-                    </div>
-                `;
-                modal.style.display = 'flex';
-                return;
-            }
             
             const orderDate = new Date(order.date).toLocaleDateString() + ' ' + new Date(order.date).toLocaleTimeString();
             

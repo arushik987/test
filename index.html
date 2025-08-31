@@ -853,20 +853,6 @@
         #header-logout-btn:hover i {
             color: white !important;
         }
-        
-        /* Google Sign-In Button Hover Effects */
-        #google-signin-btn:hover {
-            background-color: #3367d6 !important;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
-        }
-        
-        #header-google-login-btn:hover {
-            background: #3367d6 !important;
-            border-color: #3367d6;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(66, 133, 244, 0.4);
-        }
 
         /* Skeleton Loading Animations */
         .skeleton {
@@ -1152,13 +1138,6 @@
                             <button class="profile-action-btn" id="header-login-btn">
                                 <i class="fas fa-sign-in-alt"></i> Login
                             </button>
-                            <button class="profile-action-btn" id="header-google-login-btn" style="
-                                background: #4285f4; 
-                                color: white !important; 
-                                border-color: #4285f4;
-                            ">
-                                <i class="fab fa-google"></i> Login with Google
-                            </button>
                             <button class="profile-action-btn" id="header-profile-btn" style="display: none;">
                                 <i class="fas fa-user-edit"></i> Edit Profile
                             </button>
@@ -1248,7 +1227,6 @@
                     <div style="text-align: left; width: 100%;">
                         <p><strong>User ID:</strong> <span id="profile-user-id">Not available</span></p>
                         <p><strong>Email:</strong> <span id="profile-email">Not logged in</span></p>
-                        <p id="profile-auth-provider" style="display: none;"><strong>Sign-in Method:</strong> <span id="profile-auth-provider-text"></span></p>
                     </div>
                     <button id="edit-profile-btn" style="background-color: var(--primary-red); color: white; margin-top: 20px; padding: 10px 20px; border-radius: 8px;">Edit Profile</button>
                 </div>
@@ -1345,45 +1323,6 @@
                 <p id="auth-error" style="color: var(--primary-red); margin-bottom: 15px; display: none;"></p>
                 <button type="submit" id="auth-submit-btn" style="background-color: var(--primary-red); color: white; width: 100%; margin-bottom: 10px;">Login</button>
                 <button type="button" id="toggle-auth-mode" style="background-color: var(--muted-color); color: white; width: 100%; margin-bottom: 10px;">Switch to Register</button>
-                
-                <!-- Resend Verification Button (hidden by default) -->
-                <button type="button" id="resend-verification-btn" style="
-                    background-color: #28a745; 
-                    color: white; 
-                    width: 100%; 
-                    margin-bottom: 10px; 
-                    display: none;
-                    padding: 10px;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 0.9rem;
-                    cursor: pointer;
-                ">
-                    <i class="fas fa-envelope" style="margin-right: 8px;"></i>Resend Verification Email
-                </button>
-                
-                <!-- Google Sign-In Button -->
-                <div style="margin: 15px 0; text-align: center;">
-                    <div style="margin-bottom: 10px; color: var(--muted-color); font-size: 0.9rem;">Or</div>
-                    <button type="button" id="google-signin-btn" style="
-                        background-color: #4285f4; 
-                        color: white; 
-                        width: 100%; 
-                        padding: 12px; 
-                        border: none; 
-                        border-radius: 8px; 
-                        font-size: 1rem; 
-                        cursor: pointer; 
-                        display: flex; 
-                        align-items: center; 
-                        justify-content: center; 
-                        gap: 10px;
-                        transition: background-color 0.2s ease;
-                    ">
-                        <i class="fab fa-google" style="font-size: 1.1rem;"></i>
-                        Sign in with Google
-                    </button>
-                </div>
             </form>
             <button class="close-modal-btn" style="background-color: var(--muted-color); color: white; width: 100%;" onclick="document.getElementById('auth-modal').style.display = 'none';">Close</button>
         </div>
@@ -1435,14 +1374,14 @@
 
     <script type="module">
         // Firebase Configuration (Placeholder)
-const firebaseConfig = {
-  apiKey: "AIzaSyDTSCG-mP_Atcgpg1-JKhAlKKLjNug-PZk",
-  authDomain: "kirana-store-f55dd.firebaseapp.com",
-  databaseURL: "https://kirana-store-f55dd-default-rtdb.firebaseio.com",
-  projectId: "kirana-store-f55dd",
-  storageBucket: "kirana-store-f55dd.firebasestorage.app",
-  messagingSenderId: "584414364232",
-  appId: "1:584414364232:web:1a89c8c6b293be45e30e7d"
+        const firebaseConfig = {
+  apiKey: "AIzaSyBGh16sYlLk1e9nkhcLu7IPTZk807qeLZM",
+  authDomain: "test-60bf6.firebaseapp.com",
+  databaseURL: "https://test-60bf6-default-rtdb.firebaseio.com",
+  projectId: "test-60bf6",
+  storageBucket: "test-60bf6.firebasestorage.app",
+  messagingSenderId: "208881094528",
+  appId: "1:208881094528:web:114768e2de5956cae6fb65"
 };
 
         // Telegram Bot Configuration
@@ -1451,7 +1390,7 @@ const firebaseConfig = {
 
         // Initialize Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile, GoogleAuthProvider, signInWithPopup, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
         import { getDatabase, ref, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
         // --- Telegram Bot Integration ---
@@ -1577,14 +1516,6 @@ const firebaseConfig = {
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const database = getDatabase(app);
-        
-        // Initialize Google Auth Provider
-        const googleProvider = new GoogleAuthProvider();
-        
-        // Add custom parameters to help with popup issues
-        googleProvider.setCustomParameters({
-            prompt: 'select_account'
-        });
 
         // --- SPA Routing Logic ---
         const routes = {
@@ -1634,7 +1565,7 @@ const firebaseConfig = {
         window.addEventListener('load', handleHashChange);
 
         // --- Firebase Authentication ---
-        let authForm, authEmailInput, authPasswordInput, authError, authSubmitBtn, toggleAuthModeBtn, authNameInput, authGenderSelect, authAgeInput, resendVerificationBtn;
+        let authForm, authEmailInput, authPasswordInput, authError, authSubmitBtn, toggleAuthModeBtn, authNameInput, authGenderSelect, authAgeInput;
         let loginStatusIndicator, menuLoginLink, menuProfileLink, menuOrdersLink, menuLogoutLink, profileEmailSpan, profilePicDisplay, editProfileBtn, editProfileModal, editProfileForm, editProfileNameInput, editProfilePicUrlInput, profileUserIdSpan;
         let isLoginMode = true; // Default to login mode
 
@@ -1650,23 +1581,11 @@ const firebaseConfig = {
                 authError.textContent = '';
                 authError.style.display = 'none';
             }
-            
-            // Also hide the resend verification button when clearing errors
-            if (resendVerificationBtn) {
-                resendVerificationBtn.style.display = 'none';
-            }
         }
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // Check if user is verified (only for Email/Password users)
-                if (user.providerData[0]?.providerId === 'password' && !user.emailVerified) {
-                    // Email/Password user is not verified, sign them out
-                    await signOut(auth);
-                    return;
-                }
-                
-                // User is signed in and verified
+                // User is signed in
                 loginStatusIndicator.style.display = 'block';
                 menuLoginLink.style.display = 'none';
                 menuProfileLink.style.display = 'list-item';
@@ -1675,26 +1594,11 @@ const firebaseConfig = {
 
                 profileEmailSpan.textContent = user.email;
                 profileUserIdSpan.textContent = user.uid; // Display User ID
-                
-                // Show authentication provider in profile section
-                const profileAuthProvider = document.getElementById('profile-auth-provider');
-                const profileAuthProviderText = document.getElementById('profile-auth-provider-text');
-                if (profileAuthProvider && profileAuthProviderText) {
-                    const authProvider = user.providerData[0]?.providerId;
-                    if (authProvider === 'google.com') {
-                        profileAuthProviderText.innerHTML = 'Google <i class="fab fa-google" style="color: #4285f4; margin-left: 5px;"></i>';
-                        profileAuthProvider.style.display = 'block';
-                    } else {
-                        profileAuthProviderText.innerHTML = 'Email & Password <i class="fas fa-envelope" style="color: var(--primary-red); margin-left: 5px;"></i>';
-                        profileAuthProvider.style.display = 'block';
-                    }
-                }
 
                 // Update header profile dropdown
                 const headerProfileName = document.getElementById('header-profile-name');
                 const headerProfileEmail = document.getElementById('header-profile-email');
                 const headerLoginBtn = document.getElementById('header-login-btn');
-                const headerGoogleLoginBtn = document.getElementById('header-google-login-btn');
                 const headerProfileBtn = document.getElementById('header-profile-btn');
                 const headerOrdersBtn = document.getElementById('header-orders-btn');
                 const headerLogoutBtn = document.getElementById('header-logout-btn');
@@ -1702,19 +1606,9 @@ const firebaseConfig = {
                 if (headerProfileName) headerProfileName.textContent = user.displayName || user.email.split('@')[0];
                 if (headerProfileEmail) headerProfileEmail.textContent = user.email;
                 if (headerLoginBtn) headerLoginBtn.style.display = 'none';
-                if (headerGoogleLoginBtn) headerGoogleLoginBtn.style.display = 'none';
                 if (headerProfileBtn) headerProfileBtn.style.display = 'flex';
                 if (headerOrdersBtn) headerOrdersBtn.style.display = 'flex';
                 if (headerLogoutBtn) headerLogoutBtn.style.display = 'flex';
-                
-                // Show authentication provider indicator
-                const authProvider = user.providerData[0]?.providerId;
-                if (authProvider === 'google.com') {
-                    // Add a small Google icon indicator
-                    if (headerProfileEmail) {
-                        headerProfileEmail.innerHTML = `${user.email} <i class="fab fa-google" style="color: #4285f4; margin-left: 5px; font-size: 0.8rem;"></i>`;
-                    }
-                }
 
                 // No longer fetching name and age for display in this section
                 // const userProfileRef = ref(database, `users/${user.uid}/profile`);
@@ -1785,18 +1679,11 @@ const firebaseConfig = {
                 profilePicDisplay.src = 'https://i.ibb.co/V0z4HyF2/1bcaf73402827ce2445bfc904fd01f4b.jpg'; // Always use the specified image
                 editProfileBtn.style.display = 'none';
                 editProfileModal.style.display = 'none'; // Hide edit modal if logged out
-                
-                // Hide authentication provider info
-                const profileAuthProvider = document.getElementById('profile-auth-provider');
-                if (profileAuthProvider) {
-                    profileAuthProvider.style.display = 'none';
-                }
 
                 // Update header profile dropdown for logged out state
                 const headerProfileName = document.getElementById('header-profile-name');
                 const headerProfileEmail = document.getElementById('header-profile-email');
                 const headerLoginBtn = document.getElementById('header-login-btn');
-                const headerGoogleLoginBtn = document.getElementById('header-google-login-btn');
                 const headerProfileBtn = document.getElementById('header-profile-btn');
                 const headerOrdersBtn = document.getElementById('header-orders-btn');
                 const headerLogoutBtn = document.getElementById('header-logout-btn');
@@ -1804,7 +1691,6 @@ const firebaseConfig = {
                 if (headerProfileName) headerProfileName.textContent = 'Guest User';
                 if (headerProfileEmail) headerProfileEmail.textContent = 'Not logged in';
                 if (headerLoginBtn) headerLoginBtn.style.display = 'flex';
-                if (headerGoogleLoginBtn) headerGoogleLoginBtn.style.display = 'flex';
                 if (headerProfileBtn) headerProfileBtn.style.display = 'none';
                 if (headerOrdersBtn) headerOrdersBtn.style.display = 'none';
                 if (headerLogoutBtn) headerLogoutBtn.style.display = 'none';
@@ -2364,25 +2250,6 @@ const firebaseConfig = {
             authGenderSelect = document.getElementById('auth-gender');
             authAgeInput = document.getElementById('auth-age');
             
-            // Get Google Sign-In button
-            const googleSignInBtn = document.getElementById('google-signin-btn');
-            
-            // Get resend verification button
-            resendVerificationBtn = document.getElementById('resend-verification-btn');
-            
-            // Add event listeners to hide resend button when user starts typing
-            if (authEmailInput && resendVerificationBtn) {
-                authEmailInput.addEventListener('input', () => {
-                    resendVerificationBtn.style.display = 'none';
-                });
-            }
-            
-            if (authPasswordInput && resendVerificationBtn) {
-                authPasswordInput.addEventListener('input', () => {
-                    resendVerificationBtn.style.display = 'none';
-                });
-            }
-            
             // Get profile elements
             loginStatusIndicator = document.getElementById('login-status-indicator');
             menuLoginLink = document.getElementById('menu-login-link');
@@ -2565,128 +2432,8 @@ const firebaseConfig = {
                     if (authNameInput) authNameInput.style.display = isLoginMode ? 'none' : 'block';
                     if (authGenderSelect) authGenderSelect.style.display = isLoginMode ? 'none' : 'block';
                     if (authAgeInput) authAgeInput.style.display = isLoginMode ? 'none' : 'block';
-                    
-                    // Hide resend verification button by default (only show when verification fails)
-                    if (resendVerificationBtn) {
-                        resendVerificationBtn.style.display = 'none';
-                    }
 
                     hideAuthError();
-                });
-            }
-            
-            // Set up Google Sign-In functionality
-            if (googleSignInBtn) {
-                googleSignInBtn.addEventListener('click', async () => {
-                    try {
-                        hideAuthError();
-                        
-                        // Check if we're in a secure context (required for popup)
-                        if (!window.isSecureContext && location.protocol !== 'https:' && location.hostname !== 'localhost') {
-                            showAuthError('Google Sign-In requires a secure connection (HTTPS) or localhost. Please use HTTPS or localhost for testing.');
-                            return;
-                        }
-                        
-                        // Show helpful message about popup requirements
-                        showAuthError('🔐 Opening Google Sign-In popup... Please ensure popups are allowed for this site.');
-                        
-                        try {
-                            const result = await signInWithPopup(auth, googleProvider);
-                            const user = result.user;
-                            
-                            // Check if this is a new user
-                            if (result._tokenResponse?.isNewUser) {
-                                try {
-                                    // Save additional user data to Realtime Database for new Google users
-                                    const userProfileRef = ref(database, `users/${user.uid}/profile`);
-                                    await set(userProfileRef, {
-                                        email: user.email,
-                                        name: user.displayName || user.email.split('@')[0],
-                                        registrationDate: Date.now(),
-                                        authProvider: 'google',
-                                        emailVerified: true, // Google accounts are pre-verified
-                                        isAdmin: false // Normal users are not admin
-                                    });
-                                } catch (dbError) {
-                                    console.warn('Could not save user profile to database:', dbError);
-                                    // Continue with sign-in even if database save fails
-                                }
-                            }
-                        } catch (popupError) {
-                            // Handle specific popup errors
-                            if (popupError.code === 'auth/popup-closed-by-user') {
-                                // User closed the popup - no error message needed
-                                return;
-                            } else if (popupError.code === 'auth/popup-blocked') {
-                                showAuthError('Google Sign-In popup was blocked. Please allow popups for this site and try again.');
-                                return;
-                            } else if (popupError.code === 'auth/unauthorized-domain') {
-                                showAuthError('This domain is not authorized for Google Sign-In. Please contact the administrator or use a different domain.');
-                                return;
-                            } else if (popupError.code === 'auth/cancelled-popup-request') {
-                                showAuthError('Google Sign-In was cancelled. Please try again.');
-                                return;
-                            } else {
-                                // For other popup errors, suggest alternative methods
-                                showAuthError('Google Sign-In popup failed. Please try using email/password sign-in instead, or check your browser settings.');
-                                return;
-                                                            }
-                            }
-                            
-                            // Clear any error messages and close the auth modal
-                            hideAuthError();
-                            document.getElementById('auth-modal').style.display = 'none';
-                    } catch (error) {
-                        console.error('Google Sign-In Error:', error);
-                        if (error.code === 'auth/popup-closed-by-user') {
-                            // User closed the popup - no error message needed
-                        } else if (error.code === 'auth/unauthorized-domain') {
-                            showAuthError('This domain is not authorized for Google Sign-In. Please contact the administrator or use a different domain.');
-                        } else if (error.code === 'auth/popup-blocked') {
-                            showAuthError('Google Sign-In popup was blocked. Please allow popups for this site and try again.');
-                        } else {
-                            showAuthError(`Google Sign-In failed: ${error.message}`);
-                        }
-                    }
-                });
-            }
-            
-            // Set up resend verification functionality
-            if (resendVerificationBtn) {
-                resendVerificationBtn.addEventListener('click', async () => {
-                    try {
-                        const email = authEmailInput.value;
-                        if (!email) {
-                            showAuthError('Please enter your email address first.');
-                            return;
-                        }
-                        
-                        // Try to sign in to get the user object
-                        const userCredential = await signInWithEmailAndPassword(auth, email, authPasswordInput.value);
-                        const user = userCredential.user;
-                        
-                        // Send verification email
-                        await sendEmailVerification(user);
-                        
-                        // Sign out immediately
-                        await signOut(auth);
-                        
-                        // Show success message
-                        showAuthError('✅ Verification email resent! Please check your inbox.');
-                        
-                        // Hide the resend button
-                        resendVerificationBtn.style.display = 'none';
-                    } catch (error) {
-                        if (error.code === 'auth/user-not-found') {
-                            showAuthError('User not found. Please check your email address.');
-                        } else if (error.code === 'auth/wrong-password') {
-                            showAuthError('Wrong password. Please check your credentials.');
-                        } else if (error.code === 'auth/too-many-requests') {
-                            showAuthError('Too many attempts. Please try again later.');
-                        } else {
-                            showAuthError(`Failed to resend verification: ${error.message}`);
-                        }
-                    }
                 });
             }
 
@@ -2703,23 +2450,7 @@ const firebaseConfig = {
 
                     if (isLoginMode) {
                         try {
-                            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                            const user = userCredential.user;
-                            
-                            // Check if email is verified for Email/Password users
-                            if (!user.emailVerified) {
-                                // Sign out immediately if email is not verified
-                                await signOut(auth);
-                                showAuthError('❌ Please verify your email before logging in. Check your inbox for the verification link.');
-                                
-                                // Show resend verification button
-                                if (resendVerificationBtn) {
-                                    resendVerificationBtn.style.display = 'block';
-                                }
-                                return;
-                            }
-                            
-                            // Email is verified, proceed with login
+                            await signInWithEmailAndPassword(auth, email, password);
                             document.getElementById('auth-modal').style.display = 'none';
                         } catch (error) {
                             showAuthError(error.message);
@@ -2735,9 +2466,6 @@ const firebaseConfig = {
                             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                             const user = userCredential.user;
 
-                            // Send email verification
-                            await sendEmailVerification(user);
-
                             // Update Firebase Auth profile (displayName)
                             await updateProfile(user, {
                                 displayName: name,
@@ -2750,18 +2478,10 @@ const firebaseConfig = {
                                 name: name,
                                 gender: gender,
                                 age: age,
-                                registrationDate: Date.now(),
-                                emailVerified: false,
-                                authProvider: 'email'
+                                registrationDate: Date.now()
                             });
 
-                            // Sign out the user immediately after registration
-                            await signOut(auth);
-                            
-                            // Show verification message
-                            showAuthError('✅ Verification email sent! Please check your inbox and verify your email before logging in.');
-                            
-                            // Don't close the modal, let user see the message
+                            document.getElementById('auth-modal').style.display = 'none';
                         } catch (error) {
                             showAuthError(error.message);
                         }
@@ -2999,126 +2719,6 @@ const firebaseConfig = {
                     headerLoginBtn.addEventListener('click', () => {
                         profileDropdown.classList.remove('show');
                         document.getElementById('auth-modal').style.display = 'flex';
-                    });
-                }
-                
-                // Header Google login button
-                const headerGoogleLoginBtn = document.getElementById('header-google-login-btn');
-                if (headerGoogleLoginBtn) {
-                    headerGoogleLoginBtn.addEventListener('click', async () => {
-                        profileDropdown.classList.remove('show');
-                        try {
-                            // Check if we're in a secure context (required for popup)
-                            if (!window.isSecureContext && location.protocol !== 'https:' && location.hostname !== 'localhost') {
-                                const notification = document.createElement('div');
-                                notification.style.cssText = `
-                                    position: fixed;
-                                    top: 80px;
-                                    right: 20px;
-                                    background: var(--primary-red);
-                                    color: white;
-                                    padding: 15px 20px;
-                                    border-radius: 8px;
-                                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                                    z-index: 10000;
-                                    max-width: 300px;
-                                    animation: slideInRight 0.3s ease;
-                                `;
-                                notification.innerHTML = `
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                        <div>Google Sign-In requires HTTPS or localhost. Please use a secure connection.</div>
-                                    </div>
-                                `;
-                                document.body.appendChild(notification);
-                                
-                                // Auto-remove after 5 seconds
-                                setTimeout(() => {
-                                    if (notification.parentNode) {
-                                        notification.parentNode.removeChild(notification);
-                                    }
-                                }, 5000);
-                                return;
-                            }
-                            
-                            const result = await signInWithPopup(auth, googleProvider);
-                            const user = result.user;
-                            
-                            // Check if this is a new user
-                            if (result._tokenResponse?.isNewUser) {
-                                // Save additional user data to Realtime Database for new Google users
-                                const userProfileRef = ref(database, `users/${user.uid}/profile`);
-                                await set(userProfileRef, {
-                                    email: user.email,
-                                    name: user.displayName || user.email.split('@')[0],
-                                    registrationDate: Date.now(),
-                                    authProvider: 'google',
-                                    emailVerified: true // Google accounts are pre-verified
-                                });
-                            }
-                        } catch (error) {
-                            console.error('Google Sign-In Error:', error);
-                            if (error.code === 'auth/unauthorized-domain') {
-                                const notification = document.createElement('div');
-                                notification.style.cssText = `
-                                    position: fixed;
-                                    top: 80px;
-                                    right: 20px;
-                                    background: var(--primary-red);
-                                    color: white;
-                                    padding: 15px 20px;
-                                    border-radius: 8px;
-                                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                                    z-index: 10000;
-                                    max-width: 300px;
-                                    animation: slideInRight 0.3s ease;
-                                `;
-                                notification.innerHTML = `
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                        <div>Domain not authorized. Please contact administrator.</div>
-                                    </div>
-                                `;
-                                document.body.appendChild(notification);
-                                
-                                // Auto-remove after 5 seconds
-                                setTimeout(() => {
-                                    if (notification.parentNode) {
-                                        notification.parentNode.removeChild(notification);
-                                    }
-                                }, 5000);
-                            } else if (error.code !== 'auth/popup-closed-by-user') {
-                                // Show error in a user-friendly way
-                                const notification = document.createElement('div');
-                                notification.style.cssText = `
-                                    position: fixed;
-                                    top: 80px;
-                                    right: 20px;
-                                    background: var(--primary-red);
-                                    color: white;
-                                    padding: 15px 20px;
-                                    border-radius: 8px;
-                                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                                    z-index: 10000;
-                                    max-width: 300px;
-                                    animation: slideInRight 0.3s ease;
-                                `;
-                                notification.innerHTML = `
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                        <div>Google Sign-In failed. Please try again.</div>
-                                    </div>
-                                `;
-                                document.body.appendChild(notification);
-                                
-                                // Auto-remove after 5 seconds
-                                setTimeout(() => {
-                                    if (notification.parentNode) {
-                                        notification.parentNode.removeChild(notification);
-                                    }
-                                }, 5000);
-                            }
-                        }
                     });
                 }
                 
