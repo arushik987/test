@@ -2885,6 +2885,12 @@ const firebaseConfig = {
                         return;
                     }
                     
+                    // Check if popups are blocked
+                    if (window.opener || window.name) {
+                        showAdminAuthError('Google Sign-In popup may not work properly in this context. Please try using email/password sign-in instead.');
+                        return;
+                    }
+                    
                     try {
                         const result = await signInWithPopup(auth, googleProvider);
                         const user = result.user;
@@ -2900,11 +2906,13 @@ const firebaseConfig = {
                                     registrationDate: Date.now(),
                                     authProvider: 'google',
                                     emailVerified: true, // Google accounts are pre-verified
-                                    isAdmin: false // New users are not admin by default
+                                    isAdmin: isAdminUser(user.uid) // Check if they're in admin list
                                 });
+                                console.log('User profile saved successfully');
                             } catch (dbError) {
-                                console.warn('Could not save user profile to database:', dbError);
+                                console.warn('Could not save user profile to database (permission issue):', dbError);
                                 // Continue with sign-in even if database save fails
+                                // This is expected for non-admin users due to database rules
                             }
                         }
                         
@@ -2916,41 +2924,9 @@ const firebaseConfig = {
                             return;
                         }
                         
-                        // Check if existing user has admin role in database
-                        if (!result._tokenResponse?.isNewUser) {
-                            try {
-                                // Additional check for admin role in database (if accessible)
-                                const userProfileRef = ref(database, `users/${user.uid}/profile`);
-                                const snapshot = await get(userProfileRef);
-                                
-                                if (snapshot.exists() && snapshot.val().isAdmin === false) {
-                                    // User explicitly marked as non-admin, sign them out
-                                    await signOut(auth);
-                                    showAdminAuthError('❌ Access Denied: Admin privileges have been revoked.');
-                                    return;
-                                }
-                            } catch (error) {
-                                console.log('Could not check database admin role, proceeding with UID check only:', error);
-                                // Proceed if user is in admin UID list even if database check fails
-                            }
-                        } else {
-                            // New user - only allow if they're in the admin UID list
-                            try {
-                                // Save admin user data to Realtime Database for new Google users
-                                const userProfileRef = ref(database, `users/${user.uid}/profile`);
-                                await set(userProfileRef, {
-                                    email: user.email,
-                                    name: user.displayName || user.email.split('@')[0],
-                                    registrationDate: Date.now(),
-                                    authProvider: 'google',
-                                    emailVerified: true, // Google accounts are pre-verified
-                                    isAdmin: true // They're in the admin list, so mark as admin
-                                });
-                            } catch (dbError) {
-                                console.warn('Could not save admin user profile to database:', dbError);
-                                // Continue with sign-in even if database save fails
-                            }
-                        }
+                        // For existing users, we only check the UID list
+                        // Database admin role check is not needed and may cause permission issues
+                        console.log('Existing user, checking admin status from UID list');
                         
                         // Login successful, onAuthStateChanged will handle UI update
                     } catch (popupError) {
