@@ -2396,6 +2396,7 @@ const firebaseConfig = {
         }
 
         let app, auth, database;
+        let isUserAdmin = false; // Flag to track if current user is admin
         
         try {
             app = initializeApp(firebaseConfig);
@@ -2679,6 +2680,14 @@ const firebaseConfig = {
 
         // --- Admin Authentication (Re-enabled) ---
         document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is already logged in and is admin
+            if (auth.currentUser) {
+                if (!isAdminUser(auth.currentUser.uid)) {
+                    // Current user is not admin, sign them out immediately
+                    signOut(auth);
+                }
+            }
+            
             const adminAuthModal = document.getElementById('admin-auth-modal');
             const adminAuthForm = document.getElementById('admin-auth-form');
             const adminEmailInput = document.getElementById('admin-email');
@@ -2686,6 +2695,15 @@ const firebaseConfig = {
             const adminAuthError = document.getElementById('admin-auth-error');
             const adminLoginBtn = document.getElementById('admin-login-btn'); // Get the login button
             const adminResendVerificationBtn = document.getElementById('admin-resend-verification-btn'); // Get the resend verification button
+            
+            // Ensure admin content is hidden by default until proper authentication
+            const adminContent = document.getElementById('admin-content');
+            const adminContentWrapper = document.getElementById('admin-content-wrapper');
+            if (adminContent) adminContent.style.display = 'none';
+            if (adminContentWrapper) adminContentWrapper.classList.add('blur-overlay');
+            
+            // Always show login modal first
+            if (adminAuthModal) adminAuthModal.style.display = 'flex';
 
         // Add event listeners to hide resend button when user starts typing
         if (adminEmailInput && adminResendVerificationBtn) {
@@ -2726,13 +2744,25 @@ const firebaseConfig = {
                     
                     // Check if user has admin privileges
                     if (!isAdminUser(user.uid)) {
-                        // User is not in admin list, sign them out
+                        // User is not in admin list, sign them out and show error
+                        isUserAdmin = false;
                         signOut(auth);
-                        showAdminAuthError('❌ Access Denied: Only admin users can access this panel.');
+                        // Show error message in the modal
+                        if (adminAuthError) {
+                            adminAuthError.textContent = '❌ Access Denied: Only admin users can access this panel.';
+                            adminAuthError.style.display = 'block';
+                        }
+                        // Keep showing the login modal
+                        adminAuthModal.style.display = 'flex';
+                        adminContent.style.display = 'none';
+                        adminContentWrapper.classList.add('blur-overlay');
+                        clearAdminProfile();
+                        clearAdminLoginForm();
                         return;
                     }
                     
                     // User is signed in, verified, and has admin privileges - show admin content
+                    isUserAdmin = true;
                     adminAuthModal.style.display = 'none';
                     adminContent.style.display = 'block';
                     adminContentWrapper.classList.remove('blur-overlay');
@@ -2746,12 +2776,14 @@ const firebaseConfig = {
                     }
                 } else {
                     // User is signed out, show login modal and hide admin content
+                    isUserAdmin = false;
                     adminAuthModal.style.display = 'flex';
                     adminContent.style.display = 'none';
                     adminContentWrapper.classList.add('blur-overlay');
                     
-                    // Clear admin profile information
+                    // Clear admin profile information and form
                     clearAdminProfile();
+                    clearAdminLoginForm();
                 }
             });
 
@@ -3061,6 +3093,11 @@ const firebaseConfig = {
         };
 
         function showSection(sectionId) {
+            // Check if user has admin access before showing any section
+            if (!protectAdminRoute()) {
+                return;
+            }
+            
             document.querySelectorAll('.admin-section').forEach(section => {
                 section.classList.remove('active');
             });
@@ -3073,6 +3110,11 @@ const firebaseConfig = {
         function handleAdminHashChange() {
             const hash = window.location.hash || '#today-orders';
             const route = adminRoutes[hash];
+
+            // Check admin access before proceeding
+            if (!protectAdminRoute()) {
+                return;
+            }
 
             // Ensure bottom navigation is always visible
             const bottomNav = document.querySelector('.admin-bottom-nav');
@@ -3117,6 +3159,11 @@ const firebaseConfig = {
 
         // Handle navigation changes
         window.addEventListener('hashchange', () => {
+            // Check admin access before proceeding
+            if (!protectAdminRoute()) {
+                return;
+            }
+            
             if (window.location.hash === '#today-orders') {
                 renderTodayOrders();
             }
@@ -3124,6 +3171,11 @@ const firebaseConfig = {
 
         // Handle hash changes for navigation
         window.addEventListener('hashchange', () => {
+            // Check admin access before proceeding
+            if (!protectAdminRoute()) {
+                return;
+            }
+            
             const hash = window.location.hash.substring(1); // Remove the #
             if (hash) {
                 showSection(hash);
@@ -3149,6 +3201,11 @@ const firebaseConfig = {
 
         // Initial load - show correct section by default
         window.addEventListener('load', () => {
+            // Check admin access before proceeding
+            if (!protectAdminRoute()) {
+                return;
+            }
+            
             // Ensure bottom navigation is always visible
             const bottomNav = document.querySelector('.admin-bottom-nav');
             if (bottomNav) {
@@ -3256,6 +3313,40 @@ const firebaseConfig = {
             updateConnectionStatus(false);
         }
         
+        // Function to clear admin login form
+        function clearAdminLoginForm() {
+            if (adminAuthForm) {
+                adminAuthForm.reset();
+            }
+            if (adminAuthError) {
+                adminAuthError.textContent = '';
+                adminAuthError.style.display = 'none';
+            }
+            if (adminResendVerificationBtn) {
+                adminResendVerificationBtn.style.display = 'none';
+            }
+        }
+        
+        // Function to check if user can access admin functions
+        function checkAdminAccess() {
+            if (!isUserAdmin || !auth.currentUser || !isAdminUser(auth.currentUser.uid)) {
+                // User is not admin, sign them out
+                signOut(auth);
+                return false;
+            }
+            return true;
+        }
+        
+        // Function to protect admin routes
+        function protectAdminRoute() {
+            if (!checkAdminAccess()) {
+                // Redirect to login or show error
+                window.location.hash = '#today-orders';
+                return false;
+            }
+            return true;
+        }
+        
         // Theme functionality
         function initializeTheme() {
             // Load saved theme from localStorage
@@ -3313,18 +3404,29 @@ const firebaseConfig = {
             // --- Theme Toggle Functionality ---
             const themeToggleIcon = document.querySelector('.theme-toggle-icon');
             
-            // Initialize theme functionality
-            initializeTheme();
-            
-            // Refresh order cards to ensure proper encoding
-            setTimeout(() => {
-                refreshOrderCards();
-            }, 1000); // Wait 1 second for data to load
-            
-            // Clean up any corrupted order data
-            setTimeout(() => {
-                cleanupCorruptedOrders();
-            }, 2000); // Wait 2 seconds for data to load
+                    // Initialize theme functionality
+        initializeTheme();
+        
+        // Check if current user is admin when page loads
+        if (auth.currentUser && !isAdminUser(auth.currentUser.uid)) {
+            // Current user is not admin, sign them out immediately
+            signOut(auth);
+            // Show error message
+            if (adminAuthError) {
+                adminAuthError.textContent = '❌ Access Denied: Only admin users can access this panel.';
+                adminAuthError.style.display = 'block';
+            }
+        }
+        
+        // Refresh order cards to ensure proper encoding
+        setTimeout(() => {
+            refreshOrderCards();
+        }, 1000); // Wait 1 second for data to load
+        
+        // Clean up any corrupted order data
+        setTimeout(() => {
+            cleanupCorruptedOrders();
+        }, 2000); // Wait 2 seconds for data to load
             
             if (themeToggleIcon) {
                 themeToggleIcon.addEventListener('click', () => {
